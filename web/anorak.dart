@@ -1,52 +1,52 @@
 import 'dart:html';
 
 abstract class Tile {
-  String get explanation;  // Explains what the symbol means.
-  String get symbol;  // Symbol used to render the tile.
-  String get color;  // Color of the symbol.
+  String _explanation;  // Explains what the symbol means.
+  String _symbol;  // Symbol used to render the tile.
+  String _color;  // Color of the symbol.
   bool get passable => true;  // True if player can move onto tile.
   bool get has_event => false;  // True if interacting with the tile results in event.
   bool get bold => false;  // Rendered in bold if true (typically PC and NPCs).
 
   Element MakeElement() {
     Element span = new Element.span();
-    span.style.setProperty('color', color);
+    span.style.setProperty('color', _color);
     if (bold) {
       span.style.setProperty('font-weight', 'bold');
     }
-    span.appendText(symbol);
+    span.appendText(_symbol);
     return span;
   }
 }
 
 class NullTile extends Tile {
-  String get explanation => '';
-  String get symbol => ' ';
-  String get color => 'white';
+  String _explanation = '';
+  String _symbol = ' ';
+  String _color = 'white';
 }
 
 class Grass extends Tile {
-  String get explanation => 'grass';
-  String get symbol => '.';
-  String get color => 'lightgreen';  // TODO: Pick right shade of green.
+  String _explanation = 'grass';
+  String _symbol = '.';
+  String _color = 'lightgreen';  // TODO: Pick right shade of green.
 }
 
 class Tree extends Tile {
-  String get explanation => 'tree';
-  String get symbol => '#';
-  String get color => 'green';
+  String _explanation = 'tree';
+  String _symbol = '#';
+  String _color = 'green';
 }
 
 class Path extends Tile {
-  String get explanation => 'path';
-  String get symbol => '#';
-  String get color => 'brown';
+  String _explanation = 'path';
+  String _symbol = '#';
+  String _color = 'brown';
 }
 
 class PlayerTile extends Tile {
-  String get explanation => 'you';
-  String get symbol => '@';
-  String get color => 'black';
+  String _explanation = 'you';
+  String _symbol = '@';
+  String _color = 'black';
   bool get passable => false;
   bool get bold => true;
 }
