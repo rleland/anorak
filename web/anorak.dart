@@ -156,5 +156,6 @@ void main() {
   level.multiAddTile(new Path(),  0,  10, 20, 11);
   level.addTile(new PlayerTile(), 10, 10);
   querySelector('#world').append(level.render());
-  window.onKeyPress.listen(processKeyPress);
+  KeyboardListener kl;
+  kl.listen(window);  // TODO: Why isn't this an element! what is it?
 }
