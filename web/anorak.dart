@@ -6,6 +6,17 @@ abstract class Tile {
   String get color;  // Color of the symbol.
   bool get passable => true;  // True if player can move onto tile.
   bool get has_event => false;  // True if interacting with the tile results in event.
+  bool get bold => false;  // Rendered in bold if true (typically PC and NPCs).
+
+  Element MakeElement() {
+    Element span = new Element.span();
+    span.style.setProperty('color', color);
+    if (bold) {
+      span.style.setProperty('font-weight', 'bold');
+    }
+    span.appendText(symbol);
+    return span;
+  }
 }
 
 class NullTile extends Tile {
@@ -30,6 +41,14 @@ class Path extends Tile {
   String get explanation => 'path';
   String get symbol => '#';
   String get color => 'brown';
+}
+
+class PlayerTile extends Tile {
+  String get explanation => 'you';
+  String get symbol => '@';
+  String get color => 'black';
+  bool get passable => false;
+  bool get bold => true;
 }
 
 class TileMap {
@@ -86,11 +105,7 @@ class Level {  // Better name, e.g. zone, scene, map, area, etc
           if (!_layers[i].HasTile(row, col)) {
             continue;
           }
-          Tile tile = _layers[i].TileAt(row, col);
-          Element span = new Element.span();
-          span.style.setProperty('color', tile.color);
-          span.appendText(tile.symbol);
-          outer.append(span);
+          outer.append(_layers[i].TileAt(row, col).MakeElement());
         }
       }
       outer.append(new Element.br());
@@ -119,5 +134,6 @@ void main() {
   level.MultiAddTile(new Tree(), 0, 19, 20, 20);
   level.MultiAddTile(new Tree(), 19, 0, 20, 20);
   level.MultiAddTile(new Path(),  0,  10, 20, 11);
+  level.AddTile(new PlayerTile(), 10, 10);
   querySelector('#world').append(level.Render());
 }
