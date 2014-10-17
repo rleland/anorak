@@ -8,6 +8,12 @@ abstract class Tile {
   bool get has_event => false;  // True if interacting with the tile results in event.
 }
 
+class NullTile extends Tile {
+  String get explanation => '';
+  String get symbol => ' ';
+  String get color => 'white';
+}
+
 class Grass extends Tile {
   String get explanation => 'grass';
   String get symbol => '.';
@@ -35,6 +41,12 @@ class TileMap {
     _width = width;
     _height = height;
     _tiles = new List<Tile>(_width * _height);
+    Tile null_tile = new NullTile();
+    for (int row = 0; row < _height; ++row) {
+      for (int col = 0; col < _width; ++col) {
+        AddTile(null_tile, row, col);
+      }
+    }
   }
   
   // row and col starts at 0
@@ -68,17 +80,20 @@ class Level {  // Better name, e.g. zone, scene, map, area, etc
     Element outer = new Element.div();
     outer.style.setProperty('font-family', 'monospace');
     List<String> tiles = new List<String>(_height * _width);
-    for (int i = 0; i < _layers.length; ++i) {
-      for (int j = 0; j < _height; ++j) {
-        for (int k = 0; k < _width; ++k) {
-          Tile tile = _layers[i].TileAt(j, k);
+    for (int row = 0; row < _height; ++row) {
+      for (int col = 0; col < _width; ++col) {
+        for (int i = _layers.length-1; i >= 0; --i) {
+          if (!_layers[i].HasTile(row, col)) {
+            continue;
+          }
+          Tile tile = _layers[i].TileAt(row, col);
           Element span = new Element.span();
           span.style.setProperty('color', tile.color);
           span.appendText(tile.symbol);
           outer.append(span);
         }
-        outer.append(new Element.br());
       }
+      outer.append(new Element.br());
     }
     return outer;
   }
