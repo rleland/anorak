@@ -86,12 +86,10 @@ class TileMap {
 
 class Level {  // Better name, e.g. zone, scene, map, area, etc
   List<TileMap> _layers;
-  int _width;
-  int _height;
+  final int _width;
+  final int _height;
   
-  Level(int width, int height) {
-    _width = width;
-    _height = height;
+  Level(int this._width, int this._height) {
     _layers = new List<TileMap>();
     _layers.add(new TileMap(_width, _height));
   }
