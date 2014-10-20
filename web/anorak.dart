@@ -127,22 +127,45 @@ class Level {  // Better name, e.g. zone, scene, map, area, etc
   }
 }
 
-class KeyboardListener {
-  HashMap<int, int> _keys = new HashMap<int, int>();
+class Key {
+  static final HashMap<int, Key> _keys = {};
 
-  void listen(Element e) {
-    e.onKeyDown.listen(processKeyDown);
-    e.onKeyUp.listen(processKeyUp);
+  static Key get(int keyCode) {
+    return _keys.containsKey(keyCode) ? _keys[keyCode] : null;
+  }
+
+  final Key DOWN = new Key(40);
+  final Key UP = new Key(38);
+  final Key LEFT = new Key(37);
+  final Key RIGHT = new Key(39);
+
+  final int _code;
+  Key(this._code) {
+    _keys[_code] = this;
+  }
+}
+
+class KeyboardListener {
+  HashMap<Key, int> _keys = {};
+
+  void listen(Window w) {
+    // TODO: Change to event target
+    w.onKeyDown.listen(processKeyDown);
+    w.onKeyUp.listen(processKeyUp);
   }
 
   void processKeyDown(KeyboardEvent e) {
-    if (!_keys.containsKey(e.keyCode)) {
-      _keys[e.keyCode] = e.timeStamp;
+    Key key = Key.get(e.keyCode);
+    if (key != null && !_keys.containsKey(key)) {
+      _keys[key] = e.timeStamp;
     }
   }
 
   void processKeyUp(KeyboardEvent e) {
-    _keys.remove(e.keyCode);
+    Key key = Key.get(e.keyCode);
+    if (key != null) {
+      this._keys.remove(key);
+    }
   }
 }
 
@@ -156,6 +179,6 @@ void main() {
   level.multiAddTile(new Path(),  0,  10, 20, 11);
   level.addTile(new PlayerTile(), 10, 10);
   querySelector('#world').append(level.render());
-  KeyboardListener kl;
+  KeyboardListener kl = new KeyboardListener();
   kl.listen(window);  // TODO: Why isn't this an element! what is it?
 }
