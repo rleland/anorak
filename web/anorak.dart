@@ -134,10 +134,10 @@ class Key {
     return _keys.containsKey(keyCode) ? _keys[keyCode] : null;
   }
 
-  final Key DOWN = new Key(40);
-  final Key UP = new Key(38);
-  final Key LEFT = new Key(37);
-  final Key RIGHT = new Key(39);
+  static final Key DOWN = new Key(40);
+  static final Key UP = new Key(38);
+  static final Key LEFT = new Key(37);
+  static final Key RIGHT = new Key(39);
 
   final int _code;
   Key(this._code) {
@@ -150,22 +150,45 @@ class KeyboardListener {
 
   void listen(Window w) {
     // TODO: Change to event target
-    w.onKeyDown.listen(processKeyDown);
-    w.onKeyUp.listen(processKeyUp);
+    w.onKeyDown.listen(_processKeyDown);
+    w.onKeyUp.listen(_processKeyUp);
   }
 
-  void processKeyDown(KeyboardEvent e) {
+  int timestampIfPressed(Key key) {
+    return _keys.containsKey(key) ? _keys[key] : -1;
+  }
+
+  void _processKeyDown(KeyboardEvent e) {
     Key key = Key.get(e.keyCode);
-    if (key != null && !_keys.containsKey(key)) {
-      _keys[key] = e.timeStamp;
+    if (key != null) {
+      _keys.putIfAbsent(key, () => e.timeStamp);
     }
   }
 
-  void processKeyUp(KeyboardEvent e) {
+  void _processKeyUp(KeyboardEvent e) {
     Key key = Key.get(e.keyCode);
     if (key != null) {
       this._keys.remove(key);
     }
+  }
+}
+
+class InputHandler {  // TODO: Rename to describe the type of inputhandler and maybe generic class?
+  final KeyboardListener _listener;
+
+  InputHandler(this._listener) {
+  }
+
+  Key GetDirectionKey() {
+    int lastTimestamp = -1;
+    Key lastKey;
+    for (Key k in [Key.UP, Key.DOWN, Key.RIGHT, Key.LEFT]) {
+      int ts = _listener.timestampIfPressed(k);
+      if (ts > lastTimestamp) {
+        lastKey = k;
+      }
+    }
+    return lastKey;
   }
 }
 
