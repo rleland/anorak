@@ -189,8 +189,19 @@ class InputHandler {  // TODO: Rename to describe the type of inputhandler and m
   }
 }
 
-void gameLoop(Timer timer) {
+class Game {
+  final Level _level;
+  final KeyboardListener _kl;
 
+  Game(this._kl, this._level) {
+  }
+
+  void start() {
+    new Timer.periodic(new Duration(milliseconds: 100), this._gameLoop);
+  }
+
+  void _gameLoop(Timer timer) {
+  }
 }
 
 void main() {
@@ -206,5 +217,6 @@ void main() {
   KeyboardListener kl = new KeyboardListener();
   kl.listen(window);  // TODO: Why isn't this an element! what is it?
 
-  new Timer.periodic(new Duration(milliseconds: 100), gameLoop);
+  Game game = new Game(kl, level);
+  game.start();
 }
