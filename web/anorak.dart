@@ -1,5 +1,6 @@
 import 'dart:collection';
 import 'dart:html';
+import 'dart:async';
 
 abstract class Tile {
   String _explanation;  // Explains what the symbol means.
@@ -54,12 +55,10 @@ class PlayerTile extends Tile {
 
 class TileMap {
   List<Tile> _tiles;
-  int _width;
-  int _height;
+  final int _width;
+  final int _height;
   
-  TileMap(int width, int height) {
-    _width = width;
-    _height = height;
+  TileMap(int this._width, int this._height) {
     _tiles = new List<Tile>(_width * _height);
     Tile null_tile = new NullTile();
     for (int row = 0; row < _height; ++row) {
@@ -190,6 +189,10 @@ class InputHandler {  // TODO: Rename to describe the type of inputhandler and m
   }
 }
 
+void gameLoop(Timer timer) {
+
+}
+
 void main() {
   Level level = new Level(20, 20);
   level.multiAddTile(new Grass(), 0, 0, 20, 20);
@@ -202,4 +205,6 @@ void main() {
   querySelector('#world').append(level.render());
   KeyboardListener kl = new KeyboardListener();
   kl.listen(window);  // TODO: Why isn't this an element! what is it?
+
+  new Timer.periodic(new Duration(milliseconds: 100), gameLoop);
 }
