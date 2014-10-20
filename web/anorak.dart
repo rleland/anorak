@@ -189,11 +189,31 @@ class InputHandler {  // TODO: Rename to describe the type of inputhandler and m
   }
 }
 
+class Player {
+  static final int MOVE_PERIOD_MS = 500;
+  int _row = 10;
+  int _col = 10;
+  int _last_move = 0;
+  Tile _tile = new PlayerTile();
+
+  bool shouldMove() {
+    // TODO: TIme should be passed in.
+    int now_ms = new DateTime.now().millisecondsSinceEpoch;
+    if (now_ms > _last_move + MOVE_PERIOD_MS) {
+      _last_move = now_ms;
+      return true;
+    }
+    return false;
+  }
+}
+
 class Game {
   final Level _level;
   final KeyboardListener _kl;
+  InputHandler _input_handler;
 
   Game(this._kl, this._level) {
+    this._input_handler = new InputHandler(_kl);
   }
 
   void start() {
@@ -201,6 +221,10 @@ class Game {
   }
 
   void _gameLoop(Timer timer) {
+    Key direction = _input_handler.GetDirectionKey();
+    if (direction == null) {
+      return;
+    }
   }
 }
 
