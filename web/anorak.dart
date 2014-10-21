@@ -8,6 +8,10 @@ class Pos {
 
   Pos(this.row, this.col) {
   }
+
+  Pos operator+(Pos other) {
+    return new Pos(this.row + other.row, this.col + other.col);
+  }
 }
 
 abstract class Tile {
@@ -204,6 +208,8 @@ class Player {
   int _last_move = 0;
   Tile _tile = new PlayerTile();
 
+  Pos get pos => _pos;
+
   bool shouldMove() {
     // TODO: TIme should be passed in.
     int now_ms = new DateTime.now().millisecondsSinceEpoch;
@@ -254,6 +260,7 @@ class Game {
   }
 
   void _movePlayer(Pos pos_offset) {
+    Pos new_pos = _player.pos + pos_offset;
   }
 }
 
