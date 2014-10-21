@@ -2,6 +2,14 @@ import 'dart:collection';
 import 'dart:html';
 import 'dart:async';
 
+class Pos {
+  final int row;
+  final int col;
+
+  Pos(this.row, this.col) {
+  }
+}
+
 abstract class Tile {
   String _explanation;  // Explains what the symbol means.
   String _symbol;  // Symbol used to render the tile.
@@ -63,23 +71,23 @@ class TileMap {
     Tile null_tile = new NullTile();
     for (int row = 0; row < _height; ++row) {
       for (int col = 0; col < _width; ++col) {
-        addTile(null_tile, row, col);
+        addTile(null_tile, new Pos(row, col));
       }
     }
   }
   
   // row and col starts at 0
-  bool hasTile(int row, int col) {
-    return tileAt(row, col) != null;
+  bool hasTile(Pos pos) {
+    return tileAt(pos) != null;
   }
   
-  Tile tileAt(int row, int col) {
-    assert(row < _height && col < _width);
-    return _tiles[row * _width + col];
+  Tile tileAt(Pos pos) {
+    assert(pos.row < _height && pos.col < _width);
+    return _tiles[pos.row * _width + pos.col];
   }
   
-  void addTile(Tile tile, int row, int col) {
-    _tiles[row * _width + col] = tile;
+  void addTile(Tile tile, Pos pos) {
+    _tiles[pos.row * _width + pos.col] = tile;
   }
 }
 
@@ -100,10 +108,11 @@ class Level {  // Better name, e.g. zone, scene, map, area, etc
     for (int row = 0; row < _height; ++row) {
       for (int col = 0; col < _width; ++col) {
         for (int i = _layers.length-1; i >= 0; --i) {
-          if (!_layers[i].hasTile(row, col)) {
+          Pos pos = new Pos(row, col);
+          if (!_layers[i].hasTile(pos)) {
             continue;
           }
-          outer.append(_layers[i].tileAt(row, col).makeElement());
+          outer.append(_layers[i].tileAt(pos).makeElement());
         }
       }
       outer.append(new Element.br());
@@ -111,14 +120,14 @@ class Level {  // Better name, e.g. zone, scene, map, area, etc
     return outer;
   }
   
-  void addTile(Tile tile, int row, int col) {
-    _layers[0].addTile(tile, row, col);
+  void addTile(Tile tile, Pos pos) {
+    _layers[0].addTile(tile, pos);
   }
   
-  void multiAddTile(Tile tile, int start_row, int start_col, int end_row, int end_col) {
-    for (int row = start_row; row < end_row; ++row) {
-      for (int col = start_col; col < end_col; ++col) {
-        addTile(tile, row, col);
+  void multiAddTile(Tile tile, Pos start_pos, Pos end_pos) {
+    for (int row = start_pos.row; row < end_pos.row; ++row) {
+      for (int col = start_pos.col; col < end_pos.col; ++col) {
+        addTile(tile, new Pos(row, col));
       }
     }
   }
@@ -210,6 +219,7 @@ class Player {
 class Game {
   final Level _level;
   final KeyboardListener _kl;
+  final Player _player = new Player();
   InputHandler _input_handler;
 
   Game(this._kl, this._level) {
@@ -221,22 +231,42 @@ class Game {
   }
 
   void _gameLoop(Timer timer) {
+    _updatePlayer();
+  }
+
+  void _updatePlayer() {
+    if (!_player.shouldMove()) {
+      return;
+    }
     Key direction = _input_handler.GetDirectionKey();
     if (direction == null) {
       return;
+    } else if (direction == Key.UP) {
+      _movePlayer(1, 0);
+    } else if (direction == Key.RIGHT) {
+      _movePlayer(0, 1);
+    } else if (direction == Key.DOWN) {
+      _movePlayer(-1, 0);
+    } else if (direction == Key.LEFT){
+      _movePlayer(0, -1);
+    } else {
+      assert(false);  // Invalid direction.
     }
+  }
+
+  void _movePlayer(int row_off, int col_off) {
   }
 }
 
 void main() {
   Level level = new Level(20, 20);
-  level.multiAddTile(new Grass(), 0, 0, 20, 20);
-  level.multiAddTile(new Tree(), 0, 0, 1, 20);
-  level.multiAddTile(new Tree(), 0, 0, 20, 1);
-  level.multiAddTile(new Tree(), 0, 19, 20, 20);
-  level.multiAddTile(new Tree(), 19, 0, 20, 20);
-  level.multiAddTile(new Path(),  0,  10, 20, 11);
-  level.addTile(new PlayerTile(), 10, 10);
+  level.multiAddTile(new Grass(), new Pos(0, 0), new Pos(20, 20));
+  level.multiAddTile(new Tree(), new Pos(0, 0), new Pos(1, 20));
+  level.multiAddTile(new Tree(), new Pos(0, 0), new Pos(20, 1));
+  level.multiAddTile(new Tree(), new Pos(0, 19), new Pos(20, 20));
+  level.multiAddTile(new Tree(), new Pos(19, 0), new Pos(20, 20));
+  level.multiAddTile(new Path(),  new Pos(0,  10), new Pos(20, 11));
+  level.addTile(new PlayerTile(), new Pos(10, 10));
   querySelector('#world').append(level.render());
   KeyboardListener kl = new KeyboardListener();
   kl.listen(window);  // TODO: Why isn't this an element! what is it?
