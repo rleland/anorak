@@ -242,19 +242,19 @@ class Game {
     if (direction == null) {
       return;
     } else if (direction == Key.UP) {
-      _movePlayer(1, 0);
+      _movePlayer(new Pos(1, 0));
     } else if (direction == Key.RIGHT) {
-      _movePlayer(0, 1);
+      _movePlayer(new Pos(0, 1));
     } else if (direction == Key.DOWN) {
-      _movePlayer(-1, 0);
+      _movePlayer(new Pos(-1, 0));
     } else if (direction == Key.LEFT){
-      _movePlayer(0, -1);
+      _movePlayer(new Pos(0, -1));
     } else {
       assert(false);  // Invalid direction.
     }
   }
 
-  void _movePlayer(int row_off, int col_off) {
+  void _movePlayer(Pos pos_offset) {
   }
 }
 
