@@ -200,8 +200,7 @@ class InputHandler {  // TODO: Rename to describe the type of inputhandler and m
 
 class Player {
   static final int MOVE_PERIOD_MS = 500;
-  int _row = 10;
-  int _col = 10;
+  Pos _pos = new Pos(10, 10);
   int _last_move = 0;
   Tile _tile = new PlayerTile();
 
