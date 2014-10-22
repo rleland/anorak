@@ -210,9 +210,9 @@ class Player {
 
   Pos get pos => _pos;
 
-  bool shouldMove(int now_ms) {
+  bool shouldMove(DateTime now) {
     if (now_ms > _last_move + MOVE_PERIOD_MS) {
-      _last_move = now_ms;
+      _last_move = now.millisecondsSinceEpoch;
       return true;
     }
     return false;
@@ -234,12 +234,12 @@ class Game {
   }
 
   void _gameLoop(Timer timer) {
-    int now_ms = new DateTime.now().millisecondsSinceEpoch;
-    _updatePlayer(now_ms);
+    DateTime now = new DateTime.now();
+    _updatePlayer(now);
   }
 
-  void _updatePlayer(int now_ms) {
-    if (!_player.shouldMove(now_ms)) {
+  void _updatePlayer(DateTime now) {
+    if (!_player.shouldMove(now)) {
       return;
     }
     Key direction = _input_handler.GetDirectionKey();
