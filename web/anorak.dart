@@ -135,6 +135,19 @@ class Level {  // Better name, e.g. zone, scene, map, area, etc
       }
     }
   }
+  
+  bool isPassable(Pos pos) {
+    if (pos.row >= _height || pos.col >= _width) {
+      return false;
+    }
+    for (int i = 0; i < _layers.length; ++i) {
+      Tile tile = _layers[i].tileAt(pos);
+      if (tile != null && !tile.passable) {
+        return false;
+      }
+    }
+    return true;
+  }
 }
 
 class Key {
@@ -204,11 +217,9 @@ class InputHandler {  // TODO: Rename to describe the type of inputhandler and m
 
 class Player {
   static final int MOVE_PERIOD_MS = 500;
-  Pos _pos = new Pos(10, 10);
+  Pos pos = new Pos(10, 10);
   int _last_move = 0;
   Tile _tile = new PlayerTile();
-
-  Pos get pos => _pos;
 
   bool shouldMove(DateTime now) {
     if (now_ms > _last_move + MOVE_PERIOD_MS) {
@@ -260,6 +271,9 @@ class Game {
 
   void _movePlayer(Pos pos_offset) {
     Pos new_pos = _player.pos + pos_offset;
+    if (_level.isPassable(new_pos)) {
+      _player.pos = new_pos;
+    }
   }
 }
 
