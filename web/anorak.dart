@@ -67,14 +67,14 @@ class PlayerTile extends Tile {
 
 class TileMap {
   List<Tile> _tiles;
-  final int _width;
-  final int _height;
+  final int _rows;
+  final int _cols;
   
-  TileMap(int this._width, int this._height) {
-    _tiles = new List<Tile>(_width * _height);
+  TileMap(int this._rows, int this._cols) {
+    _tiles = new List<Tile>(_rows * _cols);
     Tile null_tile = new NullTile();
-    for (int row = 0; row < _height; ++row) {
-      for (int col = 0; col < _width; ++col) {
+    for (int row = 0; row < _rows; ++row) {
+      for (int col = 0; col < _cols; ++col) {
         addTile(null_tile, new Pos(row, col));
       }
     }
@@ -86,31 +86,31 @@ class TileMap {
   }
   
   Tile tileAt(Pos pos) {
-    assert(pos.row < _height && pos.col < _width);
-    return _tiles[pos.row * _width + pos.col];
+    assert(pos.row < _rows && pos.col < _cols);
+    return _tiles[pos.row * _cols + pos.col];
   }
   
   void addTile(Tile tile, Pos pos) {
-    _tiles[pos.row * _width + pos.col] = tile;
+    _tiles[pos.row * _cols + pos.col] = tile;
   }
 }
 
 class Level {  // Better name, e.g. zone, scene, map, area, etc
   List<TileMap> _layers;
-  final int _width;
-  final int _height;
+  final int _rows;
+  final int _cols;
   
-  Level(int this._width, int this._height) {
+  Level(int this._rows, int this._cols) {
     _layers = new List<TileMap>();
-    _layers.add(new TileMap(_width, _height));
+    _layers.add(new TileMap(_rows, _cols));
   }
   
   Element render() {
     Element outer = new Element.div();
     outer.style.setProperty('font-family', 'monospace');
-    List<String> tiles = new List<String>(_height * _width);
-    for (int row = 0; row < _height; ++row) {
-      for (int col = 0; col < _width; ++col) {
+    List<String> tiles = new List<String>(_rows * _cols);
+    for (int row = 0; row < _rows; ++row) {
+      for (int col = 0; col < _cols; ++col) {
         for (int i = _layers.length-1; i >= 0; --i) {
           Pos pos = new Pos(row, col);
           if (!_layers[i].hasTile(pos)) {
@@ -137,7 +137,7 @@ class Level {  // Better name, e.g. zone, scene, map, area, etc
   }
   
   bool isPassable(Pos pos) {
-    if (pos.row >= _height || pos.col >= _width) {
+    if (pos.row >= _rows || pos.col >= _cols) {
       return false;
     }
     for (int i = 0; i < _layers.length; ++i) {
