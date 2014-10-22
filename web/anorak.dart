@@ -222,8 +222,9 @@ class Player {
   Tile _tile = new PlayerTile();
 
   bool shouldMove(DateTime now) {
+    int now_ms = now.millisecondsSinceEpoch;
     if (now_ms > _last_move + MOVE_PERIOD_MS) {
-      _last_move = now.millisecondsSinceEpoch;
+      _last_move = now_ms;
       return true;
     }
     return false;
