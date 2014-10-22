@@ -102,13 +102,20 @@ class TileMap {
 }
 
 class Level {  // Better name, e.g. zone, scene, map, area, etc
+  static final int BASE_LAYER = 0;
+  static final int MOVABLE_LAYER = 1; // TODO: Better name?
+  static final int CHARACTER_LAYER = 2;
+  static final int NUM_LAYERS = 3;
+
   List<TileMap> _layers;
   final int _rows;
   final int _cols;
   
   Level(int this._rows, int this._cols) {
     _layers = new List<TileMap>();
-    _layers.add(new TileMap(_rows, _cols));
+    for (int i = 0; i < NUM_LAYERS; ++i) {
+      _layers.add(new TileMap(_rows, _cols));
+    }
   }
   
   Element render() {
@@ -130,14 +137,14 @@ class Level {  // Better name, e.g. zone, scene, map, area, etc
     return outer;
   }
   
-  void addTile(Tile tile, Pos pos) {
-    _layers[0].addTile(tile, pos);
+  void addBaseTile(Tile tile, Pos pos) {
+    _layers[BASE_LAYER].addTile(tile, pos);
   }
   
-  void multiAddTile(Tile tile, Pos start_pos, Pos end_pos) {
+  void multiAddBaseTile(Tile tile, Pos start_pos, Pos end_pos) {
     for (int row = start_pos.row; row < end_pos.row; ++row) {
       for (int col = start_pos.col; col < end_pos.col; ++col) {
-        addTile(tile, new Pos(row, col));
+        addBaseTile(tile, new Pos(row, col));
       }
     }
   }
@@ -294,13 +301,13 @@ class Game {
 
 void main() {
   Level level = new Level(20, 20);
-  level.multiAddTile(new Grass(), new Pos(0, 0), new Pos(20, 20));
-  level.multiAddTile(new Tree(), new Pos(0, 0), new Pos(1, 20));
-  level.multiAddTile(new Tree(), new Pos(0, 0), new Pos(20, 1));
-  level.multiAddTile(new Tree(), new Pos(0, 19), new Pos(20, 20));
-  level.multiAddTile(new Tree(), new Pos(19, 0), new Pos(20, 20));
-  level.multiAddTile(new Path(),  new Pos(0,  10), new Pos(20, 11));
-  level.addTile(new PlayerTile(), new Pos(10, 10));
+  level.multiAddBaseTile(new Grass(), new Pos(0, 0), new Pos(20, 20));
+  level.multiAddBaseTile(new Tree(), new Pos(0, 0), new Pos(1, 20));
+  level.multiAddBaseTile(new Tree(), new Pos(0, 0), new Pos(20, 1));
+  level.multiAddBaseTile(new Tree(), new Pos(0, 19), new Pos(20, 20));
+  level.multiAddBaseTile(new Tree(), new Pos(19, 0), new Pos(20, 20));
+  level.multiAddBaseTile(new Path(),  new Pos(0,  10), new Pos(20, 11));
+  level.addBaseTile(new PlayerTile(), new Pos(10, 10));
   KeyboardListener kl = new KeyboardListener();
   kl.listen(window);
 
