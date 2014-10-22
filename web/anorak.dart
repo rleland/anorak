@@ -39,12 +39,6 @@ abstract class Tile {
   }
 }
 
-class NullTile extends Tile {
-  String _explanation = '';
-  String _symbol = ' ';
-  String _color = 'white';
-}
-
 class Grass extends Tile {
   String _explanation = 'grass';
   String _symbol = '.';
@@ -78,10 +72,9 @@ class TileMap {
   
   TileMap(int this._rows, int this._cols) {
     _tiles = new List<Tile>(_rows * _cols);
-    Tile null_tile = new NullTile();
     for (int row = 0; row < _rows; ++row) {
       for (int col = 0; col < _cols; ++col) {
-        addTile(null_tile, new Pos(row, col));
+        addTile(null, new Pos(row, col));
       }
     }
   }
@@ -98,6 +91,10 @@ class TileMap {
   
   void addTile(Tile tile, Pos pos) {
     _tiles[pos.row * _cols + pos.col] = tile;
+  }
+
+  void clearTile(Pos pos) {
+    _tiles[pos.row * _cols + pos.col] = null;
   }
 }
 
@@ -130,6 +127,7 @@ class Level {  // Better name, e.g. zone, scene, map, area, etc
             continue;
           }
           outer.append(_layers[i].tileAt(pos).makeElement());
+          break;  // Only append one per row,col.
         }
       }
       outer.append(new Element.br());
@@ -149,6 +147,18 @@ class Level {  // Better name, e.g. zone, scene, map, area, etc
     }
   }
   
+  void clearCharacterLayer() {
+    for (int row = 0; row < _rows; ++row) {
+      for (int col = 0; col < _cols; ++col) {
+        _layers[CHARACTER_LAYER].clearTile(new Pos(row, col));
+      }
+    }
+  }
+
+  void addCharacterTile(Tile tile, Pos pos) {
+    _layers[CHARACTER_LAYER].addTile(tile, pos);
+  }
+
   bool isPassable(Pos pos) {
     if (pos.row >= _rows || pos.col >= _cols) {
       return false;
@@ -230,6 +240,8 @@ class InputHandler {  // TODO: Rename to describe the type of inputhandler and m
 
 class Player {
   static final int MOVE_PERIOD_MS = 500;
+  
+  final Tile tile = new PlayerTile();
   Pos pos = new Pos(10, 10);
   int _last_move = 0;
   Tile _tile = new PlayerTile();
@@ -265,6 +277,8 @@ class Game {
   }
 
   void _redraw() {
+    _level.clearCharacterLayer();
+    _level.addCharacterTile(_player.tile, _player.pos);
     Element world = querySelector('#world');
     clearElement(world);
     world.append(_level.render());
@@ -278,11 +292,11 @@ class Game {
     if (direction == null) {
       return;
     } else if (direction == Key.UP) {
-      _movePlayer(new Pos(1, 0));
+      _movePlayer(new Pos(-1, 0));
     } else if (direction == Key.RIGHT) {
       _movePlayer(new Pos(0, 1));
     } else if (direction == Key.DOWN) {
-      _movePlayer(new Pos(-1, 0));
+      _movePlayer(new Pos(1, 0));
     } else if (direction == Key.LEFT){
       _movePlayer(new Pos(0, -1));
     } else {
@@ -307,7 +321,6 @@ void main() {
   level.multiAddBaseTile(new Tree(), new Pos(0, 19), new Pos(20, 20));
   level.multiAddBaseTile(new Tree(), new Pos(19, 0), new Pos(20, 20));
   level.multiAddBaseTile(new Path(),  new Pos(0,  10), new Pos(20, 11));
-  level.addBaseTile(new PlayerTile(), new Pos(10, 10));
   KeyboardListener kl = new KeyboardListener();
   kl.listen(window);
 
