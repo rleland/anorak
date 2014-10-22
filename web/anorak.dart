@@ -2,6 +2,12 @@ import 'dart:collection';
 import 'dart:html';
 import 'dart:async';
 
+void clearElement(Element e) {
+  while (e.hasChildNodes()) {
+    e.firstChild.remove();
+  }
+}
+
 class Pos {
   final int row;
   final int col;
@@ -248,6 +254,13 @@ class Game {
   void _gameLoop(Timer timer) {
     DateTime now = new DateTime.now();
     _updatePlayer(now);
+    _redraw();
+  }
+
+  void _redraw() {
+    Element world = querySelector('#world');
+    clearElement(world);
+    world.append(_level.render());
   }
 
   void _updatePlayer(DateTime now) {
@@ -275,6 +288,7 @@ class Game {
     if (_level.isPassable(new_pos)) {
       _player.pos = new_pos;
     }
+    // TODO: Interact with new tile regardless of whether it's passable.
   }
 }
 
@@ -287,7 +301,6 @@ void main() {
   level.multiAddTile(new Tree(), new Pos(19, 0), new Pos(20, 20));
   level.multiAddTile(new Path(),  new Pos(0,  10), new Pos(20, 11));
   level.addTile(new PlayerTile(), new Pos(10, 10));
-  querySelector('#world').append(level.render());
   KeyboardListener kl = new KeyboardListener();
   kl.listen(window);
 
