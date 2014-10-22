@@ -239,6 +239,10 @@ class InputHandler {  // TODO: Rename to describe the type of inputhandler and m
 }
 
 class Player {
+  // TODO: Two problems. 1) This may be too slow? 2) Doesn't react quickly enough to keypress.
+  // Especially bad if keydown and keyup happens between loops checking kbd input.
+  // I think keypresses need to be processed somehow, and I have to build a better model of
+  // keypresses + key repetitions.
   static final int MOVE_PERIOD_MS = 500;
   
   final Tile tile = new PlayerTile();
