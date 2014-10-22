@@ -289,7 +289,7 @@ void main() {
   level.addTile(new PlayerTile(), new Pos(10, 10));
   querySelector('#world').append(level.render());
   KeyboardListener kl = new KeyboardListener();
-  kl.listen(window);  // TODO: Why isn't this an element! what is it?
+  kl.listen(window);
 
   Game game = new Game(kl, level);
   game.start();
