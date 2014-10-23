@@ -243,7 +243,7 @@ class Player {
   // Especially bad if keydown and keyup happens between loops checking kbd input.
   // I think keypresses need to be processed somehow, and I have to build a better model of
   // keypresses + key repetitions.
-  static final int MOVE_PERIOD_MS = 500;
+  static final int MOVE_PERIOD_MS = 200;
   
   final Tile tile = new PlayerTile();
   Pos pos = new Pos(10, 10);
