@@ -239,7 +239,7 @@ class InputHandler {  // TODO: Rename to describe the type of inputhandler and m
 }
 
 class Player {
-  // TODO: Two problems. 1) This may be too slow? 2) Doesn't react quickly enough to keypress.
+  // TODO: One problems. Doesn't react quickly enough to keypress.
   // Especially bad if keydown and keyup happens between loops checking kbd input.
   // I think keypresses need to be processed somehow, and I have to build a better model of
   // keypresses + key repetitions.
@@ -271,7 +271,7 @@ class Game {
   }
 
   void start() {
-    new Timer.periodic(new Duration(milliseconds: 100), this._gameLoop);
+    new Timer.periodic(new Duration(milliseconds: 50), this._gameLoop);
   }
 
   void _gameLoop(Timer timer) {
