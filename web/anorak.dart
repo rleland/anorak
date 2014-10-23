@@ -260,13 +260,39 @@ class Player {
   }
 }
 
+class FpsCounter {
+  static final int WINDOW = 5;
+  final Element _element;
+  final Queue<int> _frames = new Queue<int>();
+
+  FpsCounter(Element this._element) {
+  }
+
+  void update(DateTime time) {
+    int now_ms = time.millisecondsSinceEpoch;
+    int cutoff = now_ms - WINDOW * 1000;
+    while (_frames.isNotEmpty && _frames.first < cutoff) {
+      _frames.removeFirst();
+    }
+    _frames.add(now_ms);
+    _redraw(_frames.length / WINDOW);
+  }
+
+  void _redraw(double fps) {
+    clearElement(_element);
+    _element.appendText("$fps");
+  }
+}
+
 class Game {
   final Level _level;
   final KeyboardListener _kl;
   final Player _player = new Player();
+  final FpsCounter _fps_counter;
   InputHandler _input_handler;
+  bool _need_redraw = true;  // Force first draw.
 
-  Game(this._kl, this._level) {
+  Game(this._kl, this._level) : _fps_counter = new FpsCounter(querySelector('#fps')) {
     this._input_handler = new InputHandler(_kl);
   }
 
@@ -276,16 +302,22 @@ class Game {
 
   void _gameLoop(Timer timer) {
     DateTime now = new DateTime.now();
+    _fps_counter.update(now);
     _updatePlayer(now);
     _redraw();
   }
 
   void _redraw() {
+    if (!_need_redraw) {
+      // Don't waste resources.
+      return;
+    }
     _level.clearCharacterLayer();
     _level.addCharacterTile(_player.tile, _player.pos);
     Element world = querySelector('#world');
     clearElement(world);
     world.append(_level.render());
+    _need_redraw = false;
   }
 
   void _updatePlayer(DateTime now) {
@@ -309,6 +341,7 @@ class Game {
   }
 
   void _movePlayer(Pos pos_offset) {
+    _need_redraw = true;
     Pos new_pos = _player.pos + pos_offset;
     if (_level.isPassable(new_pos)) {
       _player.pos = new_pos;
