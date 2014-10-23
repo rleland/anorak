@@ -195,7 +195,6 @@ class KeyboardListener {
   HashMap<Key, int> _keys = {};
 
   void listen(Window w) {
-    // TODO: Change to event target
     w.onKeyDown.listen(_processKeyDown);
     w.onKeyUp.listen(_processKeyUp);
   }
@@ -357,7 +356,7 @@ void main() {
   level.multiAddBaseTile(new Tree(), new Pos(0, 0), new Pos(20, 1));
   level.multiAddBaseTile(new Tree(), new Pos(0, 19), new Pos(20, 20));
   level.multiAddBaseTile(new Tree(), new Pos(19, 0), new Pos(20, 20));
-  level.multiAddBaseTile(new Path(),  new Pos(0,  10), new Pos(20, 11));
+  level.multiAddBaseTile(new Path(), new Pos(0,  10), new Pos(20, 11));
   KeyboardListener kl = new KeyboardListener();
   kl.listen(window);
 
