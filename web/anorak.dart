@@ -61,6 +61,7 @@ class Tree extends Tile {
   String _explanation = 'tree';
   String _symbol = '#';
   String _color = 'green';
+  bool get passable => false;
 }
 
 class Path extends Tile {
