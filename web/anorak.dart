@@ -172,7 +172,7 @@ class Level {  // Better name, e.g. zone, scene, map, area, etc
   }
 
   bool isPassable(Pos pos) {
-    if (pos.row >= _rows || pos.col >= _cols) {
+    if (pos.row >= _rows || pos.row < 0 || pos.col >= _cols || pos.col < 0) {
       return false;
     }
     for (int i = 0; i < _layers.length; ++i) {
