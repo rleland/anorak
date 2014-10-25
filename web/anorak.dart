@@ -81,7 +81,7 @@ class TileMap {
   List<Tile> _tiles;
   final int _rows;
   final int _cols;
-  
+
   TileMap(int this._rows, int this._cols) {
     _tiles = new List<Tile>(_rows * _cols);
     for (int row = 0; row < _rows; ++row) {
@@ -90,17 +90,17 @@ class TileMap {
       }
     }
   }
-  
+
   // row and col starts at 0
   bool hasTile(Pos pos) {
     return tileAt(pos) != null;
   }
-  
+
   Tile tileAt(Pos pos) {
     assert(pos.row < _rows && pos.col < _cols);
     return _tiles[pos.row * _cols + pos.col];
   }
-  
+
   void addTile(Tile tile, Pos pos) {
     _tiles[pos.row * _cols + pos.col] = tile;
   }
@@ -119,14 +119,14 @@ class Level {  // Better name, e.g. zone, scene, map, area, etc
   List<TileMap> _layers;
   final int _rows;
   final int _cols;
-  
+
   Level(int this._rows, int this._cols) {
     _layers = new List<TileMap>();
     for (int i = 0; i < NUM_LAYERS; ++i) {
       _layers.add(new TileMap(_rows, _cols));
     }
   }
-  
+
   Element render() {
     Element outer = new Element.div();
     outer.style.setProperty('font-family', 'monospace');
@@ -146,11 +146,11 @@ class Level {  // Better name, e.g. zone, scene, map, area, etc
     }
     return outer;
   }
-  
+
   void addBaseTile(Tile tile, Pos pos) {
     _layers[BASE_LAYER].addTile(tile, pos);
   }
-  
+
   void multiAddBaseTile(Tile tile, Pos start_pos, Pos end_pos) {
     for (int row = start_pos.row; row < end_pos.row; ++row) {
       for (int col = start_pos.col; col < end_pos.col; ++col) {
@@ -158,7 +158,7 @@ class Level {  // Better name, e.g. zone, scene, map, area, etc
       }
     }
   }
-  
+
   void clearCharacterLayer() {
     for (int row = 0; row < _rows; ++row) {
       for (int col = 0; col < _cols; ++col) {
@@ -262,7 +262,7 @@ class Player {
   // I think keypresses need to be processed somehow, and I have to build a better model of
   // keypresses + key repetitions.
   static final int MOVE_PERIOD_MS = 200;
-  
+
   final Tile tile = new PlayerTile();
   Pos pos = new Pos(10, 10);
   int _last_move = 0;
