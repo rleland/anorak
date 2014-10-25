@@ -174,21 +174,28 @@ class Level {  // Better name, e.g. zone, scene, map, area, etc
 }
 
 class Key {
-  static final HashMap<int, Key> _keys = {};
+  static const Key DOWN = const Key(40);
+  static const Key UP = const Key(38);
+  static const Key LEFT = const Key(37);
+  static const Key RIGHT = const Key(39);
 
   static Key get(int keyCode) {
-    return _keys.containsKey(keyCode) ? _keys[keyCode] : null;
-  }
+     if (_keys.isEmpty) {
+       _initKeys();
+     }
+     return _keys.containsKey(keyCode) ? _keys[keyCode] : null;
+   }
 
-  static final Key DOWN = new Key(40);
-  static final Key UP = new Key(38);
-  static final Key LEFT = new Key(37);
-  static final Key RIGHT = new Key(39);
+  static final HashMap<int, Key> _keys = new HashMap<int, Key>();
+
+  static void _initKeys() {
+    for (Key k in [DOWN, UP, LEFT, RIGHT]) {
+      _keys[k._code] = k;
+    }
+  }
 
   final int _code;
-  Key(this._code) {
-    _keys[_code] = this;
-  }
+  const Key(int this._code);
 }
 
 class KeyboardListener {
