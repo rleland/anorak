@@ -20,16 +20,6 @@ void debug(String s) {
   }
 }
 
-Element renderTile(Tile tile) {
-  Element span = new Element.span();
-  span.style.setProperty('color', tile.color);
-  if (tile.bold) {
-    span.style.setProperty('font-weight', 'bold');
-  }
-  span.appendText(tile.symbol);
-  return span;
-}
-
 class LevelRendererImpl implements LevelRenderer {
   final Element _outer;
 
@@ -38,7 +28,7 @@ class LevelRendererImpl implements LevelRenderer {
   }
 
   void AddTile(Tile tile) {
-    _outer.append(renderTile(tile));
+    _outer.append(_renderTile(tile));
   }
 
   void NewRow() {
@@ -46,6 +36,16 @@ class LevelRendererImpl implements LevelRenderer {
   }
 
   Element get rendered => _outer;
+
+  Element _renderTile(Tile tile) {
+    Element span = new Element.span();
+    span.style.setProperty('color', tile.color);
+    if (tile.bold) {
+      span.style.setProperty('font-weight', 'bold');
+    }
+    span.appendText(tile.symbol);
+    return span;
+  }
 }
 
 void redraw(Level level) {
