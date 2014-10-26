@@ -1,4 +1,5 @@
 import 'dart:html';
+import 'package:anorak/level.dart';
 import 'package:anorak/tile.dart';
 
 void clearElement(Element e) {
@@ -27,4 +28,10 @@ Element renderTile(Tile tile) {
   }
   span.appendText(tile.symbol);
   return span;
+}
+
+void redraw(Level level) {
+  Element world = querySelector('#world');
+  clearElement(world);
+  world.append(level.render());
 }
