@@ -1,7 +1,5 @@
 library game;
 
-import 'dart:async';
-
 import 'package:anorak/common.dart';
 import 'package:anorak/input.dart';
 import 'package:anorak/level.dart';
@@ -11,41 +9,33 @@ class Game {
   final Level _level;
   final KeyboardListener _kl;
   final Player _player = new Player();
-  //final FpsCounter _fps_counter;
-  InputHandler _input_handler;
+  final InputHandler _input_handler;
   bool _need_redraw = true;  // Force first draw.
 
-  Game(this._kl, this._level) {//: _fps_counter = new FpsCounter(querySelector('#fps')) {
-    this._input_handler = new InputHandler();
-  }
+  Level get level => _level;
 
-  void start() {
-    // TODO: Move game loop out of here.
-    new Timer.periodic(new Duration(milliseconds: 50), this._gameLoop);
-  }
+  Game(this._kl, this._level) : _input_handler = new InputHandler();
 
-  void _gameLoop(Timer timer) {
-    DateTime now = new DateTime.now();
-    //_fps_counter.update(now);
-
+  bool loop(DateTime now) {
     while (_kl.hasKeysToProcess(now)) {
       Key key = _kl.consumeKeyFromQueue();
       if (_input_handler.IsDirectionKey(key)) {
         _updatePlayer(now, key);
       }
     }
-    _redraw();
+    // Don't waste resources unnecessarily.
+    if (_need_redraw) {
+      _redraw();
+      _need_redraw = false;
+      return true;
+    } else {
+      return false;
+    }
   }
 
   void _redraw() {
-    if (!_need_redraw) {
-      // Don't waste resources.
-      return;
-    }
     _level.clearCharacterLayer();
     _level.addCharacterTile(_player.tile, _player.pos);
-    //redraw(_level);  // TODO: No redrawing is actually happening now :(
-    _need_redraw = false;
   }
 
   void _updatePlayer(DateTime now, Key key) {

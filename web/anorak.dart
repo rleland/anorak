@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:collection';
 import 'dart:html';
 import 'package:anorak/common.dart';
@@ -48,6 +49,24 @@ class WindowListener {
   }
 }
 
+class GameLoop {
+  final Game _game;
+  final FpsCounter _fps_counter;
+
+  GameLoop(Game this._game) : _fps_counter = new FpsCounter(querySelector('#fps')) {
+    new Timer.periodic(new Duration(milliseconds: 50), this._loop);
+  }
+
+  void _loop(Timer timer) {
+    DateTime now = new DateTime.now();
+    _fps_counter.update(now);
+    if (_game.loop(now)) {
+      // Need redraw.
+      redraw(_game.level);
+    }
+  }
+}
+
 void main() {
   Level level = new Level(20, 20);
   level.multiAddBaseTile(new Grass(), new Pos(0, 0), new Pos(20, 20));
@@ -58,7 +77,5 @@ void main() {
   level.multiAddBaseTile(new Path(), new Pos(0,  10), new Pos(20, 11));
   KeyboardListener kl = new KeyboardListener();
   WindowListener wl = new WindowListener(window, kl);
-
-  Game game = new Game(kl, level);
-  game.start();
+  new GameLoop(new Game(kl, level));
 }
