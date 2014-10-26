@@ -6,7 +6,6 @@ import 'package:anorak/game.dart';
 import 'package:anorak/input.dart';
 import 'package:anorak/level.dart';
 import 'package:anorak/tile.dart';
-import 'rendering.dart';
 
 void clearElement(Element e) {
   while (e.hasChildNodes()) {
