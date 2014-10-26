@@ -1,4 +1,5 @@
 import 'dart:html';
+import 'package:anorak/tile.dart';
 
 void clearElement(Element e) {
   while (e.hasChildNodes()) {
