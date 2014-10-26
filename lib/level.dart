@@ -49,7 +49,10 @@ class TileMap {
 }
 
 abstract class LevelRenderer {
+  // Add a tile to the current row in rendering.
   void AddTile(Tile tile);
+
+  // Should be called after each row of tiles. Should not be called before first row.
   void NewRow();
 }
 
@@ -70,9 +73,7 @@ class Level {  // Better name, e.g. zone, scene, map, area, etc
     }
   }
 
-  Element render() {
-    Element outer = new Element.div();
-    outer.style.setProperty('font-family', 'monospace');
+  void render(LevelRenderer renderer) {
     List<String> tiles = new List<String>(_rows * _cols);
     for (int row = 0; row < _rows; ++row) {
       for (int col = 0; col < _cols; ++col) {
@@ -81,13 +82,12 @@ class Level {  // Better name, e.g. zone, scene, map, area, etc
           if (!_layers[i].hasTile(pos)) {
             continue;
           }
-          outer.append(renderTile(_layers[i].tileAt(pos)));
+          renderer.AddTile(_layers[i].tileAt(pos));
           break;  // Only append one per row,col.
         }
       }
-      outer.append(new Element.br());
+      renderer.NewRow();
     }
-    return outer;
   }
 
   void addBaseTile(Tile tile, Pos pos) {

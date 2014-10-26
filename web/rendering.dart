@@ -30,8 +30,29 @@ Element renderTile(Tile tile) {
   return span;
 }
 
+class LevelRendererImpl implements LevelRenderer {
+  final Element _outer;
+
+  LevelRendererImpl() : _outer = new Element.div() {
+    _outer.style.setProperty('font-family', 'monospace');
+  }
+
+  void AddTile(Tile tile) {
+    _outer.append(renderTile(tile));
+  }
+
+  void NewRow() {
+    _outer.append(new Element.br());
+  }
+
+  Element get rendered => _outer;
+}
+
 void redraw(Level level) {
+  LevelRendererImpl renderer = new LevelRendererImpl();
+  level.render(renderer);
+
   Element world = querySelector('#world');
   clearElement(world);
-  world.append(level.render());
+  world.append(renderer.rendered);
 }
