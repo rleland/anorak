@@ -119,6 +119,23 @@ class Game {
   }
 }
 
+class WindowListener {
+  final KeyboardListener _kl;
+
+  WindowListener(Window window, KeyboardListener this._kl) {
+    window.onKeyDown.listen(_processKeyDown);
+    window.onKeyUp.listen(_processKeyUp);
+  }
+
+  void _processKeyDown(KeyboardEvent e) {
+    _kl.keyDown(e.keyCode, e.timeStamp);
+  }
+
+  void _processKeyUp(KeyboardEvent e) {
+    _kl.keyUp(e.keyCode);
+  }
+}
+
 void main() {
   Level level = new Level(20, 20);
   level.multiAddBaseTile(new Grass(), new Pos(0, 0), new Pos(20, 20));
@@ -128,7 +145,7 @@ void main() {
   level.multiAddBaseTile(new Tree(), new Pos(19, 0), new Pos(20, 20));
   level.multiAddBaseTile(new Path(), new Pos(0,  10), new Pos(20, 11));
   KeyboardListener kl = new KeyboardListener();
-  kl.listen(window);
+  WindowListener wl = new WindowListener(window, kl);
 
   Game game = new Game(kl, level);
   game.start();
