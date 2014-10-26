@@ -1,19 +1,7 @@
 library level;
 
-import 'dart:html';
+import 'package:anorak/common.dart';
 import 'package:anorak/tile.dart';
-
-class Pos {
-  final int row;
-  final int col;
-
-  Pos(this.row, this.col) {
-  }
-
-  Pos operator+(Pos other) {
-    return new Pos(this.row + other.row, this.col + other.col);
-  }
-}
 
 class TileMap {
   List<Tile> _tiles;
