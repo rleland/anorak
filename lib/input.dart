@@ -17,6 +17,10 @@ class Key {
 
   static final HashMap<int, Key> _keys = new HashMap<int, Key>();
 
+  String toString() {
+    return "KeyCode: $_code";
+  }
+
   static void _initKeys() {
     for (Key k in [DOWN, UP, LEFT, RIGHT]) {
       _keys[k._code] = k;
@@ -40,6 +44,7 @@ class KeyboardListener {
   }
 
   Key consumeKeyFromQueue() {
+    assert(_key_queue.isNotEmpty);
     return _key_queue.removeFirst();
   }
 
