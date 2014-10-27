@@ -2,3 +2,4 @@ name: anorak
 description: A sample web application
 dependencies:
   browser: any
+  unittest: '>=0.10.0'
