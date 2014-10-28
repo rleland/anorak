@@ -41,6 +41,7 @@ class Game implements GameState {
       Pos new_pos = c.getMove(now, this);
       if (new_pos != null &&
           _level.isPassable(new_pos)) {
+        _need_redraw = true;
         c.move(new_pos);
       }
     }
