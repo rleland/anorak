@@ -12,6 +12,14 @@ void expectKeys(KeyboardListener kl, DateTime time, List<Key> keys) {
 }
 
 main() {
+  group("key tests", () {
+    test("get keys", () {
+      // Just check that fetching keys work.
+      expect(Key.get(38), equals(Key.UP));
+      expect(Key.get(40), equals(Key.DOWN));
+    });
+  });
+
   group("keyboard listener tests", () {
     test("keypress", () {
       KeyboardListener kl = new KeyboardListener();
