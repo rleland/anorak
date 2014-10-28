@@ -11,6 +11,8 @@ abstract class Character {
 }
 
 int capMagnitude(int value, int magnitude) {
+  if (value == 0)
+    return 0;
   return (magnitude * value / value.abs()).truncate();
 }
 
