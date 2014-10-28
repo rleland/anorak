@@ -6,6 +6,12 @@ import 'package:anorak/level.dart';
 import 'package:anorak/player.dart';
 
 class Game {
+  static final Map<Key, Pos> MOVES =
+    {Key.UP: Pos.MOVE_UP,
+     Key.DOWN: Pos.MOVE_DOWN,
+     Key.LEFT: Pos.MOVE_LEFT,
+     Key.RIGHT: Pos.MOVE_RIGHT};
+
   final Level _level;
   final KeyboardListener _kl;
   final Player _player = new Player();
@@ -42,17 +48,8 @@ class Game {
     if (!_player.shouldMove(now)) {
       return;
     }
-    if (key == Key.UP) {
-      _movePlayer(new Pos(-1, 0));
-    } else if (key == Key.RIGHT) {
-      _movePlayer(new Pos(0, 1));
-    } else if (key == Key.DOWN) {
-      _movePlayer(new Pos(1, 0));
-    } else if (key == Key.LEFT){
-      _movePlayer(new Pos(0, -1));
-    } else {
-      assert(false);  // Invalid direction.
-    }
+    assert(MOVES.containsKey(key));
+    _movePlayer(MOVES[key]);
   }
 
   void _movePlayer(Pos pos_offset) {
