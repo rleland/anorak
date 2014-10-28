@@ -8,5 +8,5 @@ abstract class Character {
 
   Character(Tile this._tile);
 
-  Pos getMove();
+  Pos getMove(GameState game_state);
 }

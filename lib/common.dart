@@ -15,3 +15,9 @@ class Pos {
     return new Pos(this.row + other.row, this.col + other.col);
   }
 }
+
+abstract class GameState {
+  Pos get player_pos;
+
+  bool isPassable(Pos pos);
+}
