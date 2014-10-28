@@ -43,7 +43,7 @@ class Rat implements Character {
     if (!shouldMove(now, game_state)) {
       return null;
     }
-    return moveCloser(_pos, game_state.player_pos);
+    return _pos + moveCloser(_pos, game_state.player_pos);
   }
 
   bool shouldMove(DateTime now, GameState game_state) {
@@ -60,7 +60,7 @@ class Rat implements Character {
     return false;
   }
 
-  void move(Pos offset) {
-    _pos += offset;
+  void move(Pos new_pos) {
+    _pos = new_pos;
   }
 }

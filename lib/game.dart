@@ -38,10 +38,10 @@ class Game implements GameState {
       }
     }
     for (Character c in _characters) {
-      Pos move = c.getMove(now, this);
-      if (move != null) {
-        // This is a bit silly.
-        c.move(move);
+      Pos new_pos = c.getMove(now, this);
+      if (new_pos != null &&
+          _level.isPassable(new_pos)) {
+        c.move(new_pos);
       }
     }
     // Don't waste resources unnecessarily.
