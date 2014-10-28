@@ -35,3 +35,11 @@ class PlayerTile extends Tile {
   bool get passable => false;
   bool get bold => true;
 }
+
+class RatTile extends Tile {
+  String get explanation => 'rat';
+  String get symbol => 'r';
+  String get color => 'black';
+  bool get passable => false;
+  bool get bold => true;
+}
