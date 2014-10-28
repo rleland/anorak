@@ -6,8 +6,7 @@ import 'package:anorak/input.dart';
 import 'package:anorak/level.dart';
 import 'package:anorak/player.dart';
 
-// TODO: Game state.
-class Game {
+class Game implements GameState {
   static final Map<Key, Pos> MOVES =
     {Key.UP: Pos.MOVE_UP,
      Key.DOWN: Pos.MOVE_DOWN,
@@ -25,6 +24,12 @@ class Game {
 
   Game(this._kl, this._level) : _input_handler = new InputHandler();
 
+  Pos get player_pos => _player.pos;
+
+  bool isPassable(Pos pos) {
+    return _level.isPassable(pos);
+  }
+
   bool loop(DateTime now) {
     while (_kl.hasKeysToProcess(now)) {
       Key key = _kl.consumeKeyFromQueue();
@@ -33,7 +38,7 @@ class Game {
       }
     }
     for (Character c in _characters) {
-      Pos move = c.getMove(now, game_state);
+      Pos move = c.getMove(now, this);
       if (move != null) {
         // This is a bit silly.
         c.move(move);
