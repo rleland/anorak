@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:collection';
 import 'dart:html';
+import 'package:anorak/character.dart';
 import 'package:anorak/common.dart';
 import 'package:anorak/game.dart';
 import 'package:anorak/input.dart';
@@ -131,5 +132,7 @@ void main() {
   level.multiAddBaseTile(new Path(), new Pos(0,  10), new Pos(20, 11));
   KeyboardListener kl = new KeyboardListener();
   WindowListener wl = new WindowListener(window, kl);
-  new GameLoop(new Game(kl, level));
+  Game game = new Game(kl, level);
+  game.addCharacter(new Rat(new Pos(1, 1)));
+  new GameLoop(game);
 }

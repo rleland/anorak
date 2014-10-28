@@ -30,6 +30,10 @@ class Game implements GameState {
     return _level.isPassable(pos);
   }
 
+  void addCharacter(Character c) {
+    _characters.add(c);
+  }
+
   bool loop(DateTime now) {
     while (_kl.hasKeysToProcess(now)) {
       Key key = _kl.consumeKeyFromQueue();
