@@ -41,7 +41,7 @@ main() {
       expect(kl.hasKeysToProcess(new DateTime(2014, 10, 26)), isFalse);
     });
 
-    test ("hold two keys", () {
+    test("hold two keys", () {
       KeyboardListener kl = new KeyboardListener();
       kl.keyDown(38, 100);
       kl.keyDown(40, 101);
@@ -52,6 +52,13 @@ main() {
       expectKeys(kl, new DateTime(2014, 10, 26), [Key.UP]);
       kl.keyUp(38);
       expect(kl.hasKeysToProcess(new DateTime(2014, 10, 26)), isFalse);
+    });
+  });
+
+  group("input handler tests", () {
+    test("check direction keys", () {
+      InputHandler ih = new InputHandler();
+      expect(ih.IsDirectionKey(Key.UP), isTrue);
     });
   });
 }
