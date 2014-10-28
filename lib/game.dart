@@ -1,10 +1,12 @@
 library game;
 
+import 'package:anorak/character.dart';
 import 'package:anorak/common.dart';
 import 'package:anorak/input.dart';
 import 'package:anorak/level.dart';
 import 'package:anorak/player.dart';
 
+// TODO: Game state.
 class Game {
   static final Map<Key, Pos> MOVES =
     {Key.UP: Pos.MOVE_UP,
@@ -17,6 +19,7 @@ class Game {
   final Player _player = new Player();
   final InputHandler _input_handler;
   bool _need_redraw = true;  // Force first draw.
+  final List<Character> _characters = new List<Character>();
 
   Level get level => _level;
 
@@ -27,6 +30,13 @@ class Game {
       Key key = _kl.consumeKeyFromQueue();
       if (_input_handler.IsDirectionKey(key)) {
         _updatePlayer(now, key);
+      }
+    }
+    for (Character c in _characters) {
+      Pos move = c.getMove(now, game_state);
+      if (move != null) {
+        // This is a bit silly.
+        c.move(move);
       }
     }
     // Don't waste resources unnecessarily.
@@ -42,6 +52,9 @@ class Game {
   void _redraw() {
     _level.clearCharacterLayer();
     _level.addCharacterTile(_player.tile, _player.pos);
+    for (Character c in _characters) {
+      _level.addCharacterTile(c.tile, c.pos);
+    }
   }
 
   void _updatePlayer(DateTime now, Key key) {

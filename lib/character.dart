@@ -5,7 +5,9 @@ import "package:anorak/tile.dart";
 
 abstract class Character {
   Tile get tile;
-  Pos getMove(GameState game_state);
+  Pos get pos;
+  Pos getMove(DateTime now, GameState game_state);
+  void move(Pos pos);
 }
 
 int capMagnitude(int value, int magnitude) {
@@ -23,7 +25,7 @@ Pos moveCloser(Pos from, Pos to) {
   }
 }
 
-class Rat {
+class Rat implements Character {
   static final int MOVE_PERIOD_MS = 200;
   static final int ROW_AGGRO = 5;
   static final int COL_AGGRO = 5;
@@ -35,6 +37,7 @@ class Rat {
   Rat(Pos this._pos);
 
   Tile get tile => _tile;
+  Pos get pos => _pos;
 
   Pos getMove(DateTime now, GameState game_state) {
     if (!shouldMove(now, game_state)) {
@@ -55,5 +58,9 @@ class Rat {
       return true;
     }
     return false;
+  }
+
+  void move(Pos offset) {
+    _pos += offset;
   }
 }
