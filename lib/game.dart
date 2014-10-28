@@ -79,6 +79,9 @@ class Game implements GameState {
     _need_redraw = true;
     Pos new_pos = _player.pos + pos_offset;
     if (_level.isPassable(new_pos)) {
+      // TODO: Currently, since the level is not updated before redraw, it's possible for two mobs
+      // to move onto the same tile. To avoid this pos needs to be updated in sequence on the level
+      // so that it's possible to accurately check which tiles are passable.
       _player.pos = new_pos;
     }
     // TODO: Interact with new tile regardless of whether it's passable.
