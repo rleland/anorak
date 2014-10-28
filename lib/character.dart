@@ -18,12 +18,12 @@ int capMagnitude(int value, int magnitude) {
 
 // TODO: Create path finding library.
 // Naive pathfinding.
-Pos moveCloser(Pos from, Pos to) {
+Pos moveCloser(Pos from, Pos to, int speed) {
   Pos delta = to - from;
   if (delta.row.abs() >= delta.col.abs()) {
-    return new Pos(capMagnitude(delta.row, 1), 0);
+    return new Pos(capMagnitude(delta.row, speed), 0);
   } else {
-    return new Pos(0, capMagnitude(delta.col, 1));
+    return new Pos(0, capMagnitude(delta.col, speed));
   }
 }
 
@@ -31,6 +31,7 @@ class Rat implements Character {
   static final int MOVE_PERIOD_MS = 200;
   static final int ROW_AGGRO = 5;
   static final int COL_AGGRO = 5;
+  static final int SPEED = 1;
 
   final Tile _tile = new RatTile();
   Pos _pos;
@@ -45,7 +46,7 @@ class Rat implements Character {
     if (!shouldMove(now, game_state)) {
       return null;
     }
-    return _pos + moveCloser(_pos, game_state.player_pos);
+    return _pos + moveCloser(_pos, game_state.player_pos, SPEED);
   }
 
   bool shouldMove(DateTime now, GameState game_state) {
