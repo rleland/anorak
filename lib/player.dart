@@ -4,8 +4,7 @@ import 'package:anorak/character.dart';
 import 'package:anorak/common.dart';
 import 'package:anorak/tile.dart';
 
-// TODO: Implement Character.
-class Player implements Character {
+class Player implements Mob {
   static final int MOVE_PERIOD_MS = 200;
 
   final Tile _tile = new PlayerTile();
@@ -24,8 +23,8 @@ class Player implements Character {
     return false;
   }
 
-  // TODO: Implemented only to fit character interface. This is not ideal; maybe npcs should have
-  // their own character subclass.
+  // TODO: Implemented only to fit mob interface. This is not ideal; maybe npcs should have
+  // their own mob subclass.
   Pos getMove(DateTime now, GameState gameState) {
     return null;
   }

@@ -47,7 +47,7 @@ abstract class LevelRenderer {
 class Level {  // Better name, e.g. zone, scene, map, area, etc
   static final int BASE_LAYER = 0;
   static final int MOVABLE_LAYER = 1; // TODO: Better name?
-  static final int CHARACTER_LAYER = 2;
+  static final int MOB_LAYER = 2;
   static final int NUM_LAYERS = 3;
 
   List<TileMap> _layers;
@@ -90,20 +90,20 @@ class Level {  // Better name, e.g. zone, scene, map, area, etc
     }
   }
 
-  void clearCharacterLayer() {
+  void clearMobLayer() {
     for (int row = 0; row < _rows; ++row) {
       for (int col = 0; col < _cols; ++col) {
-        _layers[CHARACTER_LAYER].clearTile(new Pos(row, col));
+        _layers[MOB_LAYER].clearTile(new Pos(row, col));
       }
     }
   }
 
-  void addCharacterTile(Tile tile, Pos pos) {
-    _layers[CHARACTER_LAYER].addTile(tile, pos);
+  void addMobTile(Tile tile, Pos pos) {
+    _layers[MOB_LAYER].addTile(tile, pos);
   }
 
-  void moveCharacterTile(Pos from, Pos to) {
-    TileMap layer = _layers[CHARACTER_LAYER];
+  void moveMobTile(Pos from, Pos to) {
+    TileMap layer = _layers[MOB_LAYER];
     Tile tile = layer.tileAt(from);
     layer.clearTile(from);
     layer.addTile(tile, to);

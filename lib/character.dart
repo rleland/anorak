@@ -3,7 +3,7 @@ library character;
 import "package:anorak/common.dart";
 import "package:anorak/tile.dart";
 
-abstract class Character {
+abstract class Mob {
   Tile get tile;
   Pos get pos;
   Pos getMove(DateTime now, GameState game_state);
@@ -27,7 +27,7 @@ Pos moveCloser(Pos from, Pos to, int speed) {
   }
 }
 
-class Rat implements Character {
+class Rat implements Mob {
   static final int MOVE_PERIOD_MS = 200;
   static final int ROW_AGGRO = 5;
   static final int COL_AGGRO = 5;

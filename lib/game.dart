@@ -18,12 +18,12 @@ class Game implements GameState {
   final Player _player = new Player();
   final InputHandler _input_handler;
   bool _need_redraw = true;  // Force first draw.
-  final List<Character> _characters = new List<Character>();
+  final List<Mob> _mobs = new List<Mob>();
 
   Level get level => _level;
 
   Game(this._kl, this._level) : _input_handler = new InputHandler() {
-    _level.addCharacterTile(_player.tile, _player.pos);
+    _level.addMobTile(_player.tile, _player.pos);
   }
 
   Pos get player_pos => _player.pos;
@@ -32,9 +32,9 @@ class Game implements GameState {
     return _level.isPassable(pos);
   }
 
-  void addCharacter(Character c) {
-    _characters.add(c);
-    _level.addCharacterTile(c.tile, c.pos);
+  void addMob(Mob c) {
+    _mobs.add(c);
+    _level.addMobTile(c.tile, c.pos);
   }
 
   bool loop(DateTime now) {
@@ -44,12 +44,12 @@ class Game implements GameState {
         _updatePlayer(now, key);
       }
     }
-    for (Character c in _characters) {
+    for (Mob c in _mobs) {
       Pos new_pos = c.getMove(now, this);
       if (new_pos != null &&
           _level.isPassable(new_pos)) {
         _need_redraw = true;
-        _level.moveCharacterTile(c.pos, new_pos);
+        _level.moveMobTile(c.pos, new_pos);
         c.move(new_pos);
       }
     }
@@ -73,7 +73,7 @@ class Game implements GameState {
   void _movePlayer(Pos pos_offset) {
     Pos new_pos = _player.pos + pos_offset;
     if (_level.isPassable(new_pos)) {
-      _level.moveCharacterTile(_player.pos, new_pos);
+      _level.moveMobTile(_player.pos, new_pos);
       _player.move(new_pos);
       _need_redraw = true;
     }

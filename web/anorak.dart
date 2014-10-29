@@ -133,6 +133,6 @@ void main() {
   KeyboardListener kl = new KeyboardListener();
   WindowListener wl = new WindowListener(window, kl);
   Game game = new Game(kl, level);
-  game.addCharacter(new Rat(new Pos(1, 1)));
+  game.addMob(new Rat(new Pos(1, 1)));
   new GameLoop(game);
 }
