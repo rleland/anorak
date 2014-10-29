@@ -1,6 +1,6 @@
 library player;
 
-import 'package:anorak/character.dart';
+import 'package:anorak/mob.dart';
 import 'package:anorak/common.dart';
 import 'package:anorak/tile.dart';
 

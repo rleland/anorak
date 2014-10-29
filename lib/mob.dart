@@ -1,4 +1,4 @@
-library character;
+library mob;
 
 import "package:anorak/common.dart";
 import "package:anorak/tile.dart";

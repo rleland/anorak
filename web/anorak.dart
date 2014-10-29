@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:collection';
 import 'dart:html';
-import 'package:anorak/character.dart';
+import 'package:anorak/mob.dart';
 import 'package:anorak/common.dart';
 import 'package:anorak/game.dart';
 import 'package:anorak/input.dart';

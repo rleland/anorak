@@ -1,6 +1,6 @@
 library game;
 
-import 'package:anorak/character.dart';
+import 'package:anorak/mob.dart';
 import 'package:anorak/common.dart';
 import 'package:anorak/input.dart';
 import 'package:anorak/level.dart';
