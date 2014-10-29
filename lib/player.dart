@@ -1,15 +1,19 @@
 library player;
 
+import 'package:anorak/character.dart';
 import 'package:anorak/common.dart';
 import 'package:anorak/tile.dart';
 
-class Player {
+// TODO: Implement Character.
+class Player implements Character {
   static final int MOVE_PERIOD_MS = 200;
 
-  final Tile tile = new PlayerTile();
-  Pos pos = new Pos(10, 10);
+  final Tile _tile = new PlayerTile();
+  Pos _pos = new Pos(10, 10);
   int _last_move = 0;
-  Tile _tile = new PlayerTile();
+
+  Tile get tile => _tile;
+  Pos get pos => _pos;
 
   bool shouldMove(DateTime now) {
     int now_ms = now.millisecondsSinceEpoch;
@@ -18,5 +22,15 @@ class Player {
       return true;
     }
     return false;
+  }
+
+  // TODO: Implemented only to fit character interface. This is not ideal; maybe npcs should have
+  // their own character subclass.
+  Pos getMove(DateTime now, GameState gameState) {
+    return null;
+  }
+
+  void move(Pos new_pos) {
+    _pos = new_pos;
   }
 }

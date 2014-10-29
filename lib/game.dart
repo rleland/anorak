@@ -22,7 +22,9 @@ class Game implements GameState {
 
   Level get level => _level;
 
-  Game(this._kl, this._level) : _input_handler = new InputHandler();
+  Game(this._kl, this._level) : _input_handler = new InputHandler() {
+    _level.addCharacterTile(_player.tile, _player.pos);
+  }
 
   Pos get player_pos => _player.pos;
 
@@ -32,6 +34,7 @@ class Game implements GameState {
 
   void addCharacter(Character c) {
     _characters.add(c);
+    _level.addCharacterTile(c.tile, c.pos);
   }
 
   bool loop(DateTime now) {
@@ -46,24 +49,16 @@ class Game implements GameState {
       if (new_pos != null &&
           _level.isPassable(new_pos)) {
         _need_redraw = true;
+        _level.moveCharacterTile(c.pos, new_pos);
         c.move(new_pos);
       }
     }
     // Don't waste resources unnecessarily.
     if (_need_redraw) {
-      _redraw();
       _need_redraw = false;
       return true;
     } else {
       return false;
-    }
-  }
-
-  void _redraw() {
-    _level.clearCharacterLayer();
-    _level.addCharacterTile(_player.tile, _player.pos);
-    for (Character c in _characters) {
-      _level.addCharacterTile(c.tile, c.pos);
     }
   }
 
@@ -76,13 +71,11 @@ class Game implements GameState {
   }
 
   void _movePlayer(Pos pos_offset) {
-    _need_redraw = true;
     Pos new_pos = _player.pos + pos_offset;
     if (_level.isPassable(new_pos)) {
-      // TODO: Currently, since the level is not updated before redraw, it's possible for two mobs
-      // to move onto the same tile. To avoid this pos needs to be updated in sequence on the level
-      // so that it's possible to accurately check which tiles are passable.
-      _player.pos = new_pos;
+      _level.moveCharacterTile(_player.pos, new_pos);
+      _player.move(new_pos);
+      _need_redraw = true;
     }
     // TODO: Interact with new tile regardless of whether it's passable.
   }

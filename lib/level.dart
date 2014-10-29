@@ -102,6 +102,13 @@ class Level {  // Better name, e.g. zone, scene, map, area, etc
     _layers[CHARACTER_LAYER].addTile(tile, pos);
   }
 
+  void moveCharacterTile(Pos from, Pos to) {
+    TileMap layer = _layers[CHARACTER_LAYER];
+    Tile tile = layer.tileAt(from);
+    layer.clearTile(from);
+    layer.addTile(tile, to);
+  }
+
   bool isPassable(Pos pos) {
     if (pos.row >= _rows || pos.row < 0 || pos.col >= _cols || pos.col < 0) {
       return false;
