@@ -15,14 +15,15 @@ class Game implements GameState {
 
   final Level _level;
   final KeyboardListener _kl;
-  final Player _player = new Player();
+  final Player _player;
   final InputHandler _input_handler;
   bool _need_redraw = true;  // Force first draw.
   final List<Mob> _mobs = new List<Mob>();
 
   Level get level => _level;
 
-  Game(this._kl, this._level) : _input_handler = new InputHandler() {
+  Game(KeyboardListener this._kl, Level this._level, Player this._player)
+      : _input_handler = new InputHandler() {
     _level.addMobTile(_player.tile, _player.pos);
   }
 

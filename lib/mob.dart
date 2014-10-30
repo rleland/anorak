@@ -3,9 +3,19 @@ library mob;
 import "package:anorak/common.dart";
 import "package:anorak/tile.dart";
 
+class Stats {
+  int hp;
+  int str;
+  int dex;
+  int vit;
+
+  Stats({int this.hp, int this.str, int this.dex, int this.vit});
+}
+
 abstract class Mob {
   Tile get tile;
   Pos get pos;
+  Stats get stats;
   Pos getMove(DateTime now, GameState game_state);
   void move(Pos pos);
 }
@@ -36,11 +46,13 @@ class Rat implements Mob {
   final Tile _tile = new RatTile();
   Pos _pos;
   int _last_move = 0;
+  Stats _stats;
 
-  Rat(Pos this._pos);
+  Rat(Pos this._pos, Stats this._stats);
 
   Tile get tile => _tile;
   Pos get pos => _pos;
+  Stats get stats => _stats;
 
   Pos getMove(DateTime now, GameState game_state) {
     if (!shouldMove(now, game_state)) {

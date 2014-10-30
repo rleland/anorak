@@ -6,6 +6,7 @@ import 'package:anorak/common.dart';
 import 'package:anorak/game.dart';
 import 'package:anorak/input.dart';
 import 'package:anorak/level.dart';
+import 'package:anorak/player.dart';
 import 'package:anorak/tile.dart';
 
 void clearElement(Element e) {
@@ -132,7 +133,7 @@ void main() {
   level.multiAddBaseTile(new Path(), new Pos(0,  10), new Pos(20, 11));
   KeyboardListener kl = new KeyboardListener();
   WindowListener wl = new WindowListener(window, kl);
-  Game game = new Game(kl, level);
-  game.addMob(new Rat(new Pos(1, 1)));
+  Game game = new Game(kl, level, new Player(new Stats(hp: 20, str: 3, dex: 1, vit: 2)));
+  game.addMob(new Rat(new Pos(1, 1), new Stats(hp: 10, str: 1, dex: 1, vit: 1)));
   new GameLoop(game);
 }
