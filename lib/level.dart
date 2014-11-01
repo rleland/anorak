@@ -1,6 +1,7 @@
 library level;
 
 import 'package:anorak/common.dart';
+import 'package:anorak/mob.dart';
 import 'package:anorak/tile.dart';
 
 class TileMap {
@@ -53,6 +54,7 @@ class Level {  // Better name, e.g. zone, scene, map, area, etc
   List<TileMap> _layers;
   final int _rows;
   final int _cols;
+  Map<Pos, Mob> _mobs = new Map<Pos, Mob>();
 
   Level(int this._rows, int this._cols) {
     _layers = new List<TileMap>();
@@ -98,8 +100,9 @@ class Level {  // Better name, e.g. zone, scene, map, area, etc
     }
   }
 
-  void addMobTile(Tile tile, Pos pos) {
-    _layers[MOB_LAYER].addTile(tile, pos);
+  void addMob(Mob mob, Pos pos) {
+    _layers[MOB_LAYER].addTile(mob.tile, pos);
+    _mobs[pos] = mob;
   }
 
   void moveMobTile(Pos from, Pos to) {
@@ -107,6 +110,7 @@ class Level {  // Better name, e.g. zone, scene, map, area, etc
     Tile tile = layer.tileAt(from);
     layer.clearTile(from);
     layer.addTile(tile, to);
+    _mobs[to] = _mobs.remove(from);
   }
 
   bool isPassable(Pos pos) {
@@ -120,5 +124,13 @@ class Level {  // Better name, e.g. zone, scene, map, area, etc
       }
     }
     return true;
+  }
+
+  bool hasMob(Pos pos) {
+    return _layers[MOB_LAYER].tileAt(pos) != null;
+  }
+
+  Mob mobAt(Pos pos) {
+    return _mobs[pos];
   }
 }

@@ -25,7 +25,7 @@ class Game implements GameState {
 
   Game(KeyboardListener this._kl, Level this._level, MessageLog this._log, Player this._player)
       : _input_handler = new InputHandler() {
-    _level.addMobTile(_player.tile, _player.pos);
+    _level.addMob(_player, _player.pos);
   }
 
   Pos get player_pos => _player.pos;
@@ -36,7 +36,7 @@ class Game implements GameState {
 
   void addMob(Mob c) {
     _mobs.add(c);
-    _level.addMobTile(c.tile, c.pos);
+    _level.addMob(c, c.pos);
   }
 
   bool loop(DateTime now) {
@@ -78,6 +78,8 @@ class Game implements GameState {
       _level.moveMobTile(_player.pos, new_pos);
       _player.move(new_pos);
       _need_redraw = true;
+    } else if (_level.hasMob(new_pos)) {
+
     }
     // TODO: Interact with new tile regardless of whether it's passable.
   }
