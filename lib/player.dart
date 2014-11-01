@@ -16,6 +16,7 @@ class Player implements Mob {
   Tile get tile => _tile;
   Pos get pos => _pos;
   Stats get stats => _stats;
+  bool get attackable => true;
 
   Player(Stats this._stats);
 

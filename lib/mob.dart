@@ -17,6 +17,9 @@ abstract class Mob {
   Tile get tile;
   Pos get pos;
   Stats get stats;
+
+  bool get attackable;
+
   Pos getMove(DateTime now, GameState game_state);
   void move(Pos pos);
 }
@@ -55,6 +58,7 @@ class Rat implements Mob {
   Tile get tile => _tile;
   Pos get pos => _pos;
   Stats get stats => _stats;
+  bool get attackable => true;
 
   Pos getMove(DateTime now, GameState game_state) {
     if (!shouldMove(now, game_state)) {
