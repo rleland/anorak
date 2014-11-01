@@ -44,6 +44,10 @@ class PosList<T> {
     assert(p.row < _rows && p.col < _cols);
     _list[p.row * _cols + p.col] = t;
   }
+
+  String toString() {
+    return _list.toString();
+  }
 }
 
 abstract class GameState {
