@@ -5,12 +5,12 @@ import 'package:anorak/mob.dart';
 import 'package:anorak/tile.dart';
 
 class TileMap {
-  List<Tile> _tiles;
+  PosList<Tile> _tiles;
   final int _rows;
   final int _cols;
 
   TileMap(int this._rows, int this._cols) {
-    _tiles = new List<Tile>(_rows * _cols);
+    _tiles = new PosList<Tile>(_rows, _cols);
     for (int row = 0; row < _rows; ++row) {
       for (int col = 0; col < _cols; ++col) {
         addTile(null, new Pos(row, col));
@@ -25,15 +25,15 @@ class TileMap {
 
   Tile tileAt(Pos pos) {
     assert(pos.row < _rows && pos.col < _cols);
-    return _tiles[pos.row * _cols + pos.col];
+    return _tiles[pos];
   }
 
   void addTile(Tile tile, Pos pos) {
-    _tiles[pos.row * _cols + pos.col] = tile;
+    _tiles[pos] = tile;
   }
 
   void clearTile(Pos pos) {
-    _tiles[pos.row * _cols + pos.col] = null;
+    _tiles[pos] = null;
   }
 }
 
@@ -51,13 +51,13 @@ class Level {  // Better name, e.g. zone, scene, map, area, etc
   static final int MOB_LAYER = 2;
   static final int NUM_LAYERS = 3;
 
-  List<TileMap> _layers;
+  final List<TileMap> _layers = new List<TileMap>();
   final int _rows;
   final int _cols;
-  Map<Pos, Mob> _mobs = new Map<Pos, Mob>();
+  PosList<Mob> _mobs;
 
   Level(int this._rows, int this._cols) {
-    _layers = new List<TileMap>();
+    _mobs = new PosList<Mob>(_rows, _cols);
     for (int i = 0; i < NUM_LAYERS; ++i) {
       _layers.add(new TileMap(_rows, _cols));
     }
@@ -110,7 +110,8 @@ class Level {  // Better name, e.g. zone, scene, map, area, etc
     Tile tile = layer.tileAt(from);
     layer.clearTile(from);
     layer.addTile(tile, to);
-    _mobs[to] = _mobs.remove(from);
+    _mobs[to] = _mobs[from];
+    _mobs[from] = null;
   }
 
   bool isPassable(Pos pos) {
@@ -127,7 +128,7 @@ class Level {  // Better name, e.g. zone, scene, map, area, etc
   }
 
   bool hasMob(Pos pos) {
-    return _layers[MOB_LAYER].tileAt(pos) != null;
+    return _mobs[pos] != null;
   }
 
   Mob mobAt(Pos pos) {
