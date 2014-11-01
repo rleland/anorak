@@ -25,3 +25,7 @@ abstract class GameState {
 
   bool isPassable(Pos pos);
 }
+
+abstract class MessageLog {
+  void write(String s);
+}
