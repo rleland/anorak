@@ -13,6 +13,7 @@ class Stats {
 }
 
 abstract class Mob {
+  String get name;
   Tile get tile;
   Pos get pos;
   Stats get stats;
@@ -50,6 +51,7 @@ class Rat implements Mob {
 
   Rat(Pos this._pos, Stats this._stats);
 
+  String get name => 'rat';
   Tile get tile => _tile;
   Pos get pos => _pos;
   Stats get stats => _stats;

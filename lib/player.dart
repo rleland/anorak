@@ -12,6 +12,7 @@ class Player implements Mob {
   int _last_move = 0;
   Stats _stats;
 
+  String get name => 'player';
   Tile get tile => _tile;
   Pos get pos => _pos;
   Stats get stats => _stats;
