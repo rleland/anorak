@@ -17,12 +17,13 @@ class Game implements GameState {
   final KeyboardListener _kl;
   final Player _player;
   final InputHandler _input_handler;
+  final MessageLog _log;
   bool _need_redraw = true;  // Force first draw.
   final List<Mob> _mobs = new List<Mob>();
 
   Level get level => _level;
 
-  Game(KeyboardListener this._kl, Level this._level, Player this._player)
+  Game(KeyboardListener this._kl, Level this._level, MessageLog this._log, Player this._player)
       : _input_handler = new InputHandler() {
     _level.addMobTile(_player.tile, _player.pos);
   }
