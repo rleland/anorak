@@ -2,6 +2,7 @@ library game;
 
 import 'package:anorak/mob.dart';
 import 'package:anorak/common.dart';
+import 'package:anorak/fight.dart';
 import 'package:anorak/input.dart';
 import 'package:anorak/level.dart';
 import 'package:anorak/player.dart';
@@ -79,7 +80,10 @@ class Game implements GameState {
       _player.move(new_pos);
       _need_redraw = true;
     } else if (_level.hasMob(new_pos)) {
-
+      Mob mob = _level.mobAt(new_pos);
+      if (mob.attackable) {
+        Attack(_player, mob, _log);
+      }
     }
     // TODO: Interact with new tile regardless of whether it's passable.
   }
