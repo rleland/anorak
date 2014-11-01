@@ -123,6 +123,21 @@ class LevelRendererImpl implements LevelRenderer {
   }
 }
 
+class MessageLogImpl implements MessageLog {
+  static const int LOG_LENGTH = 200;
+  final Element _log;
+
+  MessageLogImpl(Element this._log);
+
+  void write(String s) {
+    while (_log.childNodes.length >= LOG_LENGTH) {
+      _log.firstChild.remove();
+    }
+    _log.append(new Text(s));
+    _log.append(new Element.br());
+  }
+}
+
 void main() {
   Level level = new Level(20, 20);
   level.multiAddBaseTile(new Grass(), new Pos(0, 0), new Pos(20, 20));
@@ -133,6 +148,7 @@ void main() {
   level.multiAddBaseTile(new Path(), new Pos(0,  10), new Pos(20, 11));
   KeyboardListener kl = new KeyboardListener();
   WindowListener wl = new WindowListener(window, kl);
+  MessageLogImpl message_log = new MessageLogImpl(querySelector('#messageLog'));
   Game game = new Game(kl, level, new Player(new Stats(hp: 20, str: 3, dex: 1, vit: 2)));
   game.addMob(new Rat(new Pos(1, 1), new Stats(hp: 10, str: 1, dex: 1, vit: 1)));
   new GameLoop(game);
