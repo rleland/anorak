@@ -66,22 +66,16 @@ class Game implements GameState {
   }
 
   void _updatePlayer(DateTime now, Key key) {
-    if (!_player.shouldMove(now)) {
-      return;
-    }
     assert(MOVES.containsKey(key));
-    _movePlayer(MOVES[key]);
-  }
+    Pos new_pos = MOVES[key] + _player.pos;
 
-  void _movePlayer(Pos pos_offset) {
-    Pos new_pos = _player.pos + pos_offset;
-    if (_level.isPassable(new_pos)) {
+    if (_level.isPassable(new_pos) && _player.canMove(now)) {
       _level.moveMobTile(_player.pos, new_pos);
       _player.move(new_pos);
       _need_redraw = true;
     } else if (_level.hasMob(new_pos)) {
       Mob mob = _level.mobAt(new_pos);
-      if (mob.attackable) {
+      if (mob.attackable && _player.canAttack(now)) {
         Attack(_player, mob, _log);
       }
     }

@@ -6,10 +6,12 @@ import 'package:anorak/tile.dart';
 
 class Player implements Mob {
   static final int MOVE_PERIOD_MS = 200;
+  static final int ATTACK_PERIOD_MS = 1000;
 
   final Tile _tile = new PlayerTile();
   Pos _pos = new Pos(10, 10);
   int _last_move = 0;
+  int _last_attack = 0;
   Stats _stats;
 
   String get name => 'player';
@@ -20,10 +22,19 @@ class Player implements Mob {
 
   Player(Stats this._stats);
 
-  bool shouldMove(DateTime now) {
+  bool canMove(DateTime now) {
     int now_ms = now.millisecondsSinceEpoch;
     if (now_ms >= _last_move + MOVE_PERIOD_MS) {
       _last_move = now_ms;
+      return true;
+    }
+    return false;
+  }
+
+  bool canAttack(DateTime now) {
+    int now_ms = now.millisecondsSinceEpoch;
+    if (now_ms >= _last_attack + ATTACK_PERIOD_MS) {
+      _last_attack = now_ms;
       return true;
     }
     return false;
