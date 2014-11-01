@@ -18,6 +18,7 @@ bool isHit(Stats attacker, Stats defender) {
 
 void Attack(Mob attacker, Mob defender, MessageLog log) {
   if (!isHit(attacker.stats, defender.stats)) {
+    log.write(Messages.AttackMiss(attacker.name, defender.name));
     return;
   }
   defender.stats.hp -= 2;
