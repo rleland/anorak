@@ -18,6 +18,9 @@ class Pos {
   Pos operator-(Pos other) {
     return new Pos(this.row - other.row, this.col - other.col);
   }
+  String toString() {
+    return "$row,$col";
+  }
 }
 
 abstract class GameState {
