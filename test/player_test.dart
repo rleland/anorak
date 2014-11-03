@@ -17,4 +17,19 @@ main() {
       expect(player.canMove(time), isTrue);
     });
   });
+
+  group("level tracker test", () {
+    test("test level tracker increments", () {
+      LevelTracker level_tracker = new LevelTracker(1, 0);
+      expect(level_tracker.addXp(1), isFalse);  // Not enough.
+      expect(level_tracker.addXp(9), isTrue);  // Exactly enough for next level.
+      expect(level_tracker.level, equals(2));
+      expect(level_tracker.addXp(14), isTrue);  // Test xp increase.
+      expect(level_tracker.level, equals(3));
+      expect(level_tracker.addXp(25), isTrue);  // Test xp overflow (should only need 20).
+      expect(level_tracker.level, equals(4));
+      expect(level_tracker.addXp(23), isTrue);  // 28 for next lvl but should have overflow of 5.
+      expect(level_tracker.level, equals(5));
+    });
+  });
 }

@@ -1,8 +1,35 @@
 library player;
 
+import 'dart:math';
+
 import 'package:anorak/mob.dart';
 import 'package:anorak/common.dart';
 import 'package:anorak/tile.dart';
+
+class LevelTracker {
+  static int NextLevelXp(int level) {
+    return (10 * pow(SQRT2, level-1)).round();
+  }
+
+  int _level;
+  int _xp;
+
+  int get level => _level;
+
+  LevelTracker(int this._level, int this._xp);
+
+  bool addXp(int xp) {
+    bool leveled_up = false;
+    _xp += xp;
+    int next = NextLevelXp(_level);
+    if (_xp >= next) {
+      _xp -= next;
+      ++_level;
+      leveled_up = true;
+    }
+    return leveled_up;
+  }
+}
 
 class Player implements Mob {
   static final int MOVE_PERIOD_MS = 200;
