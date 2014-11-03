@@ -5,6 +5,7 @@ import 'package:anorak/common.dart';
 import 'package:anorak/fight.dart';
 import 'package:anorak/input.dart';
 import 'package:anorak/level.dart';
+import 'package:anorak/messages.dart';
 import 'package:anorak/player.dart';
 
 class Game implements GameState {
@@ -47,15 +48,26 @@ class Game implements GameState {
         _updatePlayer(now, key);
       }
     }
-    for (Mob c in _mobs) {
-      Pos new_pos = c.getMove(now, this);
+    for (Mob m in _mobs) {
+      Pos new_pos = m.getMove(now, this);
       if (new_pos != null &&
           _level.isPassable(new_pos)) {
         _need_redraw = true;
-        _level.moveMobTile(c.pos, new_pos);
-        c.move(new_pos);
+        _level.moveMobTile(m.pos, new_pos);
+        m.move(new_pos);
       }
     }
+    // TODO: Check if player is alive.
+    for (Mob m in _mobs) {
+      if (m.is_alive) {
+        continue;
+      }
+      _log.write(Messages.Dead(m.name));
+      _level.removeMobTile(m.pos);
+      _need_redraw = true;
+    }
+    _mobs.removeWhere((Mob m) => !m.is_alive);
+
     // Don't waste resources unnecessarily.
     if (_need_redraw) {
       _need_redraw = false;

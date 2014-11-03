@@ -19,6 +19,7 @@ class Player implements Mob {
   Pos get pos => _pos;
   Stats get stats => _stats;
   bool get attackable => true;
+  bool get is_alive => stats.hp > 0;
 
   Player(Stats this._stats);
 

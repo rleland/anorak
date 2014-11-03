@@ -19,6 +19,7 @@ abstract class Mob {
   Stats get stats;
 
   bool get attackable;
+  bool get is_alive;
 
   Pos getMove(DateTime now, GameState game_state);
   void move(Pos pos);
@@ -59,6 +60,7 @@ class Rat implements Mob {
   Pos get pos => _pos;
   Stats get stats => _stats;
   bool get attackable => true;
+  bool get is_alive => stats.hp > 0;
 
   Pos getMove(DateTime now, GameState game_state) {
     if (!shouldMove(now, game_state)) {

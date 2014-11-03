@@ -8,4 +8,8 @@ class Messages {
   static String AttackMiss(String attacker, String defender) {
     return "$attacker misses $defender.";
   }
+
+  static String Dead(String name) {
+    return "$name was killed.";
+  }
 }

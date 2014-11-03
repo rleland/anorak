@@ -32,7 +32,7 @@ class TileMap {
     _tiles[pos] = tile;
   }
 
-  void clearTile(Pos pos) {
+  void removeTile(Pos pos) {
     _tiles[pos] = null;
   }
 }
@@ -95,7 +95,7 @@ class Level {  // Better name, e.g. zone, scene, map, area, etc
   void clearMobLayer() {
     for (int row = 0; row < _rows; ++row) {
       for (int col = 0; col < _cols; ++col) {
-        _layers[MOB_LAYER].clearTile(new Pos(row, col));
+        _layers[MOB_LAYER].removeTile(new Pos(row, col));
       }
     }
   }
@@ -108,10 +108,15 @@ class Level {  // Better name, e.g. zone, scene, map, area, etc
   void moveMobTile(Pos from, Pos to) {
     TileMap layer = _layers[MOB_LAYER];
     Tile tile = layer.tileAt(from);
-    layer.clearTile(from);
+    layer.removeTile(from);
     layer.addTile(tile, to);
     _mobs[to] = _mobs[from];
     _mobs[from] = null;
+  }
+
+  void removeMobTile(Pos pos) {
+    _layers[MOB_LAYER].removeTile(pos);
+    _mobs[pos] = null;
   }
 
   bool isPassable(Pos pos) {
