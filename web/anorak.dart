@@ -131,10 +131,10 @@ class MessageLogImpl implements MessageLog {
 
   void write(String s) {
     while (_log.childNodes.length >= LOG_LENGTH) {
-      _log.firstChild.remove();
+      _log.lastChild.remove();
     }
-    _log.append(new Text(s));
-    _log.append(new Element.br());
+    _log.insertBefore(new Element.br(), _log.firstChild);
+    _log.insertBefore(new Text(s), _log.firstChild);
   }
 }
 
