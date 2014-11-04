@@ -20,11 +20,14 @@ class Stats {
   }
 }
 
+// TODO: This clearly needs sublcasses to distinguish types of mobs
+// (currently; player and creature).
 abstract class Mob {
   String get name;
   Tile get tile;
   Pos get pos;
   Stats get stats;
+  int get xp_gain;
 
   bool get attackable;
   bool get is_alive;
@@ -67,6 +70,7 @@ class Rat implements Mob {
   Tile get tile => _tile;
   Pos get pos => _pos;
   Stats get stats => _stats;
+  int get xp_gain => 5;
   bool get attackable => true;
   bool get is_alive => stats.hp > 0;
 
