@@ -40,6 +40,7 @@ class Player implements Mob {
   int _last_move = 0;
   int _last_attack = 0;
   Stats _stats;
+  LevelTracker _level_tracker = new LevelTracker(1, 0);
 
   String get name => 'player';
   Tile get tile => _tile;
@@ -76,5 +77,9 @@ class Player implements Mob {
 
   void move(Pos new_pos) {
     _pos = new_pos;
+  }
+
+  void gainXp(int xp) {
+    _level_tracker.addXp(xp);
   }
 }
