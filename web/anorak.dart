@@ -25,8 +25,7 @@ class FpsCounter {
   final Element _element;
   final Queue<int> _frames = new Queue<int>();
 
-  FpsCounter(Element this._element) {
-  }
+  FpsCounter(Element this._element);
 
   void update(DateTime time) {
     int now_ms = time.millisecondsSinceEpoch;
