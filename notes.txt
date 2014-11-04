@@ -5,6 +5,5 @@ Basic eatures which should be implemented as they require expanding the architec
  - Map transition
  - Monster attacks, damaging player, player death
  - Saving state
- - Leveling up stats
  - Picking up items
  - Equipping weapons
