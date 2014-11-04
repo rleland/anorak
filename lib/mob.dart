@@ -27,7 +27,7 @@ abstract class Mob {
   Tile get tile;
   Pos get pos;
   Stats get stats;
-  int get xp_gain;
+  int get xp_reward;
 
   bool get attackable;
   bool get is_alive;
@@ -70,7 +70,7 @@ class Rat implements Mob {
   Tile get tile => _tile;
   Pos get pos => _pos;
   Stats get stats => _stats;
-  int get xp_gain => 5;
+  int get xp_reward => 5;
   bool get attackable => true;
   bool get is_alive => stats.hp > 0;
 

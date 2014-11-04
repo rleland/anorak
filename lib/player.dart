@@ -52,7 +52,7 @@ class Player implements Mob {
   Pos get pos => _pos;
   Stats get stats => _stats;
   bool get attackable => true;
-  int get xp_gain => 0;
+  int get xp_reward => 0;
   bool get is_alive => stats.hp > 0;
   int get level => _level_tracker.level;
 
