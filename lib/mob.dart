@@ -8,8 +8,11 @@ class Stats {
   int str;
   int dex;
   int vit;
+  int get max_hp => vit * 10;
 
-  Stats({int this.hp, int this.str, int this.dex, int this.vit});
+  Stats({int this.str, int this.dex, int this.vit}) {
+    hp = max_hp;
+  }
 }
 
 abstract class Mob {
