@@ -27,6 +27,11 @@ void debug(String s) {
   }
 }
 
+String twoDigits(int n) {
+  if (n >= 10) return "${n}";
+  return "0${n}";
+}
+
 class FpsCounter {
   static final int WINDOW = 5;
   final Element _element;
@@ -124,12 +129,20 @@ class LevelRendererImpl implements LevelRenderer {
 }
 
 class MessageLogImpl implements MessageLog {
+  static String AddTimestamp(DateTime time, String text) {
+    String h = twoDigits(time.hour);
+    String m = twoDigits(time.minute);
+    String s = twoDigits(time.second);
+    return "[$h:$m:$s] $text";
+  }
+
   static const int LOG_LENGTH = 200;
   final Element _log;
 
   MessageLogImpl(Element this._log);
 
   void write(String s) {
+    s = AddTimestamp(new DateTime.now(), s);
     while (_log.childNodes.length >= LOG_LENGTH) {
       _log.lastChild.remove();
     }
