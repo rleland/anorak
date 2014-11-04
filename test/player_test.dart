@@ -31,5 +31,11 @@ main() {
       expect(level_tracker.addXp(23), isTrue);  // 28 for next lvl but should have overflow of 5.
       expect(level_tracker.level, equals(5));
     });
+
+    test("test double level up", () {
+      LevelTracker level_tracker = new LevelTracker(1, 0);
+      expect(level_tracker.addXp(30), isTrue);
+      expect(level_tracker.level, equals(3));
+    });
   });
 }

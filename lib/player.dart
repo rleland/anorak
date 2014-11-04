@@ -6,6 +6,7 @@ import 'package:anorak/mob.dart';
 import 'package:anorak/common.dart';
 import 'package:anorak/tile.dart';
 
+// TODO: Need mechanism for handling lvl ups, maybe return # of levels from addXp.
 class LevelTracker {
   static int NextLevelXp(int level) {
     return (10 * pow(SQRT2, level-1)).round();
@@ -21,9 +22,8 @@ class LevelTracker {
   bool addXp(int xp) {
     bool leveled_up = false;
     _xp += xp;
-    int next = NextLevelXp(_level);
-    if (_xp >= next) {
-      _xp -= next;
+    while (_xp >= NextLevelXp(_level)) {
+      _xp -= NextLevelXp(_level);
       ++_level;
       leveled_up = true;
     }
