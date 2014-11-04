@@ -15,18 +15,6 @@ void clearElement(Element e) {
   }
 }
 
-void debug(String s) {
-  Element dbg = querySelector('#debug');
-  List<Node> children = new List<Node>();
-  children.add(new Text(s));
-  children.add(new Element.br());
-  children.addAll(dbg.childNodes);
-  clearElement(dbg);
-  for (Node child in children) {
-    dbg.append(child);
-  }
-}
-
 String twoDigits(int n) {
   if (n >= 10) return "${n}";
   return "0${n}";
