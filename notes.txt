@@ -1,9 +1,10 @@
 Random notes
 
 Basic eatures which should be implemented as they require expanding the architecture:
+ - Monster attacks, damaging player, player death
+ - Tiles with events
  - Ranged attacks
  - Map transition
- - Monster attacks, damaging player, player death
  - Saving state
  - Picking up items
  - Equipping weapons
