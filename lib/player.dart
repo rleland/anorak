@@ -47,7 +47,7 @@ class Player implements Mob {
   Stats _stats;
   LevelTracker _level_tracker = new LevelTracker(1, 0);
 
-  String get name => 'player';
+  String get name => 'Player';
   Tile get tile => _tile;
   Pos get pos => _pos;
   Stats get stats => _stats;
