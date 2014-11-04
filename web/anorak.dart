@@ -149,8 +149,7 @@ void main() {
   KeyboardListener kl = new KeyboardListener();
   WindowListener wl = new WindowListener(window, kl);
   MessageLogImpl message_log = new MessageLogImpl(querySelector('#messageLog'));
-  Game game = new Game(kl, level, message_log,
-                       new Player(new Stats(str: 3, dex: 1, vit: 2)));
+  Game game = new Game(kl, level, message_log, new Player(1));
   game.addMob(new Rat(new Pos(1, 1), new Stats(str: 1, dex: 1, vit: 1)));
   new GameLoop(game);
 }

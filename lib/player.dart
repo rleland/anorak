@@ -6,7 +6,12 @@ import 'package:anorak/mob.dart';
 import 'package:anorak/common.dart';
 import 'package:anorak/tile.dart';
 
-// TODO: Need mechanism for handling multiple lvl ups, maybe return # of levels from addXp.
+Stats PlayerStatsForLevel(int level) {
+  return new Stats(str: 1 + level,
+                   dex: level,
+                   vit: 1 + level);
+}
+
 class LevelTracker {
   static int NextLevelXp(int level) {
     return (10 * pow(SQRT2, level-1)).round();
@@ -48,8 +53,10 @@ class Player implements Mob {
   Stats get stats => _stats;
   bool get attackable => true;
   bool get is_alive => stats.hp > 0;
+  int get level => _level_tracker.level;
 
-  Player(Stats this._stats);
+  Player(int level) : _level_tracker = new LevelTracker(level, 0),
+                      _stats = PlayerStatsForLevel(level);
 
   bool canMove(DateTime now) {
     int now_ms = now.millisecondsSinceEpoch;
@@ -79,7 +86,12 @@ class Player implements Mob {
     _pos = new_pos;
   }
 
-  void gainXp(int xp) {
-    _level_tracker.addXp(xp);
+  bool gainXp(int xp) {
+    if (_level_tracker.addXp(xp)) {
+      _stats = PlayerStatsForLevel(_level_tracker.level);
+      _stats.FullHeal();
+      return true;
+    }
+    return false;
   }
 }
