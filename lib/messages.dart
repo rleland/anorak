@@ -12,4 +12,8 @@ class Messages {
   static String Dead(String name) {
     return "$name was killed.";
   }
+
+  static String LevelUp(int level) {
+    return "Player levels up to level $level!";
+  }
 }
