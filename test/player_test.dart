@@ -7,7 +7,7 @@ import 'package:unittest/unittest.dart';
 main() {
   group("player test", () {
     test("test move interval", () {
-      Player player = new Player(new Stats());
+      Player player = new Player(1);
       DateTime time = new DateTime(2014, 10, 24, 13, 37, 0, 0);
       expect(player.canMove(time), isTrue);
       expect(player.canMove(time), isFalse);
