@@ -58,15 +58,21 @@ class Game implements GameState {
       }
     }
     // TODO: Check if player is alive.
+    int xp_gain = 0;
     for (Mob m in _mobs) {
       if (m.is_alive) {
         continue;
       }
       _log.write(Messages.Dead(m.name));
       _level.removeMobTile(m.pos);
+      xp_gain += m.xp_gain;
       _need_redraw = true;
     }
     _mobs.removeWhere((Mob m) => !m.is_alive);
+
+    if (_player.gainXp(xp_gain)) {
+      _log.write(Messages.LevelUp(_player.level));
+    }
 
     // Don't waste resources unnecessarily.
     if (_need_redraw) {
