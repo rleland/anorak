@@ -6,7 +6,7 @@ import 'package:anorak/mob.dart';
 import 'package:anorak/common.dart';
 import 'package:anorak/tile.dart';
 
-// TODO: Need mechanism for handling lvl ups, maybe return # of levels from addXp.
+// TODO: Need mechanism for handling multiple lvl ups, maybe return # of levels from addXp.
 class LevelTracker {
   static int NextLevelXp(int level) {
     return (10 * pow(SQRT2, level-1)).round();
