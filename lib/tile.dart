@@ -12,7 +12,7 @@ abstract class Tile {
 class Grass extends Tile {
   String get explanation => 'grass';
   String get symbol =>'.';
-  String get color => 'lightgreen';  // TODO: Pick right shade of green.
+  String get color => 'lightgreen';
 }
 
 class Tree extends Tile {
@@ -25,7 +25,13 @@ class Tree extends Tile {
 class Path extends Tile {
   String get explanation => 'path';
   String get symbol => '#';
-  String get color => 'brown';
+  String get color => 'rosybrown';
+}
+
+class Fire extends Tile {
+  String get explanation => 'fire';
+  String get symbol => '#';
+  String get color => 'orangered';
 }
 
 class PlayerTile extends Tile {
