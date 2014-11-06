@@ -139,4 +139,13 @@ class Level {  // Better name, e.g. zone, scene, map, area, etc
   Mob mobAt(Pos pos) {
     return _mobs[pos];
   }
+
+  Event getEvent(Pos pos) {
+    for (int i = _layers.length-1; i >= 0; --i) {
+      if (_layers[i].tileAt(pos).has_event) {
+        return _layers[i].tileAt(pos).event;
+      }
+    }
+    return null;
+  }
 }

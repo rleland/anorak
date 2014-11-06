@@ -2,6 +2,7 @@ library game;
 
 import 'package:anorak/mob.dart';
 import 'package:anorak/common.dart';
+import 'package:anorak/events.dart';
 import 'package:anorak/fight.dart';
 import 'package:anorak/input.dart';
 import 'package:anorak/level.dart';
@@ -57,6 +58,12 @@ class Game implements GameState {
         m.move(new_pos);
       }
     }
+
+    _triggerEvents(_player);
+    for (Mob m in _mobs) {
+      _triggerEvents(m);
+    }
+
     // TODO: Check if player is alive.
     int xp_gain = 0;
     for (Mob m in _mobs) {
@@ -80,6 +87,16 @@ class Game implements GameState {
       return true;
     } else {
       return false;
+    }
+  }
+
+  void _triggerEvents(Mob mob) {
+    Event e = _level.getEvent(mob.pos);
+    if (e == null) {
+      return;
+    }
+    if (e.type == Event.TYPE_MOB) {
+      (e as MobEvent).process(_log, mob);
     }
   }
 
