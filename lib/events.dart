@@ -10,11 +10,11 @@ abstract class MobEvent extends Event {
   int get event_type => Event.TYPE_MOB;
 }
 
-class Damage extends MobEvent {
+class DamageEvent extends MobEvent {
   final String _name;
   final int _damage;
 
-  Damage(String this._name, int this._damage);
+  DamageEvent(String this._name, int this._damage);
 
   void Process(MessageLog log, Mob mob) {
     mob.stats.hp -= _damage;
