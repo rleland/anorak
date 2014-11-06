@@ -63,5 +63,5 @@ abstract class MessageLog {
 abstract class Event {
   static const int TYPE_MOB = 1;
 
-  int get event_type;
+  int get type;
 }

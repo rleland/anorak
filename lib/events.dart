@@ -7,7 +7,7 @@ import 'package:anorak/mob.dart';
 abstract class MobEvent extends Event {
   void Process(MessageLog log, Mob mob);
 
-  int get event_type => Event.TYPE_MOB;
+  int get type => Event.TYPE_MOB;
 }
 
 class DamageEvent extends MobEvent {
