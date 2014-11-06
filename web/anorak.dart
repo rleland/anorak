@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'dart:html';
 import 'package:anorak/mob.dart';
 import 'package:anorak/common.dart';
+import 'package:anorak/events.dart';
 import 'package:anorak/game.dart';
 import 'package:anorak/input.dart';
 import 'package:anorak/level.dart';
@@ -146,7 +147,7 @@ void main() {
   level.multiAddBaseTile(new Tree(), new Pos(0, 19), new Pos(20, 20));
   level.multiAddBaseTile(new Tree(), new Pos(19, 0), new Pos(20, 20));
   level.multiAddBaseTile(new Path(), new Pos(0,  10), new Pos(20, 11));
-  level.addBaseTile(new Fire(), new Pos(15, 15));
+  level.addBaseTile(new Fire()..event = new DamageEvent('fire', 2), new Pos(15, 15));
   KeyboardListener kl = new KeyboardListener();
   WindowListener wl = new WindowListener(window, kl);
   MessageLogImpl message_log = new MessageLogImpl(querySelector('#messageLog'));
