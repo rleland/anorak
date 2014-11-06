@@ -5,7 +5,7 @@ import 'package:anorak/messages.dart';
 import 'package:anorak/mob.dart';
 
 abstract class MobEvent extends Event {
-  void Process(MessageLog log, Mob mob);
+  void process(MessageLog log, Mob mob);
 
   int get type => Event.TYPE_MOB;
 }
@@ -16,7 +16,7 @@ class DamageEvent extends MobEvent {
 
   DamageEvent(String this._name, int this._damage);
 
-  void Process(MessageLog log, Mob mob) {
+  void process(MessageLog log, Mob mob) {
     mob.stats.hp -= _damage;
     log.write(Messages.Damage(_name, mob.name, _damage));
   }
