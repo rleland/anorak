@@ -59,3 +59,9 @@ abstract class GameState {
 abstract class MessageLog {
   void write(String s);
 }
+
+abstract class Event {
+  static const int TYPE_MOB = 1;
+
+  int get event_type;
+}

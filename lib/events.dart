@@ -4,12 +4,6 @@ import 'package:anorak/common.dart';
 import 'package:anorak/messages.dart';
 import 'package:anorak/mob.dart';
 
-abstract class Event {
-  static const int TYPE_MOB = 1;
-
-  int get event_type;
-}
-
 abstract class MobEvent extends Event {
   void Process(MessageLog log, Mob mob);
 
