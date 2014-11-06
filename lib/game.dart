@@ -59,6 +59,7 @@ class Game implements GameState {
       }
     }
 
+    // TODO: Events need a timeout, and it looks like events are not triggering on the rat?
     _triggerEvents(_player);
     for (Mob m in _mobs) {
       _triggerEvents(m);
