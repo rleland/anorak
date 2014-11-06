@@ -1,12 +1,16 @@
 library tile;
 
+import 'package:anorak/common.dart';
+
 abstract class Tile {
   String get explanation;  // Explains what the symbol means.
   String get symbol;  // Symbol used to render the tile.
   String get color;  // Color of the symbol.
   bool get passable => true;  // True if player can move onto tile.
-  bool get has_event => false;  // True if interacting with the tile results in event.
+  bool get has_event => this.event != null;  // True if interacting with the tile results in event.
   bool get bold => false;  // Rendered in bold if true (typically PC and NPCs).
+
+  Event event;
 }
 
 class Grass extends Tile {
