@@ -59,7 +59,7 @@ class Game implements GameState {
       }
     }
 
-    // TODO: Events need a timeout, and it looks like events are not triggering on the rat?
+    // TODO: Events need a timeout
     _triggerEvents(_player);
     for (Mob m in _mobs) {
       _triggerEvents(m);
@@ -92,6 +92,8 @@ class Game implements GameState {
   }
 
   void _triggerEvents(Mob mob) {
+    // TODO: Currently if the mob itself has an event associated with it a mob will continuously try
+    // to trigger its own event.
     Event e = _level.getEvent(mob.pos);
     if (e == null) {
       return;

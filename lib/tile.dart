@@ -52,5 +52,4 @@ class RatTile extends Tile {
   String get color => 'black';
   bool get passable => false;
   bool get bold => true;
-  bool get has_event => true;
 }
