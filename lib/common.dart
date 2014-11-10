@@ -65,3 +65,19 @@ abstract class Event {
 
   int get type;
 }
+
+class RateLimiter {
+  final int min_delay_;
+  int last_ = 0;
+
+  RateLimiter(int this.min_delay_);
+
+  bool checkRate(DateTime now) {
+    int ms = now.millisecondsSinceEpoch;
+    if (ms - last_ < min_delay_) {
+      return false;
+    }
+    last_ = ms;
+    return true;
+  }
+}

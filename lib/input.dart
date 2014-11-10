@@ -2,6 +2,8 @@ library input;
 
 import 'dart:collection';
 
+import 'package:anorak/common.dart';
+
 class Key {
   static const Key DOWN = const Key(40);
   static const Key UP = const Key(38);
@@ -36,6 +38,7 @@ class KeyboardListener {
 
   final Queue<Key> _key_queue = new Queue<Key>();
   final HashMap<Key, int> _held_keys = {};
+  RateLimiter _repetition_rate = new RateLimiter(REPETITION_PERIOD_MS);
   int _last_repetition_check_ms = 0;
 
   bool hasKeysToProcess(DateTime now) {
@@ -65,11 +68,9 @@ class KeyboardListener {
   }
 
   void _addRepeatsToQueue(DateTime now) {
-    if (now.millisecondsSinceEpoch - _last_repetition_check_ms < REPETITION_PERIOD_MS ||
-        _held_keys.isEmpty) {
+    if (_held_keys.isEmpty || !_repetition_rate.checkRate(now)) {
       return;
     }
-    _last_repetition_check_ms = now.millisecondsSinceEpoch;
 
     Key key = null;
     int max_ts = 0;
