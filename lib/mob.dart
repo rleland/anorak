@@ -61,7 +61,7 @@ class Rat implements Mob {
 
   final Tile _tile = new RatTile();
   Pos _pos;
-  int _last_move = 0;
+  final RateLimiter move_rate_ = new RateLimiter(MOVE_PERIOD_MS);
   Stats _stats;
 
   Rat(Pos this._pos, Stats this._stats);
@@ -87,12 +87,7 @@ class Rat implements Mob {
         (player_pos.col - _pos.col).abs() > COL_AGGRO) {
       return false;
     }
-    int now_ms = now.millisecondsSinceEpoch;
-    if (now_ms >= _last_move + MOVE_PERIOD_MS) {
-      _last_move = now_ms;
-      return true;
-    }
-    return false;
+    return move_rate_.checkRate(now);
   }
 
   void move(Pos new_pos) {
