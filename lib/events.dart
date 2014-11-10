@@ -10,6 +10,7 @@ abstract class MobEvent extends Event {
   int get type => Event.TYPE_MOB;
 }
 
+// TODO: Instead of this, have event apply damage (burn) debuff.
 class DamageEvent extends MobEvent {
   final String _name;
   final int _damage;
