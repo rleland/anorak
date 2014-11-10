@@ -133,6 +133,9 @@ class Level {  // Better name, e.g. zone, scene, map, area, etc
   }
 
   bool hasMob(Pos pos) {
+    if (pos.row >= _rows || pos.row < 0 || pos.col >= _cols || pos.col < 0) {
+      return false;
+    }
     return _mobs[pos] != null;
   }
 
