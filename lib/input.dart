@@ -34,11 +34,11 @@ class Key {
 }
 
 class KeyboardListener {
-  static final REPETITION_PERIOD_MS = 200;
+  static const REPETITION_PERIOD_MS = 200;
 
   final Queue<Key> _key_queue = new Queue<Key>();
   final HashMap<Key, int> _held_keys = {};
-  RateLimiter _repetition_rate = new RateLimiter(REPETITION_PERIOD_MS);
+  final RateLimiter _repetition_rate = new RateLimiter(REPETITION_PERIOD_MS);
 
   bool hasKeysToProcess(DateTime now) {
     _addRepeatsToQueue(now);

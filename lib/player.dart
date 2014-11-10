@@ -37,13 +37,13 @@ class LevelTracker {
 }
 
 class Player implements Mob {
-  static final int MOVE_PERIOD_MS = 200;
-  static final int ATTACK_PERIOD_MS = 1000;
+  static const int MOVE_PERIOD_MS = 200;
+  static const int ATTACK_PERIOD_MS = 1000;
 
   final Tile _tile = new PlayerTile();
+  final RateLimiter _move_rate = new RateLimiter(MOVE_PERIOD_MS);
+  final RateLimiter _attack_rate = new RateLimiter(ATTACK_PERIOD_MS);
   Pos _pos = new Pos(10, 10);
-  RateLimiter _move_rate = new RateLimiter(MOVE_PERIOD_MS);
-  RateLimiter _attack_rate = new RateLimiter(ATTACK_PERIOD_MS);
   Stats _stats;
   LevelTracker _level_tracker = new LevelTracker(1, 0);
 
