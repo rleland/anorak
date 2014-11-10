@@ -54,10 +54,10 @@ Pos moveCloser(Pos from, Pos to, int speed) {
 }
 
 class Rat implements Mob {
-  static final int MOVE_PERIOD_MS = 200;
-  static final int ROW_AGGRO = 5;
-  static final int COL_AGGRO = 5;
-  static final int SPEED = 1;
+  static const int MOVE_PERIOD_MS = 200;
+  static const int ROW_AGGRO = 5;
+  static const int COL_AGGRO = 5;
+  static const int SPEED = 1;
 
   final Tile _tile = new RatTile();
   Pos _pos;
