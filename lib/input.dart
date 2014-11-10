@@ -39,7 +39,6 @@ class KeyboardListener {
   final Queue<Key> _key_queue = new Queue<Key>();
   final HashMap<Key, int> _held_keys = {};
   RateLimiter _repetition_rate = new RateLimiter(REPETITION_PERIOD_MS);
-  int _last_repetition_check_ms = 0;
 
   bool hasKeysToProcess(DateTime now) {
     _addRepeatsToQueue(now);
