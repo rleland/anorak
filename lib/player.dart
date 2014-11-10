@@ -42,8 +42,8 @@ class Player implements Mob {
 
   final Tile _tile = new PlayerTile();
   Pos _pos = new Pos(10, 10);
-  int _last_move = 0;
-  int _last_attack = 0;
+  RateLimiter _move_rate = new RateLimiter(MOVE_PERIOD_MS);
+  RateLimiter _attack_rate = new RateLimiter(ATTACK_PERIOD_MS);
   Stats _stats;
   LevelTracker _level_tracker = new LevelTracker(1, 0);
 
@@ -60,21 +60,11 @@ class Player implements Mob {
                       _stats = PlayerStatsForLevel(level);
 
   bool canMove(DateTime now) {
-    int now_ms = now.millisecondsSinceEpoch;
-    if (now_ms >= _last_move + MOVE_PERIOD_MS) {
-      _last_move = now_ms;
-      return true;
-    }
-    return false;
+    return _move_rate.checkRate(now);
   }
 
   bool canAttack(DateTime now) {
-    int now_ms = now.millisecondsSinceEpoch;
-    if (now_ms >= _last_attack + ATTACK_PERIOD_MS) {
-      _last_attack = now_ms;
-      return true;
-    }
-    return false;
+    return _attack_rate.checkRate(now);
   }
 
   // TODO: Implemented only to fit mob interface. This is not ideal; maybe npcs should have
