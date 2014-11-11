@@ -1,6 +1,7 @@
 library mob;
 
 import "package:anorak/common.dart";
+import "package:anorak/buffs.dart";
 import "package:anorak/tile.dart";
 
 
@@ -16,8 +17,19 @@ abstract class Mob {
   bool get attackable;
   bool get is_alive;
 
+  final List<Buff> _buffs = new List<Buff>();
+
   Pos getMove(DateTime now, GameState game_state);
   void move(Pos pos);
+
+  void addBuff(Buff buff) {
+    _buffs.add(buff);
+  }
+
+  void checkBuffs(DateTime now) {
+    _buffs.forEach((e) { if (e.periodic) e.apply(now, stats); });
+    _buffs.removeWhere((e) => !e.active(now));
+  }
 }
 
 int capMagnitude(int value, int magnitude) {
@@ -37,7 +49,7 @@ Pos moveCloser(Pos from, Pos to, int speed) {
   }
 }
 
-class Rat implements Mob {
+class Rat extends Mob {
   static const int MOVE_PERIOD_MS = 200;
   static const int ROW_AGGRO = 5;
   static const int COL_AGGRO = 5;

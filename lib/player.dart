@@ -36,7 +36,7 @@ class LevelTracker {
   }
 }
 
-class Player implements Mob {
+class Player extends Mob {
   static const int MOVE_PERIOD_MS = 200;
   static const int ATTACK_PERIOD_MS = 1000;
 
