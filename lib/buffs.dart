@@ -1,7 +1,6 @@
 library buffs;
 
 import "package:anorak/common.dart";
-import "package:anorak/mob.dart";
 
 // TODO: Looks like I have to put these in the mob file. Or something.
 abstract class Buff {
@@ -17,8 +16,8 @@ abstract class Buff {
     return now.millisecondsSinceEpoch - _start_time.millisecondsSinceEpoch > duration_ms;
   }
 
-  void Apply(DateTime now, Mob mob);
-  void UnApply(DateTime now, Mob mob);
+  void Apply(DateTime now, Stats stats);
+  void UnApply(DateTime now, Stats stats);
 }
 
 abstract class PeriodicBuff extends Buff {
@@ -27,16 +26,16 @@ abstract class PeriodicBuff extends Buff {
   PeriodicBuff(DateTime start_time, int period_ms) :
     super(start_time), _apply_rate = new RateLimiter(period_ms);
 
-  void Apply(DateTime now, Mob mob) {
+  void Apply(DateTime now, Stats stats) {
     if (_apply_rate.checkRate(now)) {
-      _InternalApply(now, mob);
+      _InternalApply(now, stats);
     }
   }
 
-  void UnApply(DateTime now, Mob mob) {
+  void UnApply(DateTime now, Stats stats) {
   }
 
-  void _InternalApply(DateTime now, Mob mob);
+  void _InternalApply(DateTime now, Stats stats);
 }
 
 class BurnBuff extends PeriodicBuff {
@@ -48,7 +47,7 @@ class BurnBuff extends PeriodicBuff {
 
   BurnBuff(DateTime start_time, int this._damage) : super(start_time, BURN_PERIOD_MS);
 
-  void _InternalApply(DateTime now, Mob mob) {
+  void _InternalApply(DateTime now, Stats stats) {
 
   }
 }

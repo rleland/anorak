@@ -81,3 +81,20 @@ class RateLimiter {
     return true;
   }
 }
+
+class Stats {
+  int hp;
+  int str;
+  int dex;
+  int vit;
+
+  int get max_hp => vit * 10;
+
+  Stats({int this.str, int this.dex, int this.vit}) {
+    FullHeal();
+  }
+
+  void FullHeal() {
+    hp = max_hp;
+  }
+}
