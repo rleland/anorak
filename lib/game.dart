@@ -61,9 +61,10 @@ class Game implements GameState {
 
     // TODO: Events need a timeout
     _triggerEvents(_player);
-    for (Mob m in _mobs) {
-      _triggerEvents(m);
-    }
+    _mobs.forEach((m) => _triggerEvents(m));
+
+    _player.checkBuffs(now);
+    _mobs.forEach((m) => m.checkBuffs(now));
 
     // TODO: Check if player is alive.
     int xp_gain = 0;
