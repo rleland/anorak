@@ -23,6 +23,7 @@ abstract class Mob {
   Pos getMove(DateTime now, GameState game_state);
   void move(Pos pos);
 
+  // TODO: Create BuffContainer or similar to handle these ops.
   void addBuff(DateTime now, Buff buff) {
     if (!buff.stacks && _buff_idx.containsKey(buff.id)) {
       // If it doesn't stack update the buff if it exists. This is necessary to avoid
