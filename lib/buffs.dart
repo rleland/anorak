@@ -17,7 +17,7 @@ abstract class Buff {
     return now.millisecondsSinceEpoch - _start_time.millisecondsSinceEpoch > duration_ms;
   }
 
-  void Apply(Datetime now, Mob mob);
+  void Apply(DateTime now, Mob mob);
   void UnApply(DateTime now, Mob mob);
 }
 
