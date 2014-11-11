@@ -18,7 +18,7 @@ abstract class Buff {
   }
 
   void apply(DateTime now, Stats stats);
-  void unApply(DateTime now, Stats stats);
+  void unApply(Stats stats);
 }
 
 abstract class PeriodicBuff extends Buff {
@@ -35,7 +35,7 @@ abstract class PeriodicBuff extends Buff {
     }
   }
 
-  void unApply(DateTime now, Stats stats) {
+  void unApply(Stats stats) {
   }
 
   void _internalApply(DateTime now, Stats stats);
