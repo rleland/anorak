@@ -11,31 +11,34 @@ abstract class Buff {
   int get duration_ms;
   String get id;
   bool get stacks => false;
+  bool get periodic => false;
 
-  bool Active(DateTime now) {
+  bool active(DateTime now) {
     return now.millisecondsSinceEpoch - _start_time.millisecondsSinceEpoch > duration_ms;
   }
 
-  void Apply(DateTime now, Stats stats);
-  void UnApply(DateTime now, Stats stats);
+  void apply(DateTime now, Stats stats);
+  void unApply(DateTime now, Stats stats);
 }
 
 abstract class PeriodicBuff extends Buff {
   final RateLimiter _apply_rate;
 
+  bool get periodic => true;
+
   PeriodicBuff(DateTime start_time, int period_ms) :
     super(start_time), _apply_rate = new RateLimiter(period_ms);
 
-  void Apply(DateTime now, Stats stats) {
+  void apply(DateTime now, Stats stats) {
     if (_apply_rate.checkRate(now)) {
-      _InternalApply(now, stats);
+      _internalApply(now, stats);
     }
   }
 
-  void UnApply(DateTime now, Stats stats) {
+  void unApply(DateTime now, Stats stats) {
   }
 
-  void _InternalApply(DateTime now, Stats stats);
+  void _internalApply(DateTime now, Stats stats);
 }
 
 class BurnBuff extends PeriodicBuff {
@@ -47,7 +50,7 @@ class BurnBuff extends PeriodicBuff {
 
   BurnBuff(DateTime start_time, int this._damage) : super(start_time, BURN_PERIOD_MS);
 
-  void _InternalApply(DateTime now, Stats stats) {
+  void _internalApply(DateTime now, Stats stats) {
 
   }
 }
