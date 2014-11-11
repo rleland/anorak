@@ -1,6 +1,5 @@
 library player_test;
 
-import 'package:anorak/mob.dart';
 import 'package:anorak/player.dart';
 import 'package:unittest/unittest.dart';
 

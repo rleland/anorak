@@ -1,7 +1,5 @@
 library common;
 
-import "dart:collection";
-
 // Note: This looks quite similar to dart point. Consider using that if this doesn't evolve.
 class Pos {
   static const Pos MOVE_DOWN = const Pos(1, 0);
