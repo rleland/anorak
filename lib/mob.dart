@@ -18,17 +18,28 @@ abstract class Mob {
   bool get is_alive;
 
   final List<Buff> _buffs = new List<Buff>();
+  final Map<String, Buff> _buff_idx = new Map<String, Buff>();
 
   Pos getMove(DateTime now, GameState game_state);
   void move(Pos pos);
 
-  void addBuff(Buff buff) {
-    // TODO: Check if buff stacks and if not don't add duplicates.
+  void addBuff(DateTime now, Buff buff) {
+    if (!buff.stacks && _buff_idx.containsKey(buff.id)) {
+      // If it doesn't stack update the buff if it exists. This is necessary to avoid
+      // multiple applications of the buff overcoming the internal rate limit.
+      _buff_idx[buff.id].update(buff);
+      return;
+    }
     _buffs.add(buff);
+    _buff_idx[buff.id] = buff;
+    buff.apply(now, stats);
   }
 
   void checkBuffs(DateTime now) {
-    _buffs.forEach((e) { if (e.periodic) e.apply(now, stats); });
+    _buffs.forEach((e) {
+        if (!e.active(now)) { _buff_idx.remove(e.id); e.unApply(stats); }
+        else if (e.periodic) { e.apply(now, stats); }
+      });
     _buffs.removeWhere((e) => !e.active(now));
   }
 }
