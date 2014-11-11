@@ -23,6 +23,7 @@ abstract class Mob {
   void move(Pos pos);
 
   void addBuff(Buff buff) {
+    // TODO: Check if buff stacks and if not don't add duplicates.
     _buffs.add(buff);
   }
 
