@@ -3,22 +3,6 @@ library mob;
 import "package:anorak/common.dart";
 import "package:anorak/tile.dart";
 
-class Stats {
-  int hp;
-  int str;
-  int dex;
-  int vit;
-
-  int get max_hp => vit * 10;
-
-  Stats({int this.str, int this.dex, int this.vit}) {
-    FullHeal();
-  }
-
-  void FullHeal() {
-    hp = max_hp;
-  }
-}
 
 // TODO: This clearly needs sublcasses to distinguish types of mobs
 // (currently; player and creature).
