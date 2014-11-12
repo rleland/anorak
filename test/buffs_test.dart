@@ -15,7 +15,7 @@ class TestBuff extends Buff {
   void unApply(Stats stats) {}
 }
 
-int main() {
+main() {
   group("buff tests", () {
     test("buff active", () {
       DateTime start_time = new DateTime(2014, 11, 7, 12, 0, 0);
