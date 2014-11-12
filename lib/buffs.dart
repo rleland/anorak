@@ -13,7 +13,7 @@ abstract class Buff {
   bool get periodic => false;
 
   bool active(DateTime now) {
-    return now.millisecondsSinceEpoch - _start_time.millisecondsSinceEpoch > duration_ms;
+    return now.millisecondsSinceEpoch - _start_time.millisecondsSinceEpoch <= duration_ms;
   }
 
   void update(Buff buff) {
