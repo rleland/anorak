@@ -27,8 +27,6 @@ abstract class Buff {
 }
 
 class BuffContainer {
-  //final Map<String, Buff> _buff_idx = new Map<String, Buff>();
-  //final List<Buff> _buffs = new List<Buff>();
   final Map<String, List<Buff>> _buffs = new Map<String, List<Buff>>();
 
   void add(DateTime now, Buff buff, Stats stats) {
