@@ -26,6 +26,31 @@ abstract class Buff {
   void unApply(Stats stats);
 }
 
+class BuffContainer {
+  final Map<String, Buff> _buff_idx = new Map<String, Buff>();
+  final List<Buff> _buffs = new List<Buff>();
+
+  void add(DateTime now, Buff buff, Stats stats) {
+    if (!buff.stacks && _buff_idx.containsKey(buff.id)) {
+      // If it doesn't stack update the buff if it exists. This is necessary to avoid
+      // multiple applications of the buff overcoming the internal rate limit.
+      _buff_idx[buff.id].update(buff);
+      return;
+    }
+    _buffs.add(buff);
+    _buff_idx[buff.id] = buff;
+    buff.apply(now, stats);
+  }
+
+  void process(DateTime now, Stats stats) {
+    _buffs.forEach((e) {
+        if (!e.active(now)) { _buff_idx.remove(e.id); e.unApply(stats); }
+        else if (e.periodic) { e.apply(now, stats); }
+      });
+    _buffs.removeWhere((e) => !e.active(now));
+  }
+}
+
 abstract class PeriodicBuff extends Buff {
   final RateLimiter _apply_rate;
 
