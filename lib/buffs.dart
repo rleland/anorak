@@ -1,6 +1,7 @@
 library buffs;
 
 import "package:anorak/common.dart";
+import "package:anorak/messages.dart";
 
 abstract class Buff {
   DateTime _start_time;
@@ -22,14 +23,14 @@ abstract class Buff {
     _start_time = buff._start_time;
   }
 
-  void apply(DateTime now, Stats stats);
+  void apply(MessageLog log, DateTime now, Stats stats);
   void unApply(Stats stats);
 }
 
 class BuffContainer {
   final Map<String, List<Buff>> _buffs = new Map<String, List<Buff>>();
 
-  void add(DateTime now, Buff buff, Stats stats) {
+  void add(MessageLog log, DateTime now, Buff buff, Stats stats) {
     if (!buff.stacks && _buffs.containsKey(buff.id)) {
       // If it doesn't stack update the buff if it exists. This is necessary to avoid
       // multiple applications of the buff overcoming the internal rate limit.
@@ -40,16 +41,16 @@ class BuffContainer {
       _buffs[buff.id] = new List<Buff>();
     }
     _buffs[buff.id].add(buff);
-    buff.apply(now, stats);
+    buff.apply(log, now, stats);
   }
 
-  void process(DateTime now, Stats stats) {
+  void process(MessageLog log, DateTime now, Stats stats) {
     Set<String> empty_keys = new Set<String>();
     for (String key in _buffs.keys) {
       List<Buff> buffs = _buffs[key];
       buffs.forEach((e) {
         if (!e.active(now)) e.unApply(stats);
-        else if (e.periodic) e.apply(now, stats);
+        else if (e.periodic) e.apply(log, now, stats);
       });
       buffs.removeWhere((e) => !e.active(now));
       if (buffs.isEmpty) empty_keys.add(key);
@@ -66,28 +67,32 @@ abstract class PeriodicBuff extends Buff {
   PeriodicBuff(DateTime start_time, int period_ms) :
     super(start_time), _apply_rate = new RateLimiter(period_ms);
 
-  void apply(DateTime now, Stats stats) {
+  void apply(MessageLog log, DateTime now, Stats stats) {
     if (_apply_rate.checkRate(now)) {
-      _internalApply(now, stats);
+      _internalApply(log, now, stats);
     }
   }
 
   void unApply(Stats stats) {
   }
 
-  void _internalApply(DateTime now, Stats stats);
+  void _internalApply(MessageLog log, DateTime now, Stats stats);
 }
 
 class BurnBuff extends PeriodicBuff {
   static const int BURN_PERIOD_MS = 1000;
+  final String _name;
   int _damage;
 
   int get duration_ms => 2000;
   String get id => 'burn';
 
-  BurnBuff(DateTime start_time, int this._damage) : super(start_time, BURN_PERIOD_MS);
+  BurnBuff(String this._name, DateTime start_time, int this._damage)
+      : super(start_time, BURN_PERIOD_MS);
 
-  void _internalApply(DateTime now, Stats stats) {
+  void _internalApply(MessageLog log, DateTime now, Stats stats) {
+    log.write(Messages.BurnBuff(_name, _damage));
+    stats.hp -= _damage;
   }
 
   void update(Buff buff) {

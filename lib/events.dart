@@ -1,11 +1,12 @@
 library events;
 
+import 'package:anorak/buffs.dart';
 import 'package:anorak/common.dart';
 import 'package:anorak/messages.dart';
 import 'package:anorak/mob.dart';
 
 abstract class MobEvent extends Event {
-  void process(MessageLog log, Mob mob);
+  void process(DateTime now, MessageLog log, Mob mob);
 
   int get type => Event.TYPE_MOB;
 }
@@ -17,8 +18,14 @@ class DamageEvent extends MobEvent {
 
   DamageEvent(String this._name, int this._damage);
 
-  void process(MessageLog log, Mob mob) {
+  void process(DateTime now, MessageLog log, Mob mob) {
     mob.stats.hp -= _damage;
     log.write(Messages.Damage(_name, mob.name, _damage));
+  }
+}
+
+class BuffEvent extends MobEvent {
+  void process(DateTime now, MessageLog log, Mob mob) {
+    mob.addBuff(log, now, new BurnBuff(mob.name, now, 2));
   }
 }

@@ -60,11 +60,11 @@ class Game implements GameState {
     }
 
     // TODO: Events need a timeout
-    _triggerEvents(_player);
-    _mobs.forEach((m) => _triggerEvents(m));
+    _triggerEvents(now, _player);
+    _mobs.forEach((m) => _triggerEvents(now, m));
 
-    _player.checkBuffs(now);
-    _mobs.forEach((m) => m.checkBuffs(now));
+    _player.checkBuffs(_log, now);
+    _mobs.forEach((m) => m.checkBuffs(_log, now));
 
     // TODO: Check if player is alive.
     int xp_gain = 0;
@@ -92,7 +92,7 @@ class Game implements GameState {
     }
   }
 
-  void _triggerEvents(Mob mob) {
+  void _triggerEvents(DateTime now, Mob mob) {
     // TODO: Currently if the mob itself has an event associated with it a mob will continuously try
     // to trigger its own event.
     Event e = _level.getEvent(mob.pos);
@@ -100,7 +100,7 @@ class Game implements GameState {
       return;
     }
     if (e.type == Event.TYPE_MOB) {
-      (e as MobEvent).process(_log, mob);
+      (e as MobEvent).process(now, _log, mob);
     }
   }
 

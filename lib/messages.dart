@@ -16,4 +16,8 @@ class Messages {
   static String LevelUp(int level) {
     return "Player levels up to level $level!";
   }
+
+  static String BurnBuff(String name, int damage) {
+    return "$name was burned for $damage damage.";
+  }
 }

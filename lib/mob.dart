@@ -22,12 +22,12 @@ abstract class Mob {
   Pos getMove(DateTime now, GameState game_state);
   void move(Pos pos);
 
-  void addBuff(DateTime now, Buff buff) {
-    _buffs.add(now, buff, stats);
+  void addBuff(MessageLog log, DateTime now, Buff buff) {
+    _buffs.add(log, now, buff, stats);
   }
 
-  void checkBuffs(DateTime now) {
-    _buffs.process(now, stats);
+  void checkBuffs(MessageLog log, DateTime now) {
+    _buffs.process(log, now, stats);
   }
 }
 
