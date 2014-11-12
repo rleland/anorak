@@ -27,27 +27,36 @@ abstract class Buff {
 }
 
 class BuffContainer {
-  final Map<String, Buff> _buff_idx = new Map<String, Buff>();
-  final List<Buff> _buffs = new List<Buff>();
+  //final Map<String, Buff> _buff_idx = new Map<String, Buff>();
+  //final List<Buff> _buffs = new List<Buff>();
+  final Map<String, List<Buff>> _buffs = new Map<String, List<Buff>>();
 
   void add(DateTime now, Buff buff, Stats stats) {
-    if (!buff.stacks && _buff_idx.containsKey(buff.id)) {
+    if (!buff.stacks && _buffs.containsKey(buff.id)) {
       // If it doesn't stack update the buff if it exists. This is necessary to avoid
       // multiple applications of the buff overcoming the internal rate limit.
-      _buff_idx[buff.id].update(buff);
+      assert(_buffs[buff.id].length == 0);
+      _buffs[buff.id][0].update(buff);
       return;
+    } else if (!_buffs.containsKey(buff.id)) {
+      _buffs[buff.id] = new List<Buff>();
     }
-    _buffs.add(buff);
-    _buff_idx[buff.id] = buff;
+    _buffs[buff.id].add(buff);
     buff.apply(now, stats);
   }
 
   void process(DateTime now, Stats stats) {
-    _buffs.forEach((e) {
-        if (!e.active(now)) { _buff_idx.remove(e.id); e.unApply(stats); }
-        else if (e.periodic) { e.apply(now, stats); }
+    Set<String> empty_keys = new Set<String>();
+    for (String key in _buffs.keys) {
+      List<Buff> buffs = _buffs[key];
+      buffs.forEach((e) {
+        if (!e.active(now)) e.unApply(stats);
+        else if (e.periodic) e.apply(now, stats);
       });
-    _buffs.removeWhere((e) => !e.active(now));
+      buffs.removeWhere((e) => !e.active(now));
+      if (buffs.isEmpty) empty_keys.add(key);
+    }
+    empty_keys.forEach((e) => _buffs.remove(e));
   }
 }
 
