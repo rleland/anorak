@@ -2,7 +2,6 @@ library events;
 
 import 'package:anorak/buffs.dart';
 import 'package:anorak/common.dart';
-import 'package:anorak/messages.dart';
 import 'package:anorak/mob.dart';
 
 abstract class MobEvent extends Event {
