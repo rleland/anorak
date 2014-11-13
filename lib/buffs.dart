@@ -19,6 +19,7 @@ abstract class Buff {
     _name = name;
     _stats = stats;
   }
+  void detach();
 
   bool active(DateTime now) {
     return now.millisecondsSinceEpoch - _start_time.millisecondsSinceEpoch <= duration_ms;
@@ -31,7 +32,6 @@ abstract class Buff {
   }
 
   void apply(DateTime now);
-  void unApply();
 }
 
 class BuffContainer {
@@ -56,7 +56,7 @@ class BuffContainer {
     for (String key in _buffs.keys) {
       List<Buff> buffs = _buffs[key];
       buffs.forEach((e) {
-        if (!e.active(now)) e.unApply();
+        if (!e.active(now)) e.detach();
         else e.apply(now);
       });
       buffs.removeWhere((e) => !e.active(now));
@@ -93,7 +93,7 @@ abstract class PeriodicBuff extends Buff {
     }
   }
 
-  void unApply() {
+  void detach() {
   }
 
   void _internalApply(DateTime now);

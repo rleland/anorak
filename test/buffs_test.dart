@@ -11,7 +11,7 @@ class TestBuff extends Buff {
   int get duration_ms => 1000;
 
   void apply(DateTime now) {}
-  void unApply() {}
+  void detach() {}
 }
 
 main() {
