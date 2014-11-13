@@ -100,7 +100,7 @@ class Game implements GameState {
       return;
     }
     if (e.type == Event.TYPE_MOB) {
-      (e as MobEvent).process(now, _log, mob);
+      (e as MobEvent).process(now, mob);
     }
   }
 

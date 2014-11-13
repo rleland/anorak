@@ -1,12 +1,13 @@
 import 'dart:async';
 import 'dart:collection';
 import 'dart:html';
-import 'package:anorak/mob.dart';
+import 'package:anorak/buffs.dart';
 import 'package:anorak/common.dart';
 import 'package:anorak/events.dart';
 import 'package:anorak/game.dart';
 import 'package:anorak/input.dart';
 import 'package:anorak/level.dart';
+import 'package:anorak/mob.dart';
 import 'package:anorak/player.dart';
 import 'package:anorak/tile.dart';
 
@@ -140,6 +141,10 @@ class MessageLogImpl implements MessageLog {
 }
 
 void main() {
+  KeyboardListener kl = new KeyboardListener();
+  WindowListener wl = new WindowListener(window, kl);
+  MessageLogImpl log = new MessageLogImpl(querySelector('#messageLog'));
+
   Level level = new Level(20, 20);
   level.multiAddBaseTile(new Grass(), new Pos(0, 0), new Pos(20, 20));
   level.multiAddBaseTile(new Tree(), new Pos(0, 0), new Pos(1, 20));
@@ -147,11 +152,9 @@ void main() {
   level.multiAddBaseTile(new Tree(), new Pos(0, 19), new Pos(20, 20));
   level.multiAddBaseTile(new Tree(), new Pos(19, 0), new Pos(20, 20));
   level.multiAddBaseTile(new Path(), new Pos(0,  10), new Pos(20, 11));
-  level.addBaseTile(new Fire()..event = new BuffEvent(), new Pos(15, 15));
-  KeyboardListener kl = new KeyboardListener();
-  WindowListener wl = new WindowListener(window, kl);
-  MessageLogImpl message_log = new MessageLogImpl(querySelector('#messageLog'));
-  Game game = new Game(kl, level, message_log, new Player(1));
+  level.addBaseTile(new Fire()..event = new BuffEvent((DateTime now) => new BurnBuff(log, now, 2)),
+                    new Pos(15, 15));
+  Game game = new Game(kl, level, log, new Player(1));
   game.addMob(new Rat(new Pos(1, 1), new Stats(str: 1, dex: 1, vit: 1)));
   new GameLoop(game);
 }

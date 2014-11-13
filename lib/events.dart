@@ -5,14 +5,17 @@ import 'package:anorak/common.dart';
 import 'package:anorak/mob.dart';
 
 abstract class MobEvent extends Event {
-  void process(DateTime now, MessageLog log, Mob mob);
+  void process(DateTime now, Mob mob);
 
   int get type => Event.TYPE_MOB;
 }
 
-// TODO: Make more generic.
 class BuffEvent extends MobEvent {
-  void process(DateTime now, MessageLog log, Mob mob) {
-    mob.addBuff(new BurnBuff(log, now, 2));
+  Function _generator;
+
+  BuffEvent(Buff this._generator(DateTime now));
+
+  void process(DateTime now, Mob mob) {
+    mob.addBuff(_generator(now));
   }
 }
