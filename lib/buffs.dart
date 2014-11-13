@@ -11,6 +11,7 @@ abstract class Buff {
   int get duration_ms;
   String get id;
   bool get stacks => false;
+  bool get periodic => false;
 
   String _name;
   Stats _stats;
@@ -30,8 +31,6 @@ abstract class Buff {
     // strength.
     _start_time = buff._start_time;
   }
-
-  void apply(DateTime now);
 }
 
 class BuffContainer {
@@ -57,7 +56,7 @@ class BuffContainer {
       List<Buff> buffs = _buffs[key];
       buffs.forEach((e) {
         if (!e.active(now)) e.detach();
-        else e.apply(now);
+        else if (e.periodic) (e as PeriodicBuff).apply(now);
       });
       buffs.removeWhere((e) => !e.active(now));
       if (buffs.isEmpty) empty_keys.add(key);
@@ -66,23 +65,10 @@ class BuffContainer {
   }
 }
 
-abstract class OnceBuff extends Buff {
-  bool _applied = false;
-
-  OnceBuff(DateTime start_time) : super(start_time);
-
-  void apply(DateTime now) {
-    if (!_applied) {
-      _internalApply(now);
-      _applied = true;
-    }
-  }
-
-  void _internalApply(DateTime now);
-}
-
 abstract class PeriodicBuff extends Buff {
   final RateLimiter _apply_rate;
+
+  bool get periodic => true;
 
   PeriodicBuff(DateTime start_time, int period_ms) :
     super(start_time), _apply_rate = new RateLimiter(period_ms);
