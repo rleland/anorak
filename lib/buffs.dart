@@ -108,6 +108,7 @@ class BurnBuff extends PeriodicBuff {
   }
 
   void update(Buff buff) {
+    assert(buff.id == id);
     _damage = (buff as BurnBuff)._damage;
     super.update(buff);
   }
