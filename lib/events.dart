@@ -2,7 +2,6 @@ library events;
 
 import 'package:anorak/buffs.dart';
 import 'package:anorak/common.dart';
-import 'package:anorak/messages.dart';
 import 'package:anorak/mob.dart';
 
 abstract class MobEvent extends Event {
@@ -14,6 +13,6 @@ abstract class MobEvent extends Event {
 // TODO: Make more generic.
 class BuffEvent extends MobEvent {
   void process(DateTime now, MessageLog log, Mob mob) {
-    mob.addBuff(new BurnBuff(log, mob.name, now, 2));
+    mob.addBuff(new BurnBuff(log, now, 2));
   }
 }

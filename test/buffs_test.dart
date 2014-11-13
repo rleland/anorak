@@ -1,7 +1,6 @@
 library buffs_test;
 
 import 'package:anorak/buffs.dart';
-import 'package:anorak/common.dart';
 import 'package:unittest/unittest.dart';
 
 // TODO: Mock buff for testing.
@@ -11,8 +10,8 @@ class TestBuff extends Buff {
   String get id => 'test';
   int get duration_ms => 1000;
 
-  void apply(DateTime now, Stats stats) {}
-  void unApply(Stats stats) {}
+  void apply(DateTime now) {}
+  void unApply() {}
 }
 
 main() {

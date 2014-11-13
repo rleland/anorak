@@ -12,6 +12,14 @@ abstract class Buff {
   String get id;
   bool get stacks => false;
 
+  String _name;
+  Stats _stats;
+
+  void attach(Stats stats, String name) {
+    _name = name;
+    _stats = stats;
+  }
+
   bool active(DateTime now) {
     return now.millisecondsSinceEpoch - _start_time.millisecondsSinceEpoch <= duration_ms;
   }
@@ -22,14 +30,14 @@ abstract class Buff {
     _start_time = buff._start_time;
   }
 
-  void apply(DateTime now, Stats stats);
-  void unApply(Stats stats);
+  void apply(DateTime now);
+  void unApply();
 }
 
 class BuffContainer {
   final Map<String, List<Buff>> _buffs = new Map<String, List<Buff>>();
 
-  void add(Buff buff, Stats stats) {
+  void add(Buff buff, Stats stats, String name) {
     if (!buff.stacks && _buffs.containsKey(buff.id)) {
       // If it doesn't stack update the buff if it exists. This is necessary to avoid
       // multiple applications of the buff overcoming the internal rate limit.
@@ -40,15 +48,16 @@ class BuffContainer {
       _buffs[buff.id] = new List<Buff>();
     }
     _buffs[buff.id].add(buff);
+    buff.attach(stats,  name);
   }
 
-  void process(MessageLog log, DateTime now, Stats stats) {
+  void process(MessageLog log, DateTime now) {
     Set<String> empty_keys = new Set<String>();
     for (String key in _buffs.keys) {
       List<Buff> buffs = _buffs[key];
       buffs.forEach((e) {
-        if (!e.active(now)) e.unApply(stats);
-        else e.apply(now, stats);
+        if (!e.active(now)) e.unApply();
+        else e.apply(now);
       });
       buffs.removeWhere((e) => !e.active(now));
       if (buffs.isEmpty) empty_keys.add(key);
@@ -62,14 +71,14 @@ abstract class OnceBuff extends Buff {
 
   OnceBuff(DateTime start_time) : super(start_time);
 
-  void apply(DateTime now, Stats stats) {
+  void apply(DateTime now) {
     if (!_applied) {
-      _internalApply(now, stats);
+      _internalApply(now);
       _applied = true;
     }
   }
 
-  void _internalApply(DateTime now, Stats stats);
+  void _internalApply(DateTime now);
 }
 
 abstract class PeriodicBuff extends Buff {
@@ -78,35 +87,38 @@ abstract class PeriodicBuff extends Buff {
   PeriodicBuff(DateTime start_time, int period_ms) :
     super(start_time), _apply_rate = new RateLimiter(period_ms);
 
-  void apply(DateTime now, Stats stats) {
+  void apply(DateTime now) {
     if (_apply_rate.checkRate(now)) {
-      _internalApply(now, stats);
+      _internalApply(now);
     }
   }
 
-  void unApply(Stats stats) {
+  void unApply() {
   }
 
-  void _internalApply(DateTime now, Stats stats);
+  void _internalApply(DateTime now);
 }
 
 class BurnBuff extends PeriodicBuff {
   static const int BURN_PERIOD_MS = 1000;
+  String get id => 'burn';
   final MessageLog _log;
-  final String _name;
   int _damage;
 
   int get duration_ms => 2000;
-  String get id => 'burn';
 
-  BurnBuff(MessageLog this._log, String this._name, DateTime start_time, int this._damage)
+  BurnBuff(MessageLog this._log, DateTime start_time, int this._damage)
       : super(start_time, BURN_PERIOD_MS) {
+  }
+
+  void attach(Stats stats, String name) {
+    super.attach(stats, name);
     _log.write(Messages.BurnAppliedPassive(_name));
   }
 
-  void _internalApply(DateTime now, Stats stats) {
+  void _internalApply(DateTime now) {
     _log.write(Messages.BurnBuff(_name, _damage));
-    stats.hp -= _damage;
+    _stats.hp -= _damage;
   }
 
   void update(Buff buff) {
