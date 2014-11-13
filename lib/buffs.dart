@@ -22,7 +22,7 @@ abstract class Buff {
     _start_time = buff._start_time;
   }
 
-  void apply(MessageLog log, DateTime now, Stats stats);
+  void apply(DateTime now, Stats stats);
   void unApply(Stats stats);
 }
 
@@ -48,7 +48,7 @@ class BuffContainer {
       List<Buff> buffs = _buffs[key];
       buffs.forEach((e) {
         if (!e.active(now)) e.unApply(stats);
-        else e.apply(log, now, stats);
+        else e.apply(now, stats);
       });
       buffs.removeWhere((e) => !e.active(now));
       if (buffs.isEmpty) empty_keys.add(key);
@@ -62,14 +62,14 @@ abstract class OnceBuff extends Buff {
 
   OnceBuff(DateTime start_time) : super(start_time);
 
-  void apply(MessageLog log, DateTime now, Stats stats) {
+  void apply(DateTime now, Stats stats) {
     if (!_applied) {
-      _internalApply(log, now, stats);
+      _internalApply(now, stats);
       _applied = true;
     }
   }
 
-  void _internalApply(MessageLog log, DateTime now, Stats stats);
+  void _internalApply(DateTime now, Stats stats);
 }
 
 abstract class PeriodicBuff extends Buff {
@@ -78,31 +78,34 @@ abstract class PeriodicBuff extends Buff {
   PeriodicBuff(DateTime start_time, int period_ms) :
     super(start_time), _apply_rate = new RateLimiter(period_ms);
 
-  void apply(MessageLog log, DateTime now, Stats stats) {
+  void apply(DateTime now, Stats stats) {
     if (_apply_rate.checkRate(now)) {
-      _internalApply(log, now, stats);
+      _internalApply(now, stats);
     }
   }
 
   void unApply(Stats stats) {
   }
 
-  void _internalApply(MessageLog log, DateTime now, Stats stats);
+  void _internalApply(DateTime now, Stats stats);
 }
 
 class BurnBuff extends PeriodicBuff {
   static const int BURN_PERIOD_MS = 1000;
+  final MessageLog _log;
   final String _name;
   int _damage;
 
   int get duration_ms => 2000;
   String get id => 'burn';
 
-  BurnBuff(String this._name, DateTime start_time, int this._damage)
-      : super(start_time, BURN_PERIOD_MS);
+  BurnBuff(MessageLog this._log, String this._name, DateTime start_time, int this._damage)
+      : super(start_time, BURN_PERIOD_MS) {
+    _log.write(Messages.BurnAppliedPassive(_name));
+  }
 
-  void _internalApply(MessageLog log, DateTime now, Stats stats) {
-    log.write(Messages.BurnBuff(_name, _damage));
+  void _internalApply(DateTime now, Stats stats) {
+    _log.write(Messages.BurnBuff(_name, _damage));
     stats.hp -= _damage;
   }
 

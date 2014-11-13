@@ -17,6 +17,10 @@ class Messages {
     return "Player levels up to level $level!";
   }
 
+  static String BurnAppliedPassive(String name) {
+    return "$name caught fire.";
+  }
+
   static String BurnBuff(String name, int damage) {
     return "$name was burned for $damage damage.";
   }

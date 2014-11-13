@@ -11,7 +11,7 @@ class TestBuff extends Buff {
   String get id => 'test';
   int get duration_ms => 1000;
 
-  void apply(MessageLog log, DateTime now, Stats stats) {}
+  void apply(DateTime now, Stats stats) {}
   void unApply(Stats stats) {}
 }
 
