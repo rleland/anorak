@@ -1,6 +1,6 @@
 library common;
 
-// Note: This looks quite similar to dart point. Consider using that if this doesn't evolve.
+// TODO: This looks quite similar to dart point. Consider using that if this doesn't evolve.
 class Pos {
   static const Pos MOVE_DOWN = const Pos(1, 0);
   static const Pos MOVE_UP = const Pos(-1, 0);
