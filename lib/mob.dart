@@ -23,7 +23,7 @@ abstract class Mob {
   void move(Pos pos);
 
   void addBuff(MessageLog log, DateTime now, Buff buff) {
-    _buffs.add(log, now, buff, stats);
+    _buffs.add(buff, stats);
   }
 
   void checkBuffs(MessageLog log, DateTime now) {

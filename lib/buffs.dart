@@ -30,7 +30,7 @@ abstract class Buff {
 class BuffContainer {
   final Map<String, List<Buff>> _buffs = new Map<String, List<Buff>>();
 
-  void add(MessageLog log, DateTime now, Buff buff, Stats stats) {
+  void add(Buff buff, Stats stats) {
     if (!buff.stacks && _buffs.containsKey(buff.id)) {
       // If it doesn't stack update the buff if it exists. This is necessary to avoid
       // multiple applications of the buff overcoming the internal rate limit.
@@ -41,7 +41,6 @@ class BuffContainer {
       _buffs[buff.id] = new List<Buff>();
     }
     _buffs[buff.id].add(buff);
-    buff.apply(log, now, stats);
   }
 
   void process(MessageLog log, DateTime now, Stats stats) {
@@ -50,7 +49,7 @@ class BuffContainer {
       List<Buff> buffs = _buffs[key];
       buffs.forEach((e) {
         if (!e.active(now)) e.unApply(stats);
-        else if (e.periodic) e.apply(log, now, stats);
+        else e.apply(log, now, stats);
       });
       buffs.removeWhere((e) => !e.active(now));
       if (buffs.isEmpty) empty_keys.add(key);
