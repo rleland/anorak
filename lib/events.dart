@@ -13,6 +13,6 @@ abstract class MobEvent extends Event {
 // TODO: Make more generic.
 class BuffEvent extends MobEvent {
   void process(DateTime now, MessageLog log, Mob mob) {
-    mob.addBuff(log, now, new BurnBuff(mob.name, now, 2));
+    mob.addBuff(new BurnBuff(mob.name, now, 2));
   }
 }
