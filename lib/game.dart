@@ -59,7 +59,6 @@ class Game implements GameState {
       }
     }
 
-    // TODO: Events need a timeout
     _triggerEvents(now, _player);
     _mobs.forEach((m) => _triggerEvents(now, m));
 
