@@ -11,7 +11,6 @@ abstract class Buff {
   int get duration_ms;
   String get id;
   bool get stacks => false;
-  bool get periodic => false;
 
   bool active(DateTime now) {
     return now.millisecondsSinceEpoch - _start_time.millisecondsSinceEpoch <= duration_ms;
@@ -58,10 +57,23 @@ class BuffContainer {
   }
 }
 
+abstract class OnceBuff extends Buff {
+  bool _applied = false;
+
+  OnceBuff(DateTime start_time) : super(start_time);
+
+  void apply(MessageLog log, DateTime now, Stats stats) {
+    if (!_applied) {
+      _internalApply(log, now, stats);
+      _applied = true;
+    }
+  }
+
+  void _internalApply(MessageLog log, DateTime now, Stats stats);
+}
+
 abstract class PeriodicBuff extends Buff {
   final RateLimiter _apply_rate;
-
-  bool get periodic => true;
 
   PeriodicBuff(DateTime start_time, int period_ms) :
     super(start_time), _apply_rate = new RateLimiter(period_ms);
