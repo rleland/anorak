@@ -5,8 +5,6 @@ import "package:anorak/buffs.dart";
 import "package:anorak/tile.dart";
 
 
-// TODO: This clearly needs sublcasses to distinguish types of mobs
-// (currently; player and creature).
 abstract class Mob {
   Pos _pos;
 
