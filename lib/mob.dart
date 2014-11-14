@@ -66,12 +66,12 @@ int capMagnitude(int value, int magnitude) {
 
 // TODO: Create path finding library.
 // Naive pathfinding.
-Pos moveCloser(Pos from, Pos to, int speed) {
+Pos moveCloser(Pos from, Pos to) {
   Pos delta = to - from;
   if (delta.row.abs() >= delta.col.abs()) {
-    return new Pos(capMagnitude(delta.row, speed), 0);
+    return new Pos(capMagnitude(delta.row, 1), 0);
   } else {
-    return new Pos(0, capMagnitude(delta.col, speed));
+    return new Pos(0, capMagnitude(delta.col, 1));
   }
 }
 
@@ -79,7 +79,6 @@ class Rat extends Npc {
   static const int MOVE_PERIOD_MS = 200;
   static const int ROW_AGGRO = 5;
   static const int COL_AGGRO = 5;
-  static const int SPEED = 1;
 
   final Tile _tile = new RatTile();
   Stats _stats;
@@ -93,7 +92,7 @@ class Rat extends Npc {
   bool get attackable => true;
 
   Pos calculateMove(GameState game_state) {
-    return _pos + moveCloser(_pos, game_state.player_pos, SPEED);
+    return _pos + moveCloser(_pos, game_state.player_pos);
   }
 
   bool hasAggro(GameState game_state) {
