@@ -1,6 +1,6 @@
-library character_test;
+library path_finding_test;
 
-import 'package:anorak/mob.dart';
+import 'package:anorak/path_finding.dart';
 import 'package:unittest/unittest.dart';
 
 main() {

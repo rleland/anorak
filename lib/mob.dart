@@ -2,6 +2,7 @@ library mob;
 
 import "package:anorak/common.dart";
 import "package:anorak/buffs.dart";
+import "package:anorak/path_finding.dart";
 import "package:anorak/tile.dart";
 
 
@@ -54,23 +55,6 @@ abstract class Npc extends Mob {
   }
 
   bool hasAggro(GameState game_state);
-}
-
-int capMagnitude(int value, int magnitude) {
-  if (value == 0)
-    return 0;
-  return (magnitude * value / value.abs()).truncate();
-}
-
-// TODO: Create path finding library.
-// Naive pathfinding.
-Pos moveCloser(Pos from, Pos to) {
-  Pos delta = to - from;
-  if (delta.row.abs() >= delta.col.abs()) {
-    return new Pos(capMagnitude(delta.row, 1), 0);
-  } else {
-    return new Pos(0, capMagnitude(delta.col, 1));
-  }
 }
 
 class Rat extends Npc {
