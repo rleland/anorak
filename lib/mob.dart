@@ -38,10 +38,24 @@ abstract class Mob {
 abstract class Npc extends Mob {
   bool get attackable => true;
   int get xp_reward;
+  final RateLimiter move_rate_;
 
-  Npc(Pos pos) : super(pos);
+  Npc(Pos pos, int move_period) : super(pos), move_rate_ = new RateLimiter(move_period);
 
-  Pos getMove(DateTime now, GameState game_state);
+  Pos getMove(DateTime now, GameState game_state) {
+    if (!shouldMove(now, game_state)) {
+      return null;
+    }
+    return calculateMove(game_state);
+  }
+
+  Pos calculateMove(GameState game_state);
+
+  bool shouldMove(DateTime now, GameState game_state) {
+    return hasAggro(game_state) && move_rate_.checkRate(now);
+  }
+
+  bool hasAggro(GameState game_state);
 }
 
 int capMagnitude(int value, int magnitude) {
@@ -68,10 +82,9 @@ class Rat extends Npc {
   static const int SPEED = 1;
 
   final Tile _tile = new RatTile();
-  final RateLimiter move_rate_ = new RateLimiter(MOVE_PERIOD_MS);
   Stats _stats;
 
-  Rat(Pos pos, Stats this._stats) : super(pos);
+  Rat(Pos pos, Stats this._stats) : super(pos, MOVE_PERIOD_MS);
 
   String get name => 'rat';
   Tile get tile => _tile;
@@ -79,19 +92,13 @@ class Rat extends Npc {
   int get xp_reward => 5;
   bool get attackable => true;
 
-  Pos getMove(DateTime now, GameState game_state) {
-    if (!shouldMove(now, game_state)) {
-      return null;
-    }
+  Pos calculateMove(GameState game_state) {
     return _pos + moveCloser(_pos, game_state.player_pos, SPEED);
   }
 
-  bool shouldMove(DateTime now, GameState game_state) {
+  bool hasAggro(GameState game_state) {
     Pos player_pos = game_state.player_pos;
-    if ((player_pos.row - _pos.row).abs() > ROW_AGGRO ||
-        (player_pos.col - _pos.col).abs() > COL_AGGRO) {
-      return false;
-    }
-    return move_rate_.checkRate(now);
+    return (player_pos.row - _pos.row).abs() <= ROW_AGGRO ||
+           (player_pos.col - _pos.col).abs() <= COL_AGGRO;
   }
 }
