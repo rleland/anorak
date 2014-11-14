@@ -8,7 +8,6 @@ int capMagnitude(int value, int magnitude) {
   return (magnitude * value / value.abs()).truncate();
 }
 
-// TODO: Create path finding library.
 // Naive pathfinding.
 Pos moveCloser(Pos from, Pos to) {
   Pos delta = to - from;
