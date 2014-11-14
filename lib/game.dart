@@ -22,7 +22,7 @@ class Game implements GameState {
   final InputHandler _input_handler;
   final MessageLog _log;
   bool _need_redraw = true;  // Force first draw.
-  final List<Mob> _mobs = new List<Mob>();
+  final List<Npc> _npcs = new List<Mob>();
 
   Level get level => _level;
 
@@ -38,7 +38,7 @@ class Game implements GameState {
   }
 
   void addMob(Mob c) {
-    _mobs.add(c);
+    _npcs.add(c);
     _level.addMob(c, c.pos);
   }
 
@@ -49,34 +49,34 @@ class Game implements GameState {
         _updatePlayer(now, key);
       }
     }
-    for (Mob m in _mobs) {
-      Pos new_pos = m.getMove(now, this);
+    for (Npc npc in _npcs) {
+      Pos new_pos = npc.getMove(now, this);
       if (new_pos != null &&
           _level.isPassable(new_pos)) {
         _need_redraw = true;
-        _level.moveMobTile(m.pos, new_pos);
-        m.move(new_pos);
+        _level.moveMobTile(npc.pos, new_pos);
+        npc.move(new_pos);
       }
     }
 
     _triggerEvents(now, _player);
-    _mobs.forEach((m) => _triggerEvents(now, m));
+    _npcs.forEach((m) => _triggerEvents(now, m));
 
     _player.checkBuffs(_log, now);
-    _mobs.forEach((m) => m.checkBuffs(_log, now));
+    _npcs.forEach((m) => m.checkBuffs(_log, now));
 
     // TODO: Check if player is alive.
     int xp_gain = 0;
-    for (Mob m in _mobs) {
-      if (m.is_alive) {
+    for (Npc npc in _npcs) {
+      if (npc.is_alive) {
         continue;
       }
-      _log.write(Messages.Dead(m.name));
-      _level.removeMobTile(m.pos);
-      xp_gain += m.xp_reward;
+      _log.write(Messages.Dead(npc.name));
+      _level.removeMobTile(npc.pos);
+      xp_gain += npc.xp_reward;
       _need_redraw = true;
     }
-    _mobs.removeWhere((Mob m) => !m.is_alive);
+    _npcs.removeWhere((Mob m) => !m.is_alive);
 
     if (_player.gainXp(xp_gain)) {
       _log.write(Messages.LevelUp(_player.level));

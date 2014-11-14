@@ -43,21 +43,18 @@ class Player extends Mob {
   final Tile _tile = new PlayerTile();
   final RateLimiter _move_rate = new RateLimiter(MOVE_PERIOD_MS);
   final RateLimiter _attack_rate = new RateLimiter(ATTACK_PERIOD_MS);
-  Pos _pos = new Pos(10, 10);
   Stats _stats;
   LevelTracker _level_tracker = new LevelTracker(1, 0);
 
   String get name => 'Player';
   Tile get tile => _tile;
-  Pos get pos => _pos;
   Stats get stats => _stats;
-  bool get attackable => true;
-  int get xp_reward => 0;
-  bool get is_alive => stats.hp > 0;
   int get level => _level_tracker.level;
+  bool get attackable => false;
 
-  Player(int level) : _level_tracker = new LevelTracker(level, 0),
-                      _stats = PlayerStatsForLevel(level);
+  Player(Pos pos, int level) : super(pos),
+                               _level_tracker = new LevelTracker(level, 0),
+                               _stats = PlayerStatsForLevel(level);
 
   bool canMove(DateTime now) {
     return _move_rate.checkRate(now);
@@ -65,16 +62,6 @@ class Player extends Mob {
 
   bool canAttack(DateTime now) {
     return _attack_rate.checkRate(now);
-  }
-
-  // TODO: Implemented only to fit mob interface. This is not ideal; maybe npcs should have
-  // their own mob subclass.
-  Pos getMove(DateTime now, GameState gameState) {
-    return null;
-  }
-
-  void move(Pos new_pos) {
-    _pos = new_pos;
   }
 
   bool gainXp(int xp) {

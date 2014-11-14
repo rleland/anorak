@@ -154,7 +154,7 @@ void main() {
   level.multiAddBaseTile(new Path(), new Pos(0,  10), new Pos(20, 11));
   level.addBaseTile(new Fire()..event = new BuffEvent((DateTime now) => new BurnBuff(log, now, 2)),
                     new Pos(15, 15));
-  Game game = new Game(kl, level, log, new Player(1));
+  Game game = new Game(kl, level, log, new Player(new Pos(10, 10), 1));
   game.addMob(new Rat(new Pos(1, 1), new Stats(str: 1, dex: 1, vit: 1)));
   new GameLoop(game);
 }
