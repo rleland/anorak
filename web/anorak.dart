@@ -22,6 +22,10 @@ String twoDigits(int n) {
   return "0${n}";
 }
 
+void _renderGameOver() {
+  querySelector('#game_over').style.display = '';
+}
+
 class FpsCounter {
   static final int WINDOW = 5;
   final Element _element;
@@ -65,17 +69,24 @@ class WindowListener {
 class GameLoop {
   final Game _game;
   final FpsCounter _fps_counter;
+  Timer _timer;
 
-  GameLoop(Game this._game) : _fps_counter = new FpsCounter(querySelector('#fps')) {
-    new Timer.periodic(new Duration(milliseconds: 50), this._loop);
+  GameLoop(Game this._game): _fps_counter = new FpsCounter(querySelector('#fps')) {
+    _timer = new Timer.periodic(new Duration(milliseconds: 50), this._loop);
   }
 
   void _loop(Timer timer) {
     DateTime now = new DateTime.now();
     _fps_counter.update(now);
-    if (_game.loop(now)) {
-      // Need redraw.
+    try {
+      if (_game.loop(now)) {
+        // Need redraw.
+        _redraw(_game.level);
+      }
+    } catch (GameOver) {
+      _timer.cancel();
       _redraw(_game.level);
+      _renderGameOver();
     }
   }
 

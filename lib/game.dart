@@ -8,6 +8,9 @@ import 'package:anorak/input.dart';
 import 'package:anorak/level.dart';
 import 'package:anorak/messages.dart';
 import 'package:anorak/player.dart';
+import 'package:anorak/tile.dart';
+
+class GameOver {}
 
 class Game implements GameState {
   static final Map<Key, Pos> MOVES =
@@ -65,6 +68,13 @@ class Game implements GameState {
     _player.checkBuffs(_log, now);
     _npcs.forEach((m) => m.checkBuffs(_log, now));
 
+    if (!_player.is_alive) {
+      // TODO: Make this cleaner or more sophisticated once a bit more of the state changing (e.g.
+      // level changing) logic is in place.
+      _level.removeMobTile(_player.pos);
+      _level.addBaseTile(new Tombstone(), _player.pos);
+      throw new GameOver();
+    }
     // TODO: Check if player is alive.
     int xp_gain = 0;
     for (Npc npc in _npcs) {

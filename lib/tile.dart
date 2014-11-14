@@ -53,3 +53,10 @@ class RatTile extends Tile {
   bool get passable => false;
   bool get bold => true;
 }
+
+class Tombstone extends Tile {
+  String get explanation => 'tombstone';
+  String get symbol => 'X';
+  String get color => 'black';
+  bool get bold => true;
+}
