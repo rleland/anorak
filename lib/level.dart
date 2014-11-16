@@ -115,13 +115,7 @@ class Level {  // Better name, e.g. zone, scene, map, area, etc
     if (pos.row >= _rows || pos.row < 0 || pos.col >= _cols || pos.col < 0) {
       return false;
     }
-    for (int i = 0; i < _layers.length; ++i) {
-      Tile tile = _layers[i].tileAt(pos);
-      if (tile != null && !tile.passable) {
-        return false;
-      }
-    }
-    return true;
+    return _layers.every((l) => l.tileAt(pos) == null || l.tileAt(pos).passable);
   }
 
   bool hasMob(Pos pos) {
@@ -135,13 +129,8 @@ class Level {  // Better name, e.g. zone, scene, map, area, etc
     return _mobs[pos];
   }
 
-  List<Event> getEvents(Pos pos) {
-    List<Event> events = [];
-    for (int i = _layers.length-1; i >= 0; --i) {
-      if (_layers[i].hasTile(pos) && _layers[i].tileAt(pos).has_event) {
-        events.add(_layers[i].tileAt(pos).event);
-      }
-    }
-    return events;
+  Iterable<Event> getEvents(Pos pos) {
+    return _layers.takeWhile((l) => l.hasTile(pos) && l.tileAt(pos).has_event)
+                  .map((l) => l.tileAt(pos).event);
   }
 }
