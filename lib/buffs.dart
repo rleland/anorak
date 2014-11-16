@@ -78,8 +78,7 @@ abstract class PeriodicBuff extends Buff {
     }
   }
 
-  void detach() {
-  }
+  void detach() {}
 
   void _internalApply(DateTime now);
 }
