@@ -100,8 +100,8 @@ class Level {  // Better name, e.g. zone, scene, map, area, etc
   void moveMobTile(Pos from, Pos to) {
     TileMap layer = _layers[MOB_LAYER];
     Tile tile = layer.tileAt(from);
-    layer.removeTile(from);
-    layer.addTile(tile, to);
+    layer..removeTile(from)
+         ..addTile(tile, to);
     _mobs[to] = _mobs[from];
     _mobs[from] = null;
   }
