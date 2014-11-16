@@ -84,7 +84,7 @@ class GameLoop {
         // Need redraw.
         _redraw(_game.level);
       }
-    } catch (GameOver) {
+    } on GameOver {
       _timer.cancel();
       _redraw(_game.level);
       _renderGameOver();
