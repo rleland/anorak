@@ -38,6 +38,16 @@ class Fire extends Tile {
   String get color => 'orangered';
 }
 
+class Tombstone extends Tile {
+  String get explanation => 'tombstone';
+  String get symbol => 'X';
+  String get color => 'black';
+  bool get bold => true;
+}
+
+
+// Mob tiles.
+
 class PlayerTile extends Tile {
   String get explanation => 'you';
   String get symbol => '@';
@@ -51,12 +61,5 @@ class RatTile extends Tile {
   String get symbol => 'r';
   String get color => 'black';
   bool get passable => false;
-  bool get bold => true;
-}
-
-class Tombstone extends Tile {
-  String get explanation => 'tombstone';
-  String get symbol => 'X';
-  String get color => 'black';
   bool get bold => true;
 }
