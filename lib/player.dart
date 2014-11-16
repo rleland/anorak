@@ -6,14 +6,14 @@ import 'package:anorak/mob.dart';
 import 'package:anorak/common.dart';
 import 'package:anorak/tile.dart';
 
-Stats PlayerStatsForLevel(int level) {
+Stats playerStatsForLevel(int level) {
   return new Stats(str: 1 + level,
                    dex: level,
                    vit: 1 + level);
 }
 
 class LevelTracker {
-  static int NextLevelXp(int level) {
+  static int nextLevelXp(int level) {
     return (10 * pow(SQRT2, level-1)).round();
   }
 
@@ -27,8 +27,8 @@ class LevelTracker {
   bool addXp(int xp) {
     bool leveled_up = false;
     _xp += xp;
-    while (_xp >= NextLevelXp(_level)) {
-      _xp -= NextLevelXp(_level);
+    while (_xp >= nextLevelXp(_level)) {
+      _xp -= nextLevelXp(_level);
       ++_level;
       leveled_up = true;
     }
@@ -37,14 +37,14 @@ class LevelTracker {
 }
 
 class Player extends Mob {
-  static const int MOVE_PERIOD_MS = 200;
-  static const int ATTACK_PERIOD_MS = 1000;
+  static const MOVE_PERIOD_MS = 200;
+  static const ATTACK_PERIOD_MS = 1000;
 
-  final Tile _tile = new PlayerTile();
-  final RateLimiter _move_rate = new RateLimiter(MOVE_PERIOD_MS);
-  final RateLimiter _attack_rate = new RateLimiter(ATTACK_PERIOD_MS);
+  final _tile = new PlayerTile();
+  final _move_rate = new RateLimiter(MOVE_PERIOD_MS);
+  final _attack_rate = new RateLimiter(ATTACK_PERIOD_MS);
   Stats _stats;
-  LevelTracker _level_tracker = new LevelTracker(1, 0);
+  final _level_tracker;
 
   String get name => 'Player';
   Tile get tile => _tile;
@@ -54,7 +54,7 @@ class Player extends Mob {
 
   Player(Pos pos, int level) : super(pos),
                                _level_tracker = new LevelTracker(level, 0),
-                               _stats = PlayerStatsForLevel(level);
+                               _stats = playerStatsForLevel(level);
 
   bool canMove(DateTime now) {
     return _move_rate.checkRate(now);
@@ -66,7 +66,7 @@ class Player extends Mob {
 
   bool gainXp(int xp) {
     if (_level_tracker.addXp(xp)) {
-      _stats = PlayerStatsForLevel(_level_tracker.level);
+      _stats = playerStatsForLevel(_level_tracker.level);
       _stats.FullHeal();
       return true;
     }
