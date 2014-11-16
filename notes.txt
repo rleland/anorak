@@ -1,10 +1,14 @@
 Random notes
 
 Basic eatures which should be implemented as they require expanding the architecture:
- - Monster attacks, damaging player, player death
- - Tiles with events
+ - Monster attacks
  - Ranged attacks
  - Map transition
  - Saving state
  - Picking up items
  - Equipping weapons
+
+
+ Cleanup todos:
+  - change forEach to map etc where viable
+  - change return values of e.g. List to Iterable if reasonable
