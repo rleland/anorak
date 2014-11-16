@@ -11,7 +11,7 @@ abstract class MobEvent extends Event {
 }
 
 class BuffEvent extends MobEvent {
-  Function _generator;
+  final Function _generator;
 
   BuffEvent(Buff this._generator(DateTime now));
 
