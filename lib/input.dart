@@ -24,9 +24,7 @@ class Key {
   }
 
   static void _initKeys() {
-    for (Key k in [UP, DOWN, LEFT, RIGHT]) {
-      _keys[k._code] = k;
-    }
+    [UP, DOWN, LEFT, RIGHT].forEach((k) => _keys[k._code] = k);
   }
 
   final int _code;
