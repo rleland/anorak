@@ -5,10 +5,12 @@ import 'dart:collection';
 import 'package:anorak/common.dart';
 
 class Key {
-  static const Key DOWN = const Key(40);
-  static const Key UP = const Key(38);
-  static const Key LEFT = const Key(37);
-  static const Key RIGHT = const Key(39);
+  static const UP = const Key(38);
+  static const DOWN = const Key(40);
+  static const LEFT = const Key(37);
+  static const RIGHT = const Key(39);
+
+  static final _keys = new HashMap<int, Key>();
 
   static Key get(int keyCode) {
      if (_keys.isEmpty) {
@@ -17,14 +19,12 @@ class Key {
      return _keys.containsKey(keyCode) ? _keys[keyCode] : null;
    }
 
-  static final HashMap<int, Key> _keys = new HashMap<int, Key>();
-
   String toString() {
     return "KeyCode: $_code";
   }
 
   static void _initKeys() {
-    for (Key k in [DOWN, UP, LEFT, RIGHT]) {
+    for (Key k in [UP, DOWN, LEFT, RIGHT]) {
       _keys[k._code] = k;
     }
   }
@@ -36,9 +36,9 @@ class Key {
 class KeyboardListener {
   static const REPETITION_PERIOD_MS = 200;
 
-  final Queue<Key> _key_queue = new Queue<Key>();
-  final HashMap<Key, int> _held_keys = {};
-  final RateLimiter _repetition_rate = new RateLimiter(REPETITION_PERIOD_MS);
+  final _key_queue = new Queue<Key>();
+  final _held_keys = new HashMap<Key, int>();
+  final _repetition_rate = new RateLimiter(REPETITION_PERIOD_MS);
 
   bool hasKeysToProcess(DateTime now) {
     _addRepeatsToQueue(now);
@@ -88,7 +88,7 @@ class KeyboardListener {
 }
 
 class InputHandler {  // TODO: Rename to describe the type of inputhandler and maybe generic class?
-  static final List<Key> DIRECTION_KEYS = [Key.UP, Key.DOWN, Key.RIGHT, Key.LEFT];
+  static final DIRECTION_KEYS = [Key.UP, Key.DOWN, Key.RIGHT, Key.LEFT];
 
   bool IsDirectionKey(Key key) {
     return DIRECTION_KEYS.contains(key);
