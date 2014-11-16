@@ -59,14 +59,9 @@ class Level {  // Better name, e.g. zone, scene, map, area, etc
   void render(LevelRenderer renderer) {
     for (int row = 0; row < _rows; ++row) {
       for (int col = 0; col < _cols; ++col) {
-        for (int i = _layers.length-1; i >= 0; --i) {
-          Pos pos = new Pos(row, col);
-          if (!_layers[i].hasTile(pos)) {
-            continue;
-          }
-          renderer.addTile(_layers[i].tileAt(pos));
-          break;  // Only append one per row,col.
-        }
+        Pos pos = new Pos(row, col);
+        TileMap layer = _layers.lastWhere((l) => l.hasTile(pos));
+        renderer.addTile(layer.tileAt(pos));  // lastWhere does not return null.
       }
       renderer.newRow();
     }
