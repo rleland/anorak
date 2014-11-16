@@ -76,7 +76,7 @@ class GameLoop {
   }
 
   void _loop(Timer timer) {
-    DateTime now = new DateTime.now();
+    var now = new DateTime.now();
     _fps_counter.update(now);
     try {
       if (_game.loop(now)) {
@@ -91,7 +91,7 @@ class GameLoop {
   }
 
   void _redraw(Level level) {
-    LevelRendererImpl renderer = new LevelRendererImpl();
+    var renderer = new LevelRendererImpl();
     level.render(renderer);
 
     Element world = querySelector('#world');
@@ -152,11 +152,11 @@ class MessageLogImpl implements MessageLog {
 }
 
 void main() {
-  KeyboardListener kl = new KeyboardListener();
-  WindowListener wl = new WindowListener(window, kl);
-  MessageLogImpl log = new MessageLogImpl(querySelector('#messageLog'));
+  var kl = new KeyboardListener();
+  var wl = new WindowListener(window, kl);
+  var log = new MessageLogImpl(querySelector('#messageLog'));
 
-  Level level = new Level(20, 20);
+  var level = new Level(20, 20);
   level.multiAddBaseTile(new Grass(), new Pos(0, 0), new Pos(20, 20));
   level.multiAddBaseTile(new Tree(), new Pos(0, 0), new Pos(1, 20));
   level.multiAddBaseTile(new Tree(), new Pos(0, 0), new Pos(20, 1));
@@ -165,7 +165,7 @@ void main() {
   level.multiAddBaseTile(new Path(), new Pos(0,  10), new Pos(20, 11));
   level.addBaseTile(new Fire()..event = new BuffEvent((DateTime now) => new BurnBuff(log, now, 2)),
                     new Pos(15, 15));
-  Game game = new Game(kl, level, log, new Player(new Pos(10, 10), 1));
+  var game = new Game(kl, level, log, new Player(new Pos(10, 10), 1));
   game.addMob(new Rat(new Pos(1, 1), new Stats(str: 1, dex: 1, vit: 1)));
   new GameLoop(game);
 }

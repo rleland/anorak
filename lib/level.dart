@@ -64,7 +64,7 @@ class Level {  // Better name, e.g. zone, scene, map, area, etc
   }
 
   void render(LevelRenderer renderer) {
-    List<String> tiles = new List<String>(_rows * _cols);
+    var tiles = new List<String>(_rows * _cols);
     for (int row = 0; row < _rows; ++row) {
       for (int col = 0; col < _cols; ++col) {
         for (int i = _layers.length-1; i >= 0; --i) {

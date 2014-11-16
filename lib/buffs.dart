@@ -51,7 +51,7 @@ class BuffContainer {
   }
 
   void process(MessageLog log, DateTime now) {
-    Set<String> empty_keys = new Set<String>();
+    var empty_keys = new Set<String>();
     for (String key in _buffs.keys) {
       List<Buff> buffs = _buffs[key];
       buffs.forEach((e) {
