@@ -18,7 +18,6 @@ class TileMap {
     }
   }
 
-  // row and col starts at 0
   bool hasTile(Pos pos) {
     return tileAt(pos) != null;
   }
