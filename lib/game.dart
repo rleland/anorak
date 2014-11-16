@@ -51,15 +51,7 @@ class Game implements GameState {
         _updatePlayer(now, key);
       }
     }
-    for (Npc npc in _npcs) {
-      Pos new_pos = npc.getMove(now, this);
-      if (new_pos != null &&
-          _level.isPassable(new_pos)) {
-        _need_redraw = true;
-        _level.moveMobTile(npc.pos, new_pos);
-        npc.move(new_pos);
-      }
-    }
+    _npcs.forEach((n) => _moveNpc(now, n));
 
     _triggerEvents(now, _player);
     _npcs.forEach((m) => _triggerEvents(now, m));
@@ -75,21 +67,9 @@ class Game implements GameState {
       _log.write(Messages.Dead(_player.name));
       throw new GameOver();
     }
-    int xp_gain = 0;
-    for (Npc npc in _npcs) {
-      if (npc.is_alive) {
-        continue;
-      }
-      _log.write(Messages.Dead(npc.name));
-      _level.removeMobTile(npc.pos);
-      xp_gain += npc.xp_reward;
-      _need_redraw = true;
-    }
-    _npcs.removeWhere((Mob m) => !m.is_alive);
 
-    if (_player.gainXp(xp_gain)) {
-      _log.write(Messages.LevelUp(_player.level));
-    }
+    _npcs.forEach(_killNpc);
+    _npcs.removeWhere((Mob m) => !m.is_alive);
 
     // Don't waste resources unnecessarily.
     if (_need_redraw) {
@@ -98,6 +78,25 @@ class Game implements GameState {
     } else {
       return false;
     }
+  }
+
+  void _moveNpc(DateTime now, Npc npc) {
+    Pos new_pos = npc.getMove(now, this);
+    if (new_pos != null && _level.isPassable(new_pos)) {
+      _need_redraw = true;
+      _level.moveMobTile(npc.pos, new_pos);
+      npc.move(new_pos);
+    }
+  }
+
+  void _killNpc(Npc npc) {
+    if (npc.is_alive) {
+      return;
+    }
+    _log.write(Messages.Dead(npc.name));
+    _level.removeMobTile(npc.pos);
+    _player.gainXp(_log, npc.xp_reward);
+    _need_redraw = true;
   }
 
   void _triggerEvents(DateTime now, Mob mob) {

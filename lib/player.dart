@@ -4,6 +4,7 @@ import 'dart:math';
 
 import 'package:anorak/mob.dart';
 import 'package:anorak/common.dart';
+import 'package:anorak/messages.dart';
 import 'package:anorak/tile.dart';
 
 Stats playerStatsForLevel(int level) {
@@ -64,12 +65,11 @@ class Player extends Mob {
     return _attack_rate.checkRate(now);
   }
 
-  bool gainXp(int xp) {
+  void gainXp(MessageLog log, int xp) {
     if (_level_tracker.addXp(xp)) {
       _stats = playerStatsForLevel(_level_tracker.level);
       _stats.FullHeal();
-      return true;
+      log.write(Messages.LevelUp(level));
     }
-    return false;
   }
 }
