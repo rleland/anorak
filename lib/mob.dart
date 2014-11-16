@@ -7,6 +7,7 @@ import "package:anorak/tile.dart";
 
 
 abstract class Mob {
+  final _buffs = new BuffContainer();
   Pos _pos;
 
   String get name;
@@ -16,8 +17,6 @@ abstract class Mob {
   Pos get pos => _pos;
 
   bool get is_alive => stats.hp > 0;
-
-  final BuffContainer _buffs = new BuffContainer();
 
   Mob(Pos this._pos);
 
@@ -35,11 +34,12 @@ abstract class Mob {
 }
 
 abstract class Npc extends Mob {
+  final RateLimiter _move_rate;
+
   bool get attackable => true;
   int get xp_reward;
-  final RateLimiter move_rate_;
 
-  Npc(Pos pos, int move_period) : super(pos), move_rate_ = new RateLimiter(move_period);
+  Npc(Pos pos, int move_period) : super(pos), _move_rate = new RateLimiter(move_period);
 
   Pos getMove(DateTime now, GameState game_state) {
     if (!shouldMove(now, game_state)) {
@@ -51,19 +51,19 @@ abstract class Npc extends Mob {
   Pos calculateMove(GameState game_state);
 
   bool shouldMove(DateTime now, GameState game_state) {
-    return hasAggro(game_state) && move_rate_.checkRate(now);
+    return hasAggro(game_state) && _move_rate.checkRate(now);
   }
 
   bool hasAggro(GameState game_state);
 }
 
 class Rat extends Npc {
-  static const int MOVE_PERIOD_MS = 200;
-  static const int ROW_AGGRO = 5;
-  static const int COL_AGGRO = 5;
+  static const MOVE_PERIOD_MS = 200;
+  static const ROW_AGGRO = 5;
+  static const COL_AGGRO = 5;
 
-  final Tile _tile = new RatTile();
-  Stats _stats;
+  final _tile = new RatTile();
+  final Stats _stats;
 
   Rat(Pos pos, Stats this._stats) : super(pos, MOVE_PERIOD_MS);
 
