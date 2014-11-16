@@ -143,12 +143,13 @@ class Level {  // Better name, e.g. zone, scene, map, area, etc
     return _mobs[pos];
   }
 
-  Event getEvent(Pos pos) {
+  List<Event> getEvents(Pos pos) {
+    List<Event> events = [];
     for (int i = _layers.length-1; i >= 0; --i) {
       if (_layers[i].hasTile(pos) && _layers[i].tileAt(pos).has_event) {
-        return _layers[i].tileAt(pos).event;
+        events.add(_layers[i].tileAt(pos).event);
       }
     }
-    return null;
+    return events;
   }
 }

@@ -102,14 +102,13 @@ class Game implements GameState {
   }
 
   void _triggerEvents(DateTime now, Mob mob) {
-    // TODO: Currently if the mob itself has an event associated with it a mob will continuously try
-    // to trigger its own event.
-    Event e = _level.getEvent(mob.pos);
-    if (e == null) {
-      return;
-    }
-    if (e.type == Event.TYPE_MOB) {
-      (e as MobEvent).process(now, mob);
+    // Note that if the mob itself has an event associated with it a mob will continuously try to
+    // trigger its own event. As long as mob tiles don't have events this won't be an issue.
+    List<Event> events = _level.getEvents(mob.pos);
+    for (Event e in events) {
+      if (e.type == Event.TYPE_MOB) {
+        (e as MobEvent).process(now, mob);
+      }
     }
   }
 
