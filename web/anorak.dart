@@ -27,9 +27,9 @@ void _renderGameOver() {
 }
 
 class FpsCounter {
-  static final int WINDOW = 5;
+  static final WINDOW = 5;
   final Element _element;
-  final Queue<int> _frames = new Queue<int>();
+  final _frames = new Queue<int>();
 
   FpsCounter(Element this._element);
 
@@ -107,11 +107,11 @@ class LevelRendererImpl implements LevelRenderer {
     _outer.style.setProperty('font-family', 'monospace');
   }
 
-  void AddTile(Tile tile) {
+  void addTile(Tile tile) {
     _outer.append(_renderTile(tile));
   }
 
-  void NewRow() {
+  void newRow() {
     _outer.append(new Element.br());
   }
 
@@ -129,20 +129,20 @@ class LevelRendererImpl implements LevelRenderer {
 }
 
 class MessageLogImpl implements MessageLog {
-  static String AddTimestamp(DateTime time, String text) {
+  static String addTimestamp(DateTime time, String text) {
     String h = twoDigits(time.hour);
     String m = twoDigits(time.minute);
     String s = twoDigits(time.second);
     return "[$h:$m:$s] $text";
   }
 
-  static const int LOG_LENGTH = 200;
+  static const LOG_LENGTH = 200;
   final Element _log;
 
   MessageLogImpl(Element this._log);
 
   void write(String s) {
-    s = AddTimestamp(new DateTime.now(), s);
+    s = addTimestamp(new DateTime.now(), s);
     while (_log.childNodes.length >= LOG_LENGTH) {
       _log.lastChild.remove();
     }
