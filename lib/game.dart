@@ -13,19 +13,18 @@ import 'package:anorak/tile.dart';
 class GameOver {}
 
 class Game implements GameState {
-  static final Map<Key, Pos> MOVES =
-    {Key.UP: Pos.MOVE_UP,
-     Key.DOWN: Pos.MOVE_DOWN,
-     Key.LEFT: Pos.MOVE_LEFT,
-     Key.RIGHT: Pos.MOVE_RIGHT};
+  static final MOVES = {Key.UP:    Pos.MOVE_UP,
+                        Key.DOWN:  Pos.MOVE_DOWN,
+                        Key.LEFT:  Pos.MOVE_LEFT,
+                        Key.RIGHT: Pos.MOVE_RIGHT};
 
   final Level _level;
   final KeyboardListener _kl;
   final Player _player;
   final InputHandler _input_handler;
   final MessageLog _log;
-  bool _need_redraw = true;  // Force first draw.
   final List<Npc> _npcs = [];
+  bool _need_redraw = true;  // Force first draw.
 
   Level get level => _level;
 
