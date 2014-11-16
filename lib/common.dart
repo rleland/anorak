@@ -2,10 +2,10 @@ library common;
 
 // TODO: This looks quite similar to dart point. Consider using that if this doesn't evolve.
 class Pos {
-  static const Pos MOVE_DOWN = const Pos(1, 0);
-  static const Pos MOVE_UP = const Pos(-1, 0);
-  static const Pos MOVE_RIGHT = const Pos(0, 1);
-  static const Pos MOVE_LEFT = const Pos(0, -1);
+  static const MOVE_UP = const Pos(-1, 0);
+  static const MOVE_DOWN = const Pos(1, 0);
+  static const MOVE_RIGHT = const Pos(0, 1);
+  static const MOVE_LEFT = const Pos(0, -1);
 
   final int row;
   final int col;
@@ -81,10 +81,10 @@ class RateLimiter {
 }
 
 class Stats {
+  final int str;
+  final int dex;
+  final int vit;
   int hp;
-  int str;
-  int dex;
-  int vit;
 
   int get max_hp => vit * 10;
 
