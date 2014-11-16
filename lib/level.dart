@@ -5,18 +5,12 @@ import 'package:anorak/mob.dart';
 import 'package:anorak/tile.dart';
 
 class TileMap {
-  PosList<Tile> _tiles;
   final int _rows;
   final int _cols;
+  final PosList<Tile> _tiles;
 
-  TileMap(int this._rows, int this._cols) {
-    _tiles = new PosList<Tile>(_rows, _cols);
-    for (int row = 0; row < _rows; ++row) {
-      for (int col = 0; col < _cols; ++col) {
-        addTile(null, new Pos(row, col));
-      }
-    }
-  }
+  TileMap(int rows, int cols)
+      : _rows = rows, _cols = cols, _tiles = new PosList<Tile>(rows, cols);
 
   bool hasTile(Pos pos) {
     return tileAt(pos) != null;
@@ -38,25 +32,25 @@ class TileMap {
 
 abstract class LevelRenderer {
   // Add a tile to the current row in rendering.
-  void AddTile(Tile tile);
+  void addTile(Tile tile);
 
   // Should be called after each row of tiles. Should not be called before first row.
-  void NewRow();
+  void newRow();
 }
 
 class Level {  // Better name, e.g. zone, scene, map, area, etc
-  static final int BASE_LAYER = 0;
-  static final int MOVABLE_LAYER = 1; // TODO: Better name?
-  static final int MOB_LAYER = 2;
-  static final int NUM_LAYERS = 3;
+  static final BASE_LAYER = 0;
+  static final MOVABLE_LAYER = 1; // TODO: Better name?
+  static final MOB_LAYER = 2;
+  static final NUM_LAYERS = 3;
 
   final List<TileMap> _layers = [];
   final int _rows;
   final int _cols;
-  PosList<Mob> _mobs;
+  final PosList<Mob> _mobs;
 
-  Level(int this._rows, int this._cols) {
-    _mobs = new PosList<Mob>(_rows, _cols);
+  Level(int rows, int cols)
+      : _rows = rows, _cols = cols, _mobs = new PosList<Mob>(rows, cols) {
     for (int i = 0; i < NUM_LAYERS; ++i) {
       _layers.add(new TileMap(_rows, _cols));
     }
@@ -70,11 +64,11 @@ class Level {  // Better name, e.g. zone, scene, map, area, etc
           if (!_layers[i].hasTile(pos)) {
             continue;
           }
-          renderer.AddTile(_layers[i].tileAt(pos));
+          renderer.addTile(_layers[i].tileAt(pos));
           break;  // Only append one per row,col.
         }
       }
-      renderer.NewRow();
+      renderer.newRow();
     }
   }
 
