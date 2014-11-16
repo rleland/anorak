@@ -51,7 +51,7 @@ class Level {  // Better name, e.g. zone, scene, map, area, etc
   static final int MOB_LAYER = 2;
   static final int NUM_LAYERS = 3;
 
-  final List<TileMap> _layers = new List<TileMap>();
+  final List<TileMap> _layers = [];
   final int _rows;
   final int _cols;
   PosList<Mob> _mobs;

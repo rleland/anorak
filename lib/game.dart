@@ -25,7 +25,7 @@ class Game implements GameState {
   final InputHandler _input_handler;
   final MessageLog _log;
   bool _need_redraw = true;  // Force first draw.
-  final List<Npc> _npcs = new List<Npc>();
+  final List<Npc> _npcs = [];
 
   Level get level => _level;
 

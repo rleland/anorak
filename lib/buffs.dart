@@ -34,7 +34,7 @@ abstract class Buff {
 }
 
 class BuffContainer {
-  final Map<String, List<Buff>> _buffs = new Map<String, List<Buff>>();
+  final Map<String, List<Buff>> _buffs = {};
 
   void add(Buff buff, Stats stats, String name) {
     if (!buff.stacks && _buffs.containsKey(buff.id)) {
@@ -44,7 +44,7 @@ class BuffContainer {
       _buffs[buff.id][0].update(buff);
       return;
     } else if (!_buffs.containsKey(buff.id)) {
-      _buffs[buff.id] = new List<Buff>();
+      _buffs[buff.id] = [];
     }
     _buffs[buff.id].add(buff);
     buff.attach(stats,  name);
