@@ -73,6 +73,7 @@ class Game implements GameState {
       // level changing) logic is in place.
       _level.removeMobTile(_player.pos);
       _level.addBaseTile(new Tombstone(), _player.pos);
+      _log.write(Messages.Dead(_player.name));
       throw new GameOver();
     }
     // TODO: Check if player is alive.
