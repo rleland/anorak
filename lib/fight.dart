@@ -5,10 +5,10 @@ import "package:anorak/common.dart";
 import "package:anorak/messages.dart";
 import "package:anorak/mob.dart";
 
-int HIT_DICE = 12;
-int HIT_SUCCESS = 6;
+const HIT_DICE = 12;
+const HIT_SUCCESS = 6;
 
-Random _random = new Random();
+final _random = new Random();
 
 bool isHit(Stats attacker, Stats defender) {
   int bias = attacker.dex - defender.dex;
