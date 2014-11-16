@@ -5,6 +5,8 @@ import "package:anorak/messages.dart";
 
 abstract class Buff {
   DateTime _start_time;
+  String _name;
+  Stats _stats;
 
   Buff(DateTime this._start_time);
 
@@ -12,9 +14,6 @@ abstract class Buff {
   String get id;
   bool get stacks => false;
   bool get periodic => false;
-
-  String _name;
-  Stats _stats;
 
   void attach(Stats stats, String name) {
     _name = name;
@@ -86,12 +85,14 @@ abstract class PeriodicBuff extends Buff {
 }
 
 class BurnBuff extends PeriodicBuff {
-  static const int BURN_PERIOD_MS = 1000;
-  String get id => 'burn';
+  static const BURN_PERIOD_MS = 1000;
+  static const DURATION_MS = 2000;
+
   final MessageLog _log;
   int _damage;
 
-  int get duration_ms => 2000;
+  String get id => 'burn';
+  int get duration_ms => DURATION_MS;
 
   BurnBuff(MessageLog this._log, DateTime start_time, int this._damage)
       : super(start_time, BURN_PERIOD_MS) {
