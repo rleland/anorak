@@ -76,7 +76,6 @@ class Game implements GameState {
       _log.write(Messages.Dead(_player.name));
       throw new GameOver();
     }
-    // TODO: Check if player is alive.
     int xp_gain = 0;
     for (Npc npc in _npcs) {
       if (npc.is_alive) {
