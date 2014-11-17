@@ -24,7 +24,6 @@ class Game implements GameState {
   final InputHandler _input_handler;
   final MessageLog _log;
   final List<Npc> _npcs = [];
-  bool _need_redraw = true;  // Force first draw.
 
   Level get level => _level;
 
@@ -72,18 +71,12 @@ class Game implements GameState {
     _npcs.removeWhere((Mob m) => !m.is_alive);
 
     // Don't waste resources unnecessarily.
-    if (_need_redraw) {
-      _need_redraw = false;
-      return true;
-    } else {
-      return false;
-    }
+    return _level.need_redraw;
   }
 
   void _moveNpc(DateTime now, Npc npc) {
     Pos new_pos = npc.getMove(now, this);
     if (new_pos != null && _level.isPassable(new_pos)) {
-      _need_redraw = true;
       _level.moveMobTile(npc.pos, new_pos);
       npc.move(new_pos);
     }
@@ -96,7 +89,6 @@ class Game implements GameState {
     _log.write(Messages.Dead(npc.name));
     _level.removeMobTile(npc.pos);
     _player.gainXp(_log, npc.xp_reward);
-    _need_redraw = true;
   }
 
   void _triggerEvents(DateTime now, Mob mob) {
@@ -113,7 +105,6 @@ class Game implements GameState {
     if (_level.isPassable(new_pos) && _player.canMove(now)) {
       _level.moveMobTile(_player.pos, new_pos);
       _player.move(new_pos);
-      _need_redraw = true;
     } else if (_level.hasMob(new_pos)) {
       Mob mob = _level.mobAt(new_pos);
       if (mob.attackable && _player.canAttack(now)) {

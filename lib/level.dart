@@ -49,6 +49,10 @@ class Level {  // Better name, e.g. zone, scene, map, area, etc
   final int _cols;
   final PosList<Mob> _mobs;
 
+  bool _need_redraw = true;
+
+  bool get need_redraw => _need_redraw;
+
   Level(int rows, int cols)
       : _rows = rows, _cols = cols, _mobs = new PosList<Mob>(rows, cols) {
     for (int i = 0; i < NUM_LAYERS; ++i) {
@@ -65,9 +69,11 @@ class Level {  // Better name, e.g. zone, scene, map, area, etc
       }
       renderer.newRow();
     }
+    _need_redraw = false;
   }
 
   void addBaseTile(Tile tile, Pos pos) {
+    _need_redraw = true;
     _layers[BASE_LAYER].addTile(tile, pos);
   }
 
@@ -80,11 +86,13 @@ class Level {  // Better name, e.g. zone, scene, map, area, etc
   }
 
   void addMob(Mob mob, Pos pos) {
+    _need_redraw = true;
     _layers[MOB_LAYER].addTile(mob.tile, pos);
     _mobs[pos] = mob;
   }
 
   void moveMobTile(Pos from, Pos to) {
+    _need_redraw = true;
     TileMap layer = _layers[MOB_LAYER];
     Tile tile = layer.tileAt(from);
     layer..removeTile(from)
@@ -94,6 +102,7 @@ class Level {  // Better name, e.g. zone, scene, map, area, etc
   }
 
   void removeMobTile(Pos pos) {
+    _need_redraw = true;
     _layers[MOB_LAYER].removeTile(pos);
     _mobs[pos] = null;
   }
