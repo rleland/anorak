@@ -67,7 +67,7 @@ class Game implements GameState {
       throw new GameOver();
     }
 
-    _npcs.forEach(_killNpc);
+    _npcs.where((n) => !n.is_alive).forEach(_killNpc);
     _npcs.removeWhere((Mob m) => !m.is_alive);
 
     // Don't waste resources unnecessarily.
@@ -83,9 +83,6 @@ class Game implements GameState {
   }
 
   void _killNpc(Npc npc) {
-    if (npc.is_alive) {
-      return;
-    }
     _log.write(Messages.Dead(npc.name));
     _level.removeMobTile(npc.pos);
     _player.gainXp(_log, npc.xp_reward);
