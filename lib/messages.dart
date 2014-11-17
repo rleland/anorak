@@ -13,8 +13,8 @@ class Messages {
     return "$name was killed.";
   }
 
-  static String LevelUp(int level) {
-    return "Player levels up to level $level!";
+  static String LevelUp(String name, int level) {
+    return "$name levels up to level $level!";
   }
 
   static String BurnAppliedPassive(String name) {
