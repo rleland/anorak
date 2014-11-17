@@ -79,14 +79,6 @@ class Level {  // Better name, e.g. zone, scene, map, area, etc
     }
   }
 
-  void clearMobLayer() {
-    for (int row = 0; row < _rows; ++row) {
-      for (int col = 0; col < _cols; ++col) {
-        _layers[MOB_LAYER].removeTile(new Pos(row, col));
-      }
-    }
-  }
-
   void addMob(Mob mob, Pos pos) {
     _layers[MOB_LAYER].addTile(mob.tile, pos);
     _mobs[pos] = mob;
