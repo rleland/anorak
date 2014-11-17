@@ -69,7 +69,7 @@ class Player extends Mob {
     if (_level_tracker.addXp(xp)) {
       _stats = playerStatsForLevel(_level_tracker.level);
       _stats.FullHeal();
-      log.write(Messages.LevelUp(level));
+      log.write(Messages.LevelUp(name, level));
     }
   }
 }
