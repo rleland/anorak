@@ -48,12 +48,12 @@ abstract class Npc extends Mob {
     return calculateMove(game_state);
   }
 
-  Pos calculateMove(GameState game_state);
 
   bool shouldMove(DateTime now, GameState game_state) {
     return hasAggro(game_state) && _move_rate.checkRate(now);
   }
 
+  Pos calculateMove(GameState game_state);
   bool hasAggro(GameState game_state);
 }
 
