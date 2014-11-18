@@ -51,6 +51,7 @@ class Game implements GameState {
       }
     }
     _npcs.forEach((n) => _moveNpc(now, n));
+    _npcs.forEach((n) => _processActions(now, n));
 
     _triggerEvents(now, _player);
     _npcs.forEach((m) => _triggerEvents(now, m));
@@ -72,6 +73,10 @@ class Game implements GameState {
 
     // Don't waste resources unnecessarily.
     return _level.need_redraw;
+  }
+
+  void _processActions(DateTime now, Npc npc) {
+    // TODO: Attack if possible.
   }
 
   void _moveNpc(DateTime now, Npc npc) {
