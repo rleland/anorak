@@ -70,12 +70,14 @@ class RateLimiter {
 
   RateLimiter(int this.min_delay_);
 
-  bool checkRate(DateTime now) {
+  bool checkRate(DateTime now, {bool peek: false}) {
     int ms = now.millisecondsSinceEpoch;
     if (ms - last_ < min_delay_) {
       return false;
     }
-    last_ = ms;
+    if (!peek) {
+      last_ = ms;
+    }
     return true;
   }
 }
