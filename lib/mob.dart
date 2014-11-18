@@ -78,8 +78,6 @@ class Rat extends Npc {
   }
 
   bool hasAggro(GameState game_state) {
-    Pos player_pos = game_state.player_pos;
-    return (player_pos.row - _pos.row).abs() <= ROW_AGGRO ||
-           (player_pos.col - _pos.col).abs() <= COL_AGGRO;
+    return inRange(_pos, game_state.player_pos, ROW_AGGRO, COL_AGGRO);
   }
 }

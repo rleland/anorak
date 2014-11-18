@@ -17,3 +17,8 @@ Pos moveCloser(Pos from, Pos to) {
     return new Pos(0, capMagnitude(delta.col, 1));
   }
 }
+
+bool inRange(Pos src, Pos dst, int row_dist, int col_dist) {
+  Pos diff = dst - src;
+  return diff.row.abs() <= row_dist && diff.col.abs() <= col_dist;
+}
