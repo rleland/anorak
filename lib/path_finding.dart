@@ -24,7 +24,7 @@ bool inRange(Pos src, Pos dst, int row_dist, int col_dist) {
 }
 
 // Bresenham for lines in the first octant.
-List<Pos> _firstOctetBresenham(Pos from, Pos to) {
+List<Pos> _firstOctantBresenham(Pos from, Pos to) {
   // In mapping x,y coordinates in Bresenham to the row/col matrix this convention is used:
   // x : col
   // y : row
@@ -32,9 +32,9 @@ List<Pos> _firstOctetBresenham(Pos from, Pos to) {
   assert(to.row > from.row);
   assert(to.col > from.col);
   Pos delta = to - from;
-  assert(delta.col <= delta.row);
+  assert(delta.col >= delta.row);
 
-  List<Pos> plot;
+  List<Pos> plot = [];
   int y = from.row;
   int e = 0;
 
@@ -58,7 +58,7 @@ List<Pos> drawLine(Pos from, Pos to) {
   // Where there is a diagonal 'jump', rather than overlap.
   // It's possible Bresenham can be modified to include this overlap if necessary, or maybe one of
   // the anti-aliasing algorithms can be adapted, but for a first implementation this looks fine.
-  return _firstOctetBresenham(from, to);
+  return _firstOctantBresenham(from, to);
 }
 
 bool hasLineOfSight(Pos from, Pos to, GameState game_state) {

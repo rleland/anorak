@@ -18,6 +18,9 @@ class Pos {
   Pos operator-(Pos other) {
     return new Pos(this.row - other.row, this.col - other.col);
   }
+  bool operator==(Pos other) {
+    return other.row == this.row && other.col == this.col;
+  }
   String toString() {
     return "$row,$col";
   }
