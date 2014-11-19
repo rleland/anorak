@@ -49,13 +49,25 @@ List<Pos> _firstOctantBresenham(Pos from, Pos to) {
   return plot;
 }
 
+// Gets which octant the line lies in. Octants can be thought of as classifying the direction of the
+// line with the 'from' point as the origin
+// Octants:
+//  \2|1/
+//  3\|/0
+// ---+---
+//  4/|\7
+//  /5|6\
+// For the purposes of this illustration y (rows) increases going up, and x (cols) increases going
+// right. Note that this is different from the coordinate system used for the map which has the
+// origin in the top left, and y (rows) increasing going down from the origin. However for this
+// purpose that's not important.
 int _getOctant(Pos from, Pos to) {
   Pos diff = to - from;
+  assert(diff.row != 0 && diff.col != 0);
   if (diff.row > 0 && diff.col > 0) {
-    // First quartant.
-    if (diff.col >= diff.row) {
-      return 1;
-    }
+    return diff.col >= diff.row ? 0 : 1;
+  } else if (diff.row > 0 && diff.col < 0) {
+    return diff.col.abs() >= diff.row ? 3 : 2;
   }
   throw new UnimplementedError("No octant defined for from: $from and to: $to");
 }
@@ -71,7 +83,7 @@ List<Pos> drawLine(Pos from, Pos to) {
   // the anti-aliasing algorithms can be adapted, but for a first implementation this looks fine.
   int octant = _getOctant(from, to);
   switch (octant) {
-    case 1:
+    case 0:
       return _firstOctantBresenham(from, to);
     default:
       throw new UnimplementedError("Octant not supported: $octant");
