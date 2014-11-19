@@ -49,6 +49,17 @@ List<Pos> _firstOctantBresenham(Pos from, Pos to) {
   return plot;
 }
 
+int _getOctant(Pos from, Pos to) {
+  Pos diff = to - from;
+  if (diff.row > 0 && diff.col > 0) {
+    // First quartant.
+    if (diff.col >= diff.row) {
+      return 1;
+    }
+  }
+  throw new UnimplementedError("No octant defined for from: $from and to: $to");
+}
+
 List<Pos> drawLine(Pos from, Pos to) {
   // Use bresenham for this and return the positions the line passes through.
   // This will have the caveat that line of sight doesn't necessarily mean the two can be reached.
@@ -58,7 +69,14 @@ List<Pos> drawLine(Pos from, Pos to) {
   // Where there is a diagonal 'jump', rather than overlap.
   // It's possible Bresenham can be modified to include this overlap if necessary, or maybe one of
   // the anti-aliasing algorithms can be adapted, but for a first implementation this looks fine.
-  return _firstOctantBresenham(from, to);
+  int octant = _getOctant(from, to);
+  switch (octant) {
+    case 1:
+      return _firstOctantBresenham(from, to);
+    default:
+      throw new UnimplementedError("Octant not supported: $octant");
+  }
+
 }
 
 bool hasLineOfSight(Pos from, Pos to, GameState game_state) {
