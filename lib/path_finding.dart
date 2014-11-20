@@ -89,6 +89,7 @@ Pos _mapToOctant(Pos pos, int octant, {bool undo: false}) {
 
 // Returns the positions, inclusive of from and to, needed to be filled to draw a line between the
 // two points.
+// TODO: Handle straight lines.
 Iterable<Pos> drawLine(Pos from, Pos to) {
   // Shift the coordinate system so you're finding the line from the origin to the delta. This makes
   // dealing with octants and mapping between them more conceptually straight forward.
