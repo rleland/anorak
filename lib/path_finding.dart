@@ -68,8 +68,11 @@ int _getOctant(Pos from, Pos to) {
     return diff.col >= diff.row ? 0 : 1;
   } else if (diff.row > 0 && diff.col < 0) {
     return diff.col.abs() >= diff.row ? 3 : 2;
+  } else if (diff.row < 0 && diff.col < 0) {
+    return diff.col <= diff.row ? 4 : 5;
+  } else {  // diff.row < 0 && diff.col > 0
+    return diff.col >= diff.row.abs() ? 7: 6;
   }
-  throw new UnimplementedError("No octant defined for from: $from and to: $to");
 }
 
 List<Pos> drawLine(Pos from, Pos to) {
