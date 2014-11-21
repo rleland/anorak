@@ -47,11 +47,11 @@ class Player extends Mob {
   Stats _stats;
   final _level_tracker;
 
-  String get name => 'Player';
-  Tile get tile => _tile;
-  Stats get stats => _stats;
+  @override String get name => 'Player';
+  @override Tile get tile => _tile;
+  @override Stats get stats => _stats;
+  @override bool get attackable => false;
   int get level => _level_tracker.level;
-  bool get attackable => false;
 
   Player(Pos pos, int level) : super(pos),
                                _level_tracker = new LevelTracker(level, 0),
