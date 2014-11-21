@@ -18,6 +18,8 @@ class Pos {
   Pos operator-(Pos other) {
     return new Pos(this.row - other.row, this.col - other.col);
   }
+  // TODO: If you override ==, you should also override Object’s hashCode getter. For an example of
+  // overriding == and hashCode, see [Implementing map keys].
   bool operator==(Pos other) {
     return other.row == this.row && other.col == this.col;
   }
