@@ -59,7 +59,7 @@ abstract class Mob {
 abstract class Npc extends Mob {
   final RateLimiter _move_rate;
 
-  bool get attackable => true;
+  @override bool get attackable => true;
   int get xp_reward;
 
   Npc(Pos pos, int move_period) : super(pos), _move_rate = new RateLimiter(move_period);
@@ -92,13 +92,16 @@ class Rat extends Npc {
 
   Rat(Pos pos, Stats this._stats) : super(pos, MOVE_PERIOD_MS);
 
-  String get name => 'rat';
-  Tile get tile => _tile;
-  Stats get stats => _stats;
-  int get xp_reward => 5;
-  bool get attackable => true;
+  @override String get name => 'rat';
+  @override Tile get tile => _tile;
+  @override Stats get stats => _stats;
+  @override int get xp_reward => 5;
+  @override bool get attackable => true;
 
+  @override
   Pos calculateMove(GameState game_state) => _pos + moveCloser(_pos, game_state.player_pos);
+  @override
   bool hasAggro(GameState game_state) => inRange(_pos, game_state.player_pos, ROW_AGGRO, COL_AGGRO);
+  @override
   bool hasViableAttack(DateTime now, GameState game_state) => true;
 }
