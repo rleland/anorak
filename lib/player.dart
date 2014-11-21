@@ -57,13 +57,8 @@ class Player extends Mob {
                                _level_tracker = new LevelTracker(level, 0),
                                _stats = _playerStatsForLevel(level);
 
-  bool canMove(DateTime now) {
-    return _move_rate.checkRate(now);
-  }
-
-  bool canAttack(DateTime now) {
-    return _attack_rate.checkRate(now);
-  }
+  bool canMove(DateTime now) => _move_rate.checkRate(now);
+  bool canAttack(DateTime now) => _attack_rate.checkRate(now);
 
   void gainXp(MessageLog log, int xp) {
     if (_level_tracker.addXp(xp)) {
