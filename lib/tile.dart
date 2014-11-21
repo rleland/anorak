@@ -14,52 +14,52 @@ abstract class Tile {
 }
 
 class Grass extends Tile {
-  String get explanation => 'grass';
-  String get symbol =>'.';
-  String get color => 'lightgreen';
+  @override String get explanation => 'grass';
+  @override String get symbol =>'.';
+  @override String get color => 'lightgreen';
 }
 
 class Tree extends Tile {
-  String get explanation => 'tree';
-  String get symbol => '#';
-  String get color => 'green';
-  bool get passable => false;
+  @override String get explanation => 'tree';
+  @override String get symbol => '#';
+  @override String get color => 'green';
+  @override bool get passable => false;
 }
 
 class Path extends Tile {
-  String get explanation => 'path';
-  String get symbol => '#';
-  String get color => 'rosybrown';
+  @override String get explanation => 'path';
+  @override String get symbol => '#';
+  @override String get color => 'rosybrown';
 }
 
 class Fire extends Tile {
-  String get explanation => 'fire';
-  String get symbol => '#';
-  String get color => 'orangered';
+  @override String get explanation => 'fire';
+  @override String get symbol => '#';
+  @override String get color => 'orangered';
 }
 
 class Tombstone extends Tile {
-  String get explanation => 'tombstone';
-  String get symbol => 'X';
-  String get color => 'black';
-  bool get bold => true;
+  @override String get explanation => 'tombstone';
+  @override String get symbol => 'X';
+  @override String get color => 'black';
+  @override bool get bold => true;
 }
 
 
 // Mob tiles.
 
 class PlayerTile extends Tile {
-  String get explanation => 'you';
-  String get symbol => '@';
-  String get color => 'black';
-  bool get passable => false;
-  bool get bold => true;
+  @override String get explanation => 'you';
+  @override String get symbol => '@';
+  @override String get color => 'black';
+  @override bool get passable => false;
+  @override bool get bold => true;
 }
 
 class RatTile extends Tile {
-  String get explanation => 'rat';
-  String get symbol => 'r';
-  String get color => 'black';
-  bool get passable => false;
-  bool get bold => true;
+  @override String get explanation => 'rat';
+  @override String get symbol => 'r';
+  @override String get color => 'black';
+  @override bool get passable => false;
+  @override bool get bold => true;
 }
