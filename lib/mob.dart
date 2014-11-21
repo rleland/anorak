@@ -26,7 +26,6 @@ class BasicAttack extends AttackSkill {
   final _rate = new RateLimiter(BASIC_ATTACK_RATE_MS);
 
   @override bool get ranged => false;
-  // TODO: Pretty clear we need to be able to 'peek' at the rate.
   @override bool ready(DateTime now) => _rate.checkRate(now, peek: true);
 }
 
