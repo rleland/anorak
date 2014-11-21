@@ -72,13 +72,11 @@ abstract class Npc extends Mob {
     return calculateMove(game_state);
   }
 
-  bool shouldMove(DateTime now, GameState game_state) {
-    return hasAggro(game_state) && _move_rate.checkRate(now);
-  }
+  bool shouldMove(DateTime now, GameState game_state) =>
+      hasAggro(game_state) && _move_rate.checkRate(now);
 
-  bool shouldAttack(DateTime now, GameState game_state) {
-    return hasAggro(game_state) && hasViableAttack(now, game_state);
-  }
+  bool shouldAttack(DateTime now, GameState game_state) =>
+      hasAggro(game_state) && hasViableAttack(now, game_state);
 
   Pos calculateMove(GameState game_state);
   bool hasAggro(GameState game_state);
@@ -101,15 +99,7 @@ class Rat extends Npc {
   int get xp_reward => 5;
   bool get attackable => true;
 
-  Pos calculateMove(GameState game_state) {
-    return _pos + moveCloser(_pos, game_state.player_pos);
-  }
-
-  bool hasAggro(GameState game_state) {
-    return inRange(_pos, game_state.player_pos, ROW_AGGRO, COL_AGGRO);
-  }
-
-  bool hasViableAttack(DateTime now, GameState game_state) {
-    return true;
-  }
+  Pos calculateMove(GameState game_state) => _pos + moveCloser(_pos, game_state.player_pos);
+  bool hasAggro(GameState game_state) => inRange(_pos, game_state.player_pos, ROW_AGGRO, COL_AGGRO);
+  bool hasViableAttack(DateTime now, GameState game_state) => true;
 }
