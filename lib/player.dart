@@ -7,14 +7,14 @@ import 'package:anorak/common.dart';
 import 'package:anorak/messages.dart';
 import 'package:anorak/tile.dart';
 
-Stats playerStatsForLevel(int level) {
+Stats _playerStatsForLevel(int level) {
   return new Stats(str: 1 + level,
                    dex: level,
                    vit: 1 + level);
 }
 
 class LevelTracker {
-  static int nextLevelXp(int level) {
+  static int _nextLevelXp(int level) {
     return (10 * pow(SQRT2, level-1)).round();
   }
 
@@ -28,8 +28,8 @@ class LevelTracker {
   bool addXp(int xp) {
     bool leveled_up = false;
     _xp += xp;
-    while (_xp >= nextLevelXp(_level)) {
-      _xp -= nextLevelXp(_level);
+    while (_xp >= _nextLevelXp(_level)) {
+      _xp -= _nextLevelXp(_level);
       ++_level;
       leveled_up = true;
     }
@@ -55,7 +55,7 @@ class Player extends Mob {
 
   Player(Pos pos, int level) : super(pos),
                                _level_tracker = new LevelTracker(level, 0),
-                               _stats = playerStatsForLevel(level);
+                               _stats = _playerStatsForLevel(level);
 
   bool canMove(DateTime now) {
     return _move_rate.checkRate(now);
@@ -67,7 +67,7 @@ class Player extends Mob {
 
   void gainXp(MessageLog log, int xp) {
     if (_level_tracker.addXp(xp)) {
-      _stats = playerStatsForLevel(_level_tracker.level);
+      _stats = _playerStatsForLevel(_level_tracker.level);
       _stats.FullHeal();
       log.write(Messages.LevelUp(name, level));
     }
