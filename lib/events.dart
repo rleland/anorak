@@ -7,7 +7,7 @@ import 'package:anorak/mob.dart';
 abstract class MobEvent extends Event {
   void process(DateTime now, Mob mob);
 
-  int get type => Event.TYPE_MOB;
+  @override int get type => Event.TYPE_MOB;
 }
 
 class BuffEvent extends MobEvent {
@@ -15,6 +15,7 @@ class BuffEvent extends MobEvent {
 
   BuffEvent(Buff this._generator(DateTime now));
 
+  @override
   void process(DateTime now, Mob mob) {
     mob.addBuff(_generator(now));
   }

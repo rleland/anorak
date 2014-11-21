@@ -108,10 +108,12 @@ class LevelRendererImpl implements LevelRenderer {
     _outer.style.setProperty('font-family', 'monospace');
   }
 
+  @override
   void addTile(Tile tile) {
     _outer.append(_renderTile(tile));
   }
 
+  @override
   void newRow() {
     _outer.append(new Element.br());
   }
@@ -142,6 +144,7 @@ class MessageLogImpl implements MessageLog {
 
   MessageLogImpl(Element this._log);
 
+  @override
   void write(String s) {
     s = addTimestamp(new DateTime.now(), s);
     while (_log.childNodes.length >= LOG_LENGTH) {

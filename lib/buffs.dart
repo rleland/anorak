@@ -66,6 +66,7 @@ class BuffContainer {
 abstract class PeriodicBuff extends Buff {
   final RateLimiter _apply_rate;
 
+  @override
   bool get periodic => true;
 
   PeriodicBuff(DateTime start_time, int period_ms) :
@@ -77,6 +78,7 @@ abstract class PeriodicBuff extends Buff {
     }
   }
 
+  @override
   void detach() {}
 
   void _internalApply(DateTime now);
@@ -89,23 +91,26 @@ class BurnBuff extends PeriodicBuff {
   final MessageLog _log;
   int _damage;
 
-  String get id => 'burn';
-  int get duration_ms => DURATION_MS;
+  @override String get id => 'burn';
+  @override int get duration_ms => DURATION_MS;
 
   BurnBuff(MessageLog this._log, DateTime start_time, int this._damage)
       : super(start_time, BURN_PERIOD_MS) {
   }
 
+  @override
   void attach(Stats stats, String name) {
     super.attach(stats, name);
     _log.write(Messages.BurnAppliedPassive(_name));
   }
 
+  @override
   void _internalApply(DateTime now) {
     _log.write(Messages.BurnBuff(_name, _damage));
     _stats.hp -= _damage;
   }
 
+  @override
   void update(Buff buff) {
     assert(buff.id == id);
     _damage = (buff as BurnBuff)._damage;
