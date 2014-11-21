@@ -12,14 +12,8 @@ class TileMap {
   TileMap(int rows, int cols)
       : _rows = rows, _cols = cols, _tiles = new PosList<Tile>(rows, cols);
 
-  bool hasTile(Pos pos) {
-    return tileAt(pos) != null;
-  }
-
-  Tile tileAt(Pos pos) {
-    assert(pos.row < _rows && pos.col < _cols);
-    return _tiles[pos];
-  }
+  bool hasTile(Pos pos) => tileAt(pos) != null;
+  Tile tileAt(Pos pos) => _tiles[pos];
 
   void addTile(Tile tile, Pos pos) {
     _tiles[pos] = tile;
@@ -121,9 +115,7 @@ class Level {  // Better name, e.g. zone, scene, map, area, etc
     return _mobs[pos] != null;
   }
 
-  Mob mobAt(Pos pos) {
-    return _mobs[pos];
-  }
+  Mob mobAt(Pos pos) => _mobs[pos];
 
   Iterable<Event> getEvents(Pos pos) {
     return _layers.takeWhile((l) => l.hasTile(pos) && l.tileAt(pos).has_event)

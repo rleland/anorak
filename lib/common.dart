@@ -32,12 +32,12 @@ class PosList<T> {
       : _rows = rows, _cols = cols, _list = new List<T>(rows * cols);
 
   T operator[](Pos p) {
-    assert(p.row < _rows && p.col < _cols);
+    assert(p.row >= 0 && p.col >= 0 && p.row < _rows && p.col < _cols);
     return _list[p.row * _cols + p.col];
   }
 
   void operator[]=(Pos p, T t) {
-    assert(p.row < _rows && p.col < _cols);
+    assert(p.row >= 0 && p.col >= 0 && p.row < _rows && p.col < _cols);
     _list[p.row * _cols + p.col] = t;
   }
 

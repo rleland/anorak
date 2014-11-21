@@ -32,9 +32,7 @@ class Game implements GameState {
 
   Pos get player_pos => _player.pos;
 
-  bool isPassable(Pos pos) {
-    return _level.isPassable(pos);
-  }
+  bool isPassable(Pos pos) => _level.isPassable(pos);
 
   void addMob(Mob c) {
     _npcs.add(c);

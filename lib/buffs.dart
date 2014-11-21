@@ -21,9 +21,8 @@ abstract class Buff {
   }
   void detach();
 
-  bool active(DateTime now) {
-    return now.millisecondsSinceEpoch - _start_time.millisecondsSinceEpoch <= duration_ms;
-  }
+  bool active(DateTime now) =>
+      now.millisecondsSinceEpoch - _start_time.millisecondsSinceEpoch <= duration_ms;
 
   void update(Buff buff) {
     // Refresh start time, individual buffs may also want to do other things like update buff
