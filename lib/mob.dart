@@ -17,7 +17,7 @@ abstract class Skill {
 
 abstract class AttackSkill extends Skill {
   // By defintiion you only attack your enemies, not yourself.
-  bool get self_skill => false;
+  @override bool get self_skill => false;
 }
 
 class BasicAttack extends AttackSkill {
@@ -25,9 +25,9 @@ class BasicAttack extends AttackSkill {
 
   final _rate = new RateLimiter(BASIC_ATTACK_RATE_MS);
 
-  bool get ranged => false;
+  @override bool get ranged => false;
   // TODO: Pretty clear we need to be able to 'peek' at the rate.
-  bool ready(DateTime now) => _rate.checkRate(now, peek: true);
+  @override bool ready(DateTime now) => _rate.checkRate(now, peek: true);
 }
 
 abstract class Mob {

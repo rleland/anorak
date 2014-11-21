@@ -30,9 +30,8 @@ class Game implements GameState {
     _level.addMob(_player, _player.pos);
   }
 
-  Pos get player_pos => _player.pos;
-
-  bool isPassable(Pos pos) => _level.isPassable(pos);
+  @override Pos get player_pos => _player.pos;
+  @override bool isPassable(Pos pos) => _level.isPassable(pos);
 
   void addMob(Mob c) {
     _npcs.add(c);
