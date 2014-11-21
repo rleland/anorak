@@ -12,20 +12,13 @@ class Pos {
 
   const Pos(this.row, this.col);
 
-  Pos operator+(Pos other) {
-    return new Pos(this.row + other.row, this.col + other.col);
-  }
-  Pos operator-(Pos other) {
-    return new Pos(this.row - other.row, this.col - other.col);
-  }
+  Pos operator+(Pos other) => new Pos(this.row + other.row, this.col + other.col);
+  Pos operator-(Pos other) => new Pos(this.row - other.row, this.col - other.col);
+
   // TODO: If you override ==, you should also override Object’s hashCode getter. For an example of
   // overriding == and hashCode, see [Implementing map keys].
-  bool operator==(Pos other) {
-    return other.row == this.row && other.col == this.col;
-  }
-  String toString() {
-    return "$row,$col";
-  }
+  bool operator==(Pos other) => other.row == this.row && other.col == this.col;
+  String toString() => "$row,$col";
 }
 
 class PosList<T> {
@@ -48,9 +41,7 @@ class PosList<T> {
     _list[p.row * _cols + p.col] = t;
   }
 
-  String toString() {
-    return _list.toString();
-  }
+  String toString() => _list.toString();
 }
 
 abstract class GameState {
