@@ -87,10 +87,34 @@ Pos _mapToOctant(Pos pos, int octant, {bool undo: false}) {
   }
 }
 
+bool _isStraightLine(Pos from, Pos to) {
+  return from.row == to.row || from.col == to.col;
+}
+
+List<Pos> _drawStraightLine(Pos from, Pos to) {
+  assert(_isStraightLine(from, to));
+  List<Pos> plot = [];
+  // TODO: Handle negative lines.
+  for (int row = from.row, col = from.col; row <= to.row && col <= to.col;) {
+    plot.add(new Pos(row, col));
+    if (row < to.row) ++row;
+    if (col < to.col) ++col;
+  }
+  // TODO: Something more like this?
+  //int delta = from.col == to.col ? to.row - from.row : to.col - from.col;
+  //int start = from.col == to.col ? from.row : from.col;
+  //new List.generate(delta, (i) => start + i);
+  return plot;
+}
+
 // Returns the positions, inclusive of from and to, needed to be filled to draw a line between the
 // two points.
 // TODO: Handle straight lines.
 Iterable<Pos> drawLine(Pos from, Pos to) {
+  if (_isStraightLine(from, to)) {
+    // Trivial case.
+    return _drawStraightLine(from, to);
+  }
   // Shift the coordinate system so you're finding the line from the origin to the delta. This makes
   // dealing with octants and mapping between them more conceptually straight forward.
   Pos delta = to - from;
