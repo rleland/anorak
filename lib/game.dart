@@ -21,14 +21,12 @@ class Game implements GameState {
   final Level _level;
   final KeyboardListener _kl;
   final Player _player;
-  final InputHandler _input_handler;
   final MessageLog _log;
   final List<Npc> _npcs = [];
 
   Level get level => _level;
 
-  Game(KeyboardListener this._kl, Level this._level, MessageLog this._log, Player this._player)
-      : _input_handler = new InputHandler() {
+  Game(KeyboardListener this._kl, Level this._level, MessageLog this._log, Player this._player) {
     _level.addMob(_player, _player.pos);
   }
 
@@ -46,7 +44,7 @@ class Game implements GameState {
   bool loop(DateTime now) {
     while (_kl.hasKeysToProcess(now)) {
       Key key = _kl.consumeKeyFromQueue();
-      if (_input_handler.IsDirectionKey(key)) {
+      if (InputHandler.IsDirectionKey(key)) {
         _updatePlayer(now, key);
       }
     }

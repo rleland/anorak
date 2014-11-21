@@ -19,9 +19,7 @@ class Key {
      return _keys.containsKey(keyCode) ? _keys[keyCode] : null;
    }
 
-  String toString() {
-    return "KeyCode: $_code";
-  }
+  String toString() => "KeyCode: $_code";
 
   static void _initKeys() {
     [UP, DOWN, LEFT, RIGHT].forEach((k) => _keys[k._code] = k);
@@ -87,8 +85,5 @@ class KeyboardListener {
 
 class InputHandler {  // TODO: Rename to describe the type of inputhandler and maybe generic class?
   static final DIRECTION_KEYS = [Key.UP, Key.DOWN, Key.RIGHT, Key.LEFT];
-
-  bool IsDirectionKey(Key key) {
-    return DIRECTION_KEYS.contains(key);
-  }
+  static bool IsDirectionKey(Key key) => DIRECTION_KEYS.contains(key);
 }

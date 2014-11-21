@@ -57,8 +57,7 @@ main() {
 
   group("input handler tests", () {
     test("check direction keys", () {
-      InputHandler ih = new InputHandler();
-      expect(ih.IsDirectionKey(Key.UP), isTrue);
+      expect(InputHandler.IsDirectionKey(Key.UP), isTrue);
     });
   });
 }
