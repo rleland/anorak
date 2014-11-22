@@ -10,8 +10,9 @@ abstract class MobEvent extends Event {
   @override int get type => Event.TYPE_MOB;
 }
 
+typedef Buff BuffGenerator(DateTime now);
 class BuffEvent extends MobEvent {
-  final Function _generator;
+  final BuffGenerator _generator;
 
   BuffEvent(Buff this._generator(DateTime now));
 
