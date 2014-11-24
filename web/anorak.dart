@@ -131,6 +131,7 @@ class LevelRendererImpl implements LevelRenderer {
   }
 }
 
+// TODO: Look into using a circular buffer.
 class MessageLogImpl implements MessageLog {
   static String addTimestamp(DateTime time, String text) {
     String h = twoDigits(time.hour);
