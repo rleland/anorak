@@ -83,7 +83,7 @@ Pos _mapToOctant(Pos pos, int octant, {bool undo: false}) {
     case 5: return new Pos(-pos.col, -pos.row);
     case 6: return undo ? new Pos(-pos.col, pos.row) : new Pos(pos.col, -pos.row);
     case 7: return new Pos(-pos.row, pos.col);
-    default: throw new UnimplementedError("Unsupported octant: $octant");
+    default: throw new ArgumentError("Octant must be in [0,7]: $octant");
   }
 }
 
